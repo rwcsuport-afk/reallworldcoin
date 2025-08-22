@@ -1,13 +1,17 @@
 import Web3 from 'web3';
+import EthereumProvider from "@walletconnect/ethereum-provider";
 
 let web3;
 let userAddress = null;
+let provider = null;
 
-// Conversion rate: 1 BNB = 1000 Tokens (Change as per your project)
+// Conversion rate: 1 BNB = 1000 Tokens (adjust as per your project)
 const TOKEN_RATE = 1000;
-
-// Replace with your receiving wallet or contract address
+// Replace with your receiving wallet
 const RECEIVING_WALLET = '0x7f2b19509ae07a5aa7247f5ecd9cc0f7ff1cece6';
+
+// WalletConnect Project ID (get from https://cloud.walletconnect.com/)
+const WALLET_CONNECT_PROJECT_ID = "YOUR_PROJECT_ID";
 
 document.addEventListener('DOMContentLoaded', function () {
     const connectButton = document.getElementById('connectWallet');
@@ -22,29 +26,28 @@ document.addEventListener('DOMContentLoaded', function () {
         receiveAmountInput.value = (bnbAmount * TOKEN_RATE).toFixed(2);
     });
 
-    // ✅ Connect Wallet
+    // ✅ Connect Wallet (MetaMask or WalletConnect)
     connectButton.addEventListener('click', async function () {
-        if (typeof window.ethereum === 'undefined') {
-            alert('MetaMask is not installed. Please install it.');
-            return;
-        }
-
         try {
-            // Request wallet connection
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            if (!accounts || accounts.length === 0) {
-                alert('No accounts found. Please unlock your wallet.');
-                return;
+            if (typeof window.ethereum !== 'undefined') {
+                // ✅ MetaMask
+                provider = window.ethereum;
+                await provider.request({ method: 'eth_requestAccounts' });
+                await switchToBSC();
+            } else {
+                // ✅ WalletConnect v2
+                provider = await EthereumProvider.init({
+                    projectId: WALLET_CONNECT_PROJECT_ID,
+                    chains: [56], // BSC Mainnet
+                    showQrModal: true
+                });
+                await provider.enable();
             }
 
-            // Initialize Web3
-            web3 = new Web3(window.ethereum);
+            web3 = new Web3(provider);
+            const accounts = await web3.eth.getAccounts();
             userAddress = accounts[0];
 
-            // ✅ Switch to Binance Smart Chain
-            await switchToBSC();
-
-            // Display connected wallet
             walletAddressDisplay.textContent = `Connected: ${shortAddress(userAddress)}`;
             buyButton.disabled = false;
 
@@ -81,17 +84,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// ✅ Function to switch to Binance Smart Chain
+// ✅ Switch to Binance Smart Chain (MetaMask only)
 async function switchToBSC() {
     try {
-        await window.ethereum.request({
+        await provider.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: '0x38' }], // BSC Mainnet
         });
     } catch (error) {
-        // If chain is not added to MetaMask, add it
         if (error.code === 4902) {
-            await window.ethereum.request({
+            await provider.request({
                 method: 'wallet_addEthereumChain',
                 params: [{
                     chainId: '0x38',
@@ -111,7 +113,6 @@ async function switchToBSC() {
     }
 }
 
-// ✅ Helper: Shorten wallet address for display
 function shortAddress(address) {
     return address.slice(0, 6) + '...' + address.slice(-4);
 }
