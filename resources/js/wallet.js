@@ -11,7 +11,7 @@ const TOKEN_RATE = 1000;
 const RECEIVING_WALLET = '0x7f2b19509ae07a5aa7247f5ecd9cc0f7ff1cece6';
 
 // WalletConnect Project ID (get from https://cloud.walletconnect.com/)
-const WALLET_CONNECT_PROJECT_ID = "YOUR_PROJECT_ID";
+const WALLET_CONNECT_PROJECT_ID = "d657fc2caf26f35212226268cf9745d0";
 
 document.addEventListener('DOMContentLoaded', function () {
     const connectButton = document.getElementById('connectWallet');
