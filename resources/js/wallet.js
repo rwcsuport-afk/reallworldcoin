@@ -5,7 +5,7 @@ let web3;
 let userAddress = null;
 let provider = null;
 
-// Conversion rate: 1 BNB = 1000 Tokens (adjust as per your project)
+// Conversion rate: 1 BNB = 1000 Tokens
 const TOKEN_RATE = 1000;
 // Replace with your receiving wallet
 const RECEIVING_WALLET = '0x7f2b19509ae07a5aa7247f5ecd9cc0f7ff1cece6';
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const receiveAmountInput = document.getElementById('receiveAmount');
     const walletAddressDisplay = document.getElementById('walletAddress');
 
-    // ✅ Update token amount dynamically based on BNB input
+    // ✅ Update token amount dynamically
     payAmountInput.addEventListener('input', function () {
         const bnbAmount = parseFloat(payAmountInput.value) || 0;
         receiveAmountInput.value = (bnbAmount * TOKEN_RATE).toFixed(2);
@@ -39,9 +39,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 provider = await EthereumProvider.init({
                     projectId: WALLET_CONNECT_PROJECT_ID,
                     chains: [56], // BSC Mainnet
-                    showQrModal: true
+                    rpcMap: {
+                        56: "https://bsc-dataseed.binance.org/"
+                    },
+                    showQrModal: true,
+                    methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
+                    events: ["chainChanged", "accountsChanged"]
                 });
-                await provider.enable();
+
+                await provider.connect(); // ✅ v2 correct method
             }
 
             web3 = new Web3(provider);
@@ -75,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 value: valueInWei
             });
 
-            // ✅ Show success
             alert('✅ Transaction successful!\nHash: ' + tx.transactionHash);
             console.log('Transaction:', tx);
 
