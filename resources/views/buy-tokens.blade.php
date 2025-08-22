@@ -33,4 +33,4 @@
     </div>
 </div>
 
-<script src="{{ mix('js/mywallet.js') }}"></script>
+<script src="{{ mix('js/wallet.js') }}"></script>
