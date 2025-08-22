@@ -75,8 +75,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 value: valueInWei
             });
 
+            // ✅ Show success
             alert('✅ Transaction successful!\nHash: ' + tx.transactionHash);
             console.log('Transaction:', tx);
+
+            // ✅ Send transaction details to Laravel backend
+            await fetch('/api/save-transaction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    txHash: tx.transactionHash,
+                    from: userAddress,
+                    amount: bnbAmount,
+                    tokenReceived: receiveAmountInput.value
+                })
+            });
+
+            console.log('Transaction saved to backend.');
+
         } catch (error) {
             console.error('Transaction failed:', error);
             alert('❌ Transaction failed: ' + error.message);

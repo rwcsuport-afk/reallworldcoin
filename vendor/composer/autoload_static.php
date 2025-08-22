@@ -575,6 +575,7 @@ class ComposerStaticInitd473ed159a179dfc6df31abb5f1520b2
         'App\\Http\\Controllers\\HomepageController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomepageController.php',
         'App\\Http\\Controllers\\PaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/PaymentController.php',
         'App\\Http\\Controllers\\StakeController' => __DIR__ . '/../..' . '/app/Http/Controllers/StakeController.php',
+        'App\\Http\\Controllers\\TransactionController' => __DIR__ . '/../..' . '/app/Http/Controllers/TransactionController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\AdminMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/AdminMiddleware.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',

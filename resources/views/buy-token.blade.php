@@ -1,4 +1,5 @@
 @extends('app')
+<div id="successMessage" class="mt-3"></div>
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 text-center">
