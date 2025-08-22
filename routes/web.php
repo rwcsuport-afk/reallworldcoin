@@ -34,7 +34,7 @@ Route::get('/reload-captcha', function () {
 });
 
 Route::get('/buy-token', function () {
-    return view('buy-token');
+    return view('buy-tokens');
 });
 
 Route::match(['get', 'post'],'/login', [AuthController::class, 'login'])->name('login');
