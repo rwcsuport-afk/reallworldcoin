@@ -71556,24 +71556,7 @@ document.addEventListener('DOMContentLoaded', function () {
       while (1) switch (_context.p = _context.n) {
         case 0:
           _context.p = 0;
-          if (!(typeof window.ethereum !== 'undefined')) {
-            _context.n = 3;
-            break;
-          }
-          // ✅ MetaMask
-          provider = window.ethereum;
           _context.n = 1;
-          return provider.request({
-            method: 'eth_requestAccounts'
-          });
-        case 1:
-          _context.n = 2;
-          return switchToBSC();
-        case 2:
-          _context.n = 5;
-          break;
-        case 3:
-          _context.n = 4;
           return _walletconnect_ethereum_provider__WEBPACK_IMPORTED_MODULE_1__["default"].init({
             projectId: WALLET_CONNECT_PROJECT_ID,
             chains: [56],
@@ -71585,31 +71568,34 @@ document.addEventListener('DOMContentLoaded', function () {
             methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
             events: ["chainChanged", "accountsChanged"]
           });
-        case 4:
+        case 1:
           provider = _context.v;
-          _context.n = 5;
+          _context.n = 2;
           return provider.connect();
-        case 5:
+        case 2:
+          // ✅ v2 correct method
+          // }
+
           web3 = new web3__WEBPACK_IMPORTED_MODULE_0__["default"](provider);
-          _context.n = 6;
+          _context.n = 3;
           return web3.eth.getAccounts();
-        case 6:
+        case 3:
           accounts = _context.v;
           userAddress = accounts[0];
           walletAddressDisplay.textContent = "Connected: ".concat(shortAddress(userAddress));
           buyButton.disabled = false;
           console.log('Wallet connected:', userAddress);
-          _context.n = 8;
+          _context.n = 5;
           break;
-        case 7:
-          _context.p = 7;
+        case 4:
+          _context.p = 4;
           _t = _context.v;
           console.error('Wallet connection failed:', _t);
           alert('Wallet connection failed: ' + _t.message);
-        case 8:
+        case 5:
           return _context.a(2);
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[0, 4]]);
   })));
 
   // ✅ Buy with BNB

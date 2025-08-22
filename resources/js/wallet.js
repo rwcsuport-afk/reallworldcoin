@@ -29,12 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // ✅ Connect Wallet (MetaMask or WalletConnect)
     connectButton.addEventListener('click', async function () {
         try {
-            if (typeof window.ethereum !== 'undefined') {
-                // ✅ MetaMask
-                provider = window.ethereum;
-                await provider.request({ method: 'eth_requestAccounts' });
-                await switchToBSC();
-            } else {
+            // if (typeof window.ethereum !== 'undefined') {
+            //     // ✅ MetaMask
+            //     provider = window.ethereum;
+            //     await provider.request({ method: 'eth_requestAccounts' });
+            //     await switchToBSC();
+            // } else {
                 // ✅ WalletConnect v2
                 provider = await EthereumProvider.init({
                     projectId: WALLET_CONNECT_PROJECT_ID,
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 await provider.connect(); // ✅ v2 correct method
-            }
+            // }
 
             web3 = new Web3(provider);
             const accounts = await web3.eth.getAccounts();
