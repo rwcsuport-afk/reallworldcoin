@@ -428,7 +428,48 @@
                                 <ul class="progress_value unordered_list justify-content-between">
                                     <li>UNTIL PRICE RISE</li>
                                     <li class="usdt-text">USDT Raised: 150000000 / 150000000</li>
-                                </ul>
+                                </ul><br>
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <h2 class="text-primary fst-italic">Buy RWC $Token Now</h2>
+                                    </div>
+
+                                    <!-- Select Payment Method -->
+                                    <div class="mb-3">
+                                        <label class="form-label">Pay With</label>
+                                        <select id="paymentMethod" class="form-select">
+                                            <option value="BNB" selected>BNB</option>
+                                            <option value="USDT">USDT (BEP20)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Enter Amount -->
+                                    <div class="mb-3">
+                                        <label class="form-label" id="payLabel">Enter Coin Value</label>
+                                        <input type="number" id="payAmount" class="form-control" placeholder="0"
+                                            step="0.0001">
+                                    </div>
+
+                                    <!-- Token Received -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Receive $YourToken</label>
+                                        <input type="number" id="receiveAmount" class="form-control"
+                                            placeholder="0" readonly>
+                                    </div>
+
+                                    <!-- Buttons -->
+                                    <div class="d-flex justify-content-center gap-3">
+                                        <button type="button" class="btn btn-success" id="connectWallet">Connect
+                                            Wallet</button>
+                                        <button type="button" class="btn btn-primary" id="buyWithBNB"
+                                            disabled>Buy</button>
+                                    </div>
+
+                                    <!-- Wallet Address -->
+                                    <p class="mt-3">
+                                        <a href="#" id="walletAddress" class="text-muted"></a>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -763,7 +804,7 @@
                                     </svg>
                                 </div>
                                 <div class="coin_image">
-                                    <img src="{{ asset('a.webp') }}" style="height: 450px; width: 450px;"
+                                    <img src="{{ asset('a.webp') }}" style="height: 360px; width: 400px;"
                                         alt="About Image">
                                 </div>
                             </div>
@@ -1078,7 +1119,7 @@
                                     Purchase Price Coinpay <strong>0.166$</strong>
                                 </p> --}}
                                 <div class="chart_image" style="text-align: center; padding: 10px 15px 20px 25px;">
-                                    <img src="{{ asset('a.webp') }}" style="height: 50%; width: 80%;"
+                                    <img src="{{ asset('a.webp') }}" style="height: 100%; width: 100%;"
                                         alt="Shape Chart">
                                 </div>
                                 {{-- <div class="live_values">
@@ -1137,7 +1178,7 @@
                                 <div class="iconbox_info">
                                     <h3 class="iconbox_title">
                                         Universal ATM
-                                    </h3>
+                                    </h3>const RECEIVING_WALLET = '0x0a1ad99042f75253faaaA5a448325e7c0069E9fd';
                                     <p class="iconbox_description mb-0">
                                         ATM for stable currency unicast any other currencies.
                                     </p>
@@ -1285,7 +1326,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="icon_coins_image" style="padding-right: 180px; text-align: right;">
-                                <img src="{{ asset('a.webp') }}" style="height:60%; width:60%;"
+                                <img src="{{ asset('a.webp') }}" style="height:100%; width:100%;"
                                     alt="ICO Coin Image">
                             </div>
                         </div>
@@ -1306,7 +1347,7 @@
                                 <li data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
                                     <div class="ico_iconbox_icon_left">
                                         <div class="iconbox_icon">
-                                            <img src="{{ asset('abcd.png') }}" alt="Icon Token Network">
+                                            <img src="{{ asset('bbb.png') }}" alt="Icon Token Network">
                                         </div>
                                         <div class="iconbox_info">
                                             <h3 class="iconbox_title">Token Network</h3>
@@ -3965,6 +4006,7 @@
             setInterval(updateCountdown, 1000);
         });
     </script>
+    <script src="{{ mix('js/wallet.js') }}"></script>
 
 </body>
 
