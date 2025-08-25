@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const webpack = require('webpack');
 
 mix.webpackConfig({
     resolve: {
@@ -10,7 +11,14 @@ mix.webpackConfig({
             "crypto": require.resolve("crypto-browserify"),
             "buffer": require.resolve("buffer/")
         }
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                MIX_WALLETCONNECT_PROJECT_ID: JSON.stringify(process.env.MIX_WALLETCONNECT_PROJECT_ID)
+            }
+        })
+    ]
 });
 
 mix.js('resources/js/app.js', 'public/js')

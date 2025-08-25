@@ -11,9 +11,9 @@ const TOKEN_RATE = 1000;
 const RECEIVING_WALLET = '0x7f2b19509ae07a5aa7247f5ecd9cc0f7ff1cece6';
 
 // WalletConnect Project ID (get from https://cloud.walletconnect.com/)
-const WALLET_CONNECT_PROJECT_ID = "d657fc2caf26f35212226268cf9745d0";
+const WALLET_CONNECT_PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const connectButton = document.getElementById('connectWallet');
     const buyButton = document.getElementById('buyWithBNB');
     const payAmountInput = document.getElementById('payAmount');
@@ -21,13 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const walletAddressDisplay = document.getElementById('walletAddress');
 
     // ✅ Update token amount dynamically
-    payAmountInput.addEventListener('input', function () {
+    payAmountInput.addEventListener('input', function() {
         const bnbAmount = parseFloat(payAmountInput.value) || 0;
         receiveAmountInput.value = (bnbAmount * TOKEN_RATE).toFixed(2);
     });
 
     // ✅ Connect Wallet (MetaMask or WalletConnect)
-    connectButton.addEventListener('click', async function () {
+    connectButton.addEventListener('click', async function() {
         try {
             // if (typeof window.ethereum !== 'undefined') {
             //     // ✅ MetaMask
@@ -35,19 +35,19 @@ document.addEventListener('DOMContentLoaded', function () {
             //     await provider.request({ method: 'eth_requestAccounts' });
             //     await switchToBSC();
             // } else {
-                // ✅ WalletConnect v2
-                provider = await EthereumProvider.init({
-                    projectId: WALLET_CONNECT_PROJECT_ID,
-                    chains: [56], // BSC Mainnet
-                    rpcMap: {
-                        56: "https://bsc-dataseed.binance.org/"
-                    },
-                    showQrModal: true,
-                    methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
-                    events: ["chainChanged", "accountsChanged"]
-                });
+            // ✅ WalletConnect v2
+            provider = await EthereumProvider.init({
+                projectId: WALLET_CONNECT_PROJECT_ID,
+                chains: [56], // BSC Mainnet
+                rpcMap: {
+                    56: "https://bsc-dataseed.binance.org/"
+                },
+                showQrModal: true,
+                methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
+                events: ["chainChanged", "accountsChanged"]
+            });
 
-                await provider.connect(); // ✅ v2 correct method
+            await provider.connect(); // ✅ v2 correct method
             // }
 
             web3 = new Web3(provider);
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ✅ Buy with BNB
-    buyButton.addEventListener('click', async function () {
+    buyButton.addEventListener('click', async function() {
         const bnbAmount = parseFloat(payAmountInput.value) || 0;
         if (!bnbAmount || !userAddress) {
             alert('Enter amount and connect wallet first.');
