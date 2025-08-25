@@ -8,7 +8,7 @@ let provider = null;
 // Conversion rate: 1 BNB = 1000 Tokens
 const TOKEN_RATE = 1000;
 // Replace with your receiving wallet
-const RECEIVING_WALLET = '0x7f2b19509ae07a5aa7247f5ecd9cc0f7ff1cece6';
+const RECEIVING_WALLET = '0x0a1ad99042f75253faaaA5a448325e7c0069E9fd';
 
 // WalletConnect Project ID (get from https://cloud.walletconnect.com/)
 const WALLET_CONNECT_PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
