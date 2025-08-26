@@ -15,9 +15,6 @@ const WALLET_CONNECT_PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
 
 document.addEventListener('DOMContentLoaded', function() {
     const connectButton = document.getElementById('connectWallet');
-    const payAmountInput = document.getElementById('payAmount');
-    const receiveAmountInput = document.getElementById('receiveAmount');
-    const walletAddressDisplay = document.getElementById('walletAddress');
 
     // ✅ Update token amount dynamically
     payAmountInput.addEventListener('input', function() {

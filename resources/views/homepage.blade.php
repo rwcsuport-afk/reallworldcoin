@@ -466,10 +466,10 @@
                                 <ul class="progress_value unordered_list justify-content-between">
                                     <li>UNTIL PRICE RISE</li>
                                     <li class="usdt-text">USDT Raised: 150000000 / 150000000</li>
-                                </ul>
+                                </ul><br>
                                 <div class="card-body">
                                     <div class="mb-4">
-                                        <h3 class="text-primary fst-italic">Buy RWC $Token Now</h3>
+                                        <h3 class="fst-italic" style="color: #18DB1B;">Buy RWC Token Now</h3>
                                     </div>
 
                                     <!-- Select Payment Method -->
@@ -840,7 +840,7 @@
                                     </svg>
                                 </div>
                                 <div class="coin_image">
-                                    <img src="{{ asset('a.webp') }}" style="height: 450px; width: 450px;"
+                                    <img src="{{ asset('a.webp') }}" style="height: 300px; width: 300px;"
                                         alt="About Image">
                                 </div>
                             </div>
@@ -1383,7 +1383,7 @@
                                 <li data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
                                     <div class="ico_iconbox_icon_left">
                                         <div class="iconbox_icon">
-                                            <img src="{{ asset('abcd.png') }}" alt="Icon Token Network">
+                                            <img src="{{ asset('bbb.png') }}" alt="Icon Token Network">
                                         </div>
                                         <div class="iconbox_info">
                                             <h3 class="iconbox_title">Token Network</h3>
@@ -1471,7 +1471,7 @@
                     <div class="ico_roadmap_flexbox" data-aos="fade-up" data-aos-duration="600"
                         data-aos-delay="100">
                         <div class="roadmap_block">
-                            <div class="badge">Q1 - 2025</div>
+                            <div class="badge" style="color: #6c757d;">Q1 - 2025</div>
                             <h3 class="heading_text">
                                 RWC'S CALL TO ACTION
                             </h3>
@@ -1517,7 +1517,7 @@
                             </div>
                         </div>
                         <div class="roadmap_block">
-                            <div class="badge">Q2 - 2025</div>
+                            <div class="badge" style="color: #6c757d;">Q2 - 2025</div>
                             <h3 class="heading_text">
                                 RWC'S EVOLUTION
                             </h3>
@@ -1562,7 +1562,7 @@
                             </div>
                         </div>
                         <div class="roadmap_block">
-                            <div class="badge">Q3 - 2026</div>
+                            <div class="badge" style="color: #6c757d;">Q3 - 2026</div>
                             <h3 class="heading_text">
                                 RWC's ASCENT
                             </h3>
@@ -1608,7 +1608,7 @@
                             </div>
                         </div>
                         <div class="roadmap_block">
-                            <div class="badge">Q4 - 2026</div>
+                            <div class="badge" style="color: #6c757d;">Q4 - 2026</div>
                             <h3 class="heading_text">
                                 WEBSITE LAUNCH: THE OFFICIAL RWC
                             </h3>
