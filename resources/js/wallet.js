@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Wallet connected:', userAddress);
         } catch (error) {
             console.error('Wallet connection failed:', error);
-            alert('Wallet connection failed: ' + error.message);
         }
     });
 
