@@ -1,4 +1,4 @@
-import Web3 from 'web3';
+import Web3 from "web3";
 import EthereumProvider from "@walletconnect/ethereum-provider";
 
 let web3;
@@ -7,35 +7,43 @@ let provider = null;
 
 // Conversion rate: 1 BNB = 1000 Tokens
 const TOKEN_RATE = 1000;
-// Replace with your receiving wallet
-const RECEIVING_WALLET = '0x0a1ad99042f75253faaaA5a448325e7c0069E9fd';
 
-// WalletConnect Project ID (get from https://cloud.walletconnect.com/)
+// Replace with your receiving wallet (your project wallet)
+const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
+
+// USDT BEP20 contract on BSC
+const USDT_ADDRESS = "0x55d398326f99059fF775485246999027B3197955"; // official BEP20 USDT
+const USDT_ABI = [{
+    constant: false,
+    inputs: [
+        { name: "_to", type: "address" },
+        { name: "_value", type: "uint256" }
+    ],
+    name: "transfer",
+    outputs: [{ name: "", type: "bool" }],
+    type: "function"
+}];
+
+// WalletConnect Project ID (from https://cloud.walletconnect.com/)
 const WALLET_CONNECT_PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
 
-document.addEventListener('DOMContentLoaded', function() {
-    const connectButton = document.getElementById('connectWallet');
-    const buyButton = document.getElementById('buyWithBNB');
-    const payAmountInput = document.getElementById('payAmount');
-    const receiveAmountInput = document.getElementById('receiveAmount');
-    const walletAddressDisplay = document.getElementById('walletAddress');
+document.addEventListener("DOMContentLoaded", function() {
+    const connectButton = document.getElementById("connectWallet");
+    const buyButton = document.getElementById("buyWithBNB");
+    const payAmountInput = document.getElementById("payAmount");
+    const receiveAmountInput = document.getElementById("receiveAmount");
+    const walletAddressDisplay = document.getElementById("walletAddress");
+    const paymentMethodSelect = document.getElementById("paymentMethod");
 
     // ✅ Update token amount dynamically
-    payAmountInput.addEventListener('input', function() {
-        const bnbAmount = parseFloat(payAmountInput.value) || 0;
-        receiveAmountInput.value = (bnbAmount * TOKEN_RATE).toFixed(2);
+    payAmountInput.addEventListener("input", function() {
+        const amount = parseFloat(payAmountInput.value) || 0;
+        receiveAmountInput.value = (amount * TOKEN_RATE).toFixed(2);
     });
 
-    // ✅ Connect Wallet (MetaMask or WalletConnect)
-    connectButton.addEventListener('click', async function() {
+    // ✅ Connect Wallet (WalletConnect v2)
+    connectButton.addEventListener("click", async function() {
         try {
-            // if (typeof window.ethereum !== 'undefined') {
-            //     // ✅ MetaMask
-            //     provider = window.ethereum;
-            //     await provider.request({ method: 'eth_requestAccounts' });
-            //     await switchToBSC();
-            // } else {
-            // ✅ WalletConnect v2
             provider = await EthereumProvider.init({
                 projectId: WALLET_CONNECT_PROJECT_ID,
                 chains: [56], // BSC Mainnet
@@ -43,12 +51,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     56: "https://bsc-dataseed.binance.org/"
                 },
                 showQrModal: true,
-                methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
-                events: ["chainChanged", "accountsChanged"]
+                optionalMethods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
+                optionalEvents: ["chainChanged", "accountsChanged"]
             });
 
-            await provider.connect(); // ✅ v2 correct method
-            // }
+            await provider.connect();
 
             web3 = new Web3(provider);
             const accounts = await web3.eth.getAccounts();
@@ -57,86 +64,72 @@ document.addEventListener('DOMContentLoaded', function() {
             walletAddressDisplay.textContent = `Connected: ${shortAddress(userAddress)}`;
             buyButton.disabled = false;
 
-            console.log('Wallet connected:', userAddress);
+            console.log("Wallet connected:", userAddress);
         } catch (error) {
-            console.error('Wallet connection failed:', error);
-            alert('Wallet connection failed: ' + error.message);
+            console.error("Wallet connection failed:", error);
+            alert("Wallet connection failed: " + error.message);
         }
     });
 
-    // ✅ Buy with BNB
-    buyButton.addEventListener('click', async function() {
-        const bnbAmount = parseFloat(payAmountInput.value) || 0;
-        if (!bnbAmount || !userAddress) {
-            alert('Enter amount and connect wallet first.');
+    // ✅ Buy with BNB or USDT
+    buyButton.addEventListener("click", async function() {
+        const amount = parseFloat(payAmountInput.value) || 0;
+        if (!amount || !userAddress) {
+            alert("Enter amount and connect wallet first.");
             return;
         }
 
-        const valueInWei = web3.utils.toWei(bnbAmount.toString(), 'ether');
+        const method = paymentMethodSelect.value;
 
         try {
-            const tx = await web3.eth.sendTransaction({
-                from: userAddress,
-                to: RECEIVING_WALLET,
-                value: valueInWei
-            });
+            let tx;
 
-            alert('✅ Transaction successful!\nHash: ' + tx.transactionHash);
-            console.log('Transaction:', tx);
+            if (method === "BNB") {
+                // 🔹 Native BNB transaction
+                const valueInWei = web3.utils.toWei(amount.toString(), "ether");
+
+                tx = await web3.eth.sendTransaction({
+                    from: userAddress,
+                    to: RECEIVING_WALLET,
+                    value: valueInWei
+                });
+
+            } else if (method === "USDT") {
+                // 🔹 Token transaction (USDT)
+                const contract = new web3.eth.Contract(USDT_ABI, USDT_ADDRESS);
+                const decimals = 18; // USDT on BSC uses 18 decimals
+                const value = web3.utils.toWei(amount.toString(), "ether"); // convert amount to smallest unit
+
+                tx = await contract.methods.transfer(RECEIVING_WALLET, value).send({ from: userAddress });
+            }
+
+            alert("✅ Transaction successful!\nHash: " + tx.transactionHash);
+            console.log("Transaction:", tx);
 
             // ✅ Send transaction details to Laravel backend
-            await fetch('/api/save-transaction', {
-                method: 'POST',
+            await fetch("/api/save-transaction", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
                 },
                 body: JSON.stringify({
                     txHash: tx.transactionHash,
                     from: userAddress,
-                    amount: bnbAmount,
-                    tokenReceived: receiveAmountInput.value
+                    amount: amount,
+                    tokenReceived: receiveAmountInput.value,
+                    method: method
                 })
             });
 
-            console.log('Transaction saved to backend.');
-
+            console.log("Transaction saved to backend.");
         } catch (error) {
-            console.error('Transaction failed:', error);
-            alert('❌ Transaction failed: ' + error.message);
+            console.error("Transaction failed:", error);
+            alert("❌ Transaction failed: " + error.message);
         }
     });
 });
 
-// ✅ Switch to Binance Smart Chain (MetaMask only)
-async function switchToBSC() {
-    try {
-        await provider.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x38' }], // BSC Mainnet
-        });
-    } catch (error) {
-        if (error.code === 4902) {
-            await provider.request({
-                method: 'wallet_addEthereumChain',
-                params: [{
-                    chainId: '0x38',
-                    chainName: 'Binance Smart Chain',
-                    nativeCurrency: {
-                        name: 'BNB',
-                        symbol: 'BNB',
-                        decimals: 18
-                    },
-                    rpcUrls: ['https://bsc-dataseed.binance.org/'],
-                    blockExplorerUrls: ['https://bscscan.com']
-                }]
-            });
-        } else {
-            throw error;
-        }
-    }
-}
-
 function shortAddress(address) {
-    return address.slice(0, 6) + '...' + address.slice(-4);
+    return address.slice(0, 6) + "..." + address.slice(-4);
 }

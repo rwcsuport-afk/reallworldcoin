@@ -116,6 +116,14 @@
                 /* bigger on mobile */
             }
         }
+
+        /* Default (desktop) → keep inline */
+        .progress_value {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: nowrap;
+        }
     </style>
 
 </head>
