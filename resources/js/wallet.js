@@ -41,31 +41,22 @@ document.addEventListener("DOMContentLoaded", function() {
         receiveAmountInput.value = (amount * TOKEN_RATE).toFixed(2);
     });
 
-    // Detect if running inside Trust Wallet's browser
-    function isTrustWalletBrowser() {
-        return window.ethereum && window.ethereum.isTrust;
-    }
-
-    // Connect Wallet (MetaMask, Trust Wallet, or WalletConnect)
+    // Connect Wallet
     connectButton.addEventListener("click", async function() {
         try {
-            if (window.ethereum && !isTrustWalletBrowser()) {
-                // MetaMask or other browser wallet
-                provider = window.ethereum;
-                await provider.request({ method: "eth_requestAccounts" });
-                web3 = new Web3(provider);
-            } else if (isTrustWalletBrowser()) {
-                // Trust Wallet's internal browser
+            if (window.ethereum) {
+                // MetaMask or Trust Wallet in-app browser
                 provider = window.ethereum;
                 await provider.request({ method: "eth_requestAccounts" });
                 web3 = new Web3(provider);
             } else {
-                // WalletConnect (desktop or external browser)
+                // WalletConnect fallback
                 provider = await EthereumProvider.init({
                     projectId: WALLET_CONNECT_PROJECT_ID,
                     chains: [56], // BSC Mainnet
                     rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
                     showQrModal: true
+                        // ✅ Removed methods and events (let WalletConnect auto-negotiate)
                 });
                 await provider.connect();
                 web3 = new Web3(provider);
@@ -83,13 +74,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Handle Buy button click
+    // Buy Tokens (BNB or USDT)
     buyButton.addEventListener("click", async function() {
         const amount = parseFloat(payAmountInput.value) || 0;
         const method = paymentMethodSelect.value;
 
         if (!userAddress) {
             alert("Connect your wallet first");
+            return;
+        }
+
+        if (amount <= 0) {
+            alert("Please enter a valid amount");
             return;
         }
 
@@ -108,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             } else if (method === "USDT") {
                 const contract = new web3.eth.Contract(USDT_ABI, USDT_ADDRESS);
-                const decimals = 18;
+                const decimals = 18; // USDT on BSC uses 18 decimals
                 const value = web3.utils.toBN(amount * 10 ** decimals);
 
                 tx = await contract.methods.transfer(RECEIVING_WALLET, value).send({
