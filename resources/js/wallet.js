@@ -14,17 +14,24 @@ const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
 // USDT BEP20 contract on BSC
 const USDT_ADDRESS = "0x55d398326f99059fF775485246999027B3197955";
 const USDT_ABI = [{
-    constant: false,
-    inputs: [
-        { name: "_to", type: "address" },
-        { name: "_value", type: "uint256" }
-    ],
-    name: "transfer",
-    outputs: [{ name: "", type: "bool" }],
-    type: "function"
-}];
+        constant: false,
+        inputs: [
+            { name: "_to", type: "address" },
+            { name: "_value", type: "uint256" }
+        ],
+        name: "transfer",
+        outputs: [{ name: "", type: "bool" }],
+        type: "function"
+    },
+    {
+        constant: true,
+        name: "decimals",
+        outputs: [{ name: "", type: "uint8" }],
+        type: "function"
+    }
+];
 
-// WalletConnect Project ID (hardcoded for now)
+// WalletConnect Project ID
 const WALLET_CONNECT_PROJECT_ID = "d657fc2caf26f35212226268cf9745d0";
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -35,13 +42,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const walletAddressDisplay = document.getElementById("walletAddress");
     const paymentMethodSelect = document.getElementById("paymentMethod");
 
+    // Disable buy button initially
+    buyButton.disabled = true;
+
     // Update token amount dynamically
     payAmountInput.addEventListener("input", function() {
         const amount = parseFloat(payAmountInput.value) || 0;
         receiveAmountInput.value = (amount * TOKEN_RATE).toFixed(2);
     });
 
-    // Connect Wallet
+    // ✅ Connect Wallet
     connectButton.addEventListener("click", async function() {
         try {
             if (window.ethereum) {
@@ -54,27 +64,30 @@ document.addEventListener("DOMContentLoaded", function() {
                 provider = await EthereumProvider.init({
                     projectId: WALLET_CONNECT_PROJECT_ID,
                     chains: [56], // BSC Mainnet
-                    rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
+                    rpc: { 56: "https://bsc-dataseed.binance.org/" },
                     showQrModal: true
-                        // ✅ Removed methods and events (let WalletConnect auto-negotiate)
                 });
-                await provider.connect();
+                await provider.enable();
                 web3 = new Web3(provider);
             }
 
             const accounts = await web3.eth.getAccounts();
+            if (!accounts || accounts.length === 0) {
+                throw new Error("No accounts found. Please unlock your wallet.");
+            }
+
             userAddress = accounts[0];
             walletAddressDisplay.textContent = `Connected: ${shortAddress(userAddress)}`;
             buyButton.disabled = false;
 
-            console.log("Wallet connected:", userAddress);
+            console.log("✅ Wallet connected:", userAddress);
         } catch (error) {
-            console.error("Wallet connection failed:", error);
+            console.error("❌ Wallet connection failed:", error);
             alert("Wallet connection failed: " + error.message);
         }
     });
 
-    // Buy Tokens (BNB or USDT)
+    // ✅ Buy Tokens
     buyButton.addEventListener("click", async function() {
         const amount = parseFloat(payAmountInput.value) || 0;
         const method = paymentMethodSelect.value;
@@ -104,12 +117,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
             } else if (method === "USDT") {
                 const contract = new web3.eth.Contract(USDT_ABI, USDT_ADDRESS);
-                const decimals = 18; // USDT on BSC uses 18 decimals
+                const decimals = await contract.methods.decimals().call(); // ✅ Get decimals dynamically
                 const value = web3.utils.toBN(amount * 10 ** decimals);
 
                 tx = await contract.methods.transfer(RECEIVING_WALLET, value).send({
                     from: userAddress,
-                    gas: 60000 // enough gas for BEP20 transfer
+                    gas: 60000
                 });
             }
 
@@ -132,11 +145,10 @@ document.addEventListener("DOMContentLoaded", function() {
             });
 
         } catch (error) {
-            console.error("Transaction failed:", error);
-            alert("❌ Transaction failed: " + error.message);
+            console.error("❌ Transaction failed:", error);
+            alert("Transaction failed: " + error.message);
         }
     });
-
 });
 
 function shortAddress(address) {
