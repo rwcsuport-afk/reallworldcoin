@@ -478,6 +478,7 @@
                                         <a href="#" id="walletAddress" class="text-muted"></a>
                                     </p>
                                 </div>
+
                             </div>
                         </div>
                     </div>

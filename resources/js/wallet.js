@@ -27,13 +27,9 @@ const USDT_ABI = [{
 // WalletConnect Project ID
 const WALLET_CONNECT_PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
 
-// Minimum amounts
-const MIN_BNB = 0.01;
-const MIN_USDT = 10;
-
 document.addEventListener("DOMContentLoaded", function() {
     const connectButton = document.getElementById("connectWallet");
-    const buyButton = document.getElementById("buyWithBNB");
+    const buyButton = document.getElementById("buyWithBNB"); // match Blade ID
     const payAmountInput = document.getElementById("payAmount");
     const receiveAmountInput = document.getElementById("receiveAmount");
     const walletAddressDisplay = document.getElementById("walletAddress");
@@ -45,50 +41,47 @@ document.addEventListener("DOMContentLoaded", function() {
         receiveAmountInput.value = (amount * TOKEN_RATE).toFixed(2);
     });
 
-    // Connect Wallet
+    // Connect Wallet (MetaMask or WalletConnect)
     connectButton.addEventListener("click", async function() {
         try {
+            // if (window.ethereum) {
+            //     // MetaMask
+            //     provider = window.ethereum;
+            //     await provider.request({ method: "eth_requestAccounts" });
+            //     web3 = new Web3(provider);
+            // } else {
+            // WalletConnect v2
             provider = await EthereumProvider.init({
                 projectId: WALLET_CONNECT_PROJECT_ID,
                 chains: [56],
                 rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
                 showQrModal: true,
-                methods: [], // leave empty
+                methods: [],
                 optionalMethods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
                 events: [],
                 optionalEvents: ["chainChanged", "accountsChanged"]
             });
-
             await provider.connect();
-
             web3 = new Web3(provider);
+            // }
+
             const accounts = await web3.eth.getAccounts();
             userAddress = accounts[0];
-
             walletAddressDisplay.textContent = `Connected: ${shortAddress(userAddress)}`;
-            buyButton.disabled = false;
-
+            buyButton.disabled = false; // ✅ now works
             console.log("Wallet connected:", userAddress);
+
         } catch (error) {
             console.error("Wallet connection failed:", error);
             alert("Wallet connection failed: " + error.message);
         }
     });
 
-    // Buy with BNB or USDT
+    // Buy BNB or USDT
     buyButton.addEventListener("click", async function() {
         const amount = parseFloat(payAmountInput.value) || 0;
         const method = paymentMethodSelect.value;
 
-        // Minimum buy checks
-        if (method === "BNB" && amount < MIN_BNB) {
-            alert(`Minimum purchase is ${MIN_BNB} BNB`);
-            return;
-        }
-        if (method === "USDT" && amount < MIN_USDT) {
-            alert(`Minimum purchase is ${MIN_USDT} USDT`);
-            return;
-        }
         if (!userAddress) {
             alert("Connect your wallet first");
             return;
@@ -111,9 +104,8 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             alert("✅ Transaction successful!\nHash: " + tx.transactionHash);
-            console.log("Transaction:", tx);
 
-            // Send transaction to backend
+            // Save transaction to backend
             await fetch("/api/save-transaction", {
                 method: "POST",
                 headers: {
@@ -129,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 })
             });
 
-            console.log("Transaction saved to backend.");
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("❌ Transaction failed: " + error.message);
