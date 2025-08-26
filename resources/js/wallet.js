@@ -28,39 +28,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ✅ Connect Wallet (MetaMask or WalletConnect)
     connectButton.addEventListener('click', async function() {
-        try {
-            // if (typeof window.ethereum !== 'undefined') {
-            //     // ✅ MetaMask
-            //     provider = window.ethereum;
-            //     await provider.request({ method: 'eth_requestAccounts' });
-            //     await switchToBSC();
-            // } else {
-            // ✅ WalletConnect v2
-            provider = await EthereumProvider.init({
-                projectId: WALLET_CONNECT_PROJECT_ID,
-                chains: [56], // BSC Mainnet
-                rpcMap: {
-                    56: "https://bsc-dataseed.binance.org/"
-                },
-                showQrModal: true,
-                methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
-                events: ["chainChanged", "accountsChanged"]
-            });
 
-            await provider.connect(); // ✅ v2 correct method
-            // }
+        // if (typeof window.ethereum !== 'undefined') {
+        //     // ✅ MetaMask
+        //     provider = window.ethereum;
+        //     await provider.request({ method: 'eth_requestAccounts' });
+        //     await switchToBSC();
+        // } else {
+        // ✅ WalletConnect v2
+        provider = await EthereumProvider.init({
+            projectId: WALLET_CONNECT_PROJECT_ID,
+            chains: [56], // BSC Mainnet
+            rpcMap: {
+                56: "https://bsc-dataseed.binance.org/"
+            },
+            showQrModal: true,
+            methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
+            events: ["chainChanged", "accountsChanged"]
+        });
 
-            web3 = new Web3(provider);
-            const accounts = await web3.eth.getAccounts();
-            userAddress = accounts[0];
+        await provider.connect(); // ✅ v2 correct method
+        // }
 
-            walletAddressDisplay.textContent = `Connected: ${shortAddress(userAddress)}`;
-            buyButton.disabled = false;
+        web3 = new Web3(provider);
+        const accounts = await web3.eth.getAccounts();
+        userAddress = accounts[0];
 
-            console.log('Wallet connected:', userAddress);
-        } catch (error) {
-            console.error('Wallet connection failed:', error);
-        }
+        walletAddressDisplay.textContent = `Connected: ${shortAddress(userAddress)}`;
+        buyButton.disabled = false;
+
+        console.log('Wallet connected:', userAddress);
+
     });
 
     // ✅ Buy with BNB
