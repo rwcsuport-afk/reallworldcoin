@@ -15,7 +15,6 @@ const WALLET_CONNECT_PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
 
 document.addEventListener('DOMContentLoaded', function() {
     const connectButton = document.getElementById('connectWallet');
-    const buyButton = document.getElementById('buyWithBNB');
     const payAmountInput = document.getElementById('payAmount');
     const receiveAmountInput = document.getElementById('receiveAmount');
     const walletAddressDisplay = document.getElementById('walletAddress');
@@ -55,54 +54,14 @@ document.addEventListener('DOMContentLoaded', function() {
         userAddress = accounts[0];
 
         walletAddressDisplay.textContent = `Connected: ${shortAddress(userAddress)}`;
-        buyButton.disabled = false;
+
 
         console.log('Wallet connected:', userAddress);
 
     });
 
     // ✅ Buy with BNB
-    buyButton.addEventListener('click', async function() {
-        const bnbAmount = parseFloat(payAmountInput.value) || 0;
-        if (!bnbAmount || !userAddress) {
-            alert('Enter amount and connect wallet first.');
-            return;
-        }
 
-        const valueInWei = web3.utils.toWei(bnbAmount.toString(), 'ether');
-
-        try {
-            const tx = await web3.eth.sendTransaction({
-                from: userAddress,
-                to: RECEIVING_WALLET,
-                value: valueInWei
-            });
-
-            alert('✅ Transaction successful!\nHash: ' + tx.transactionHash);
-            console.log('Transaction:', tx);
-
-            // ✅ Send transaction details to Laravel backend
-            await fetch('/api/save-transaction', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    txHash: tx.transactionHash,
-                    from: userAddress,
-                    amount: bnbAmount,
-                    tokenReceived: receiveAmountInput.value
-                })
-            });
-
-            console.log('Transaction saved to backend.');
-
-        } catch (error) {
-            console.error('Transaction failed:', error);
-            alert('❌ Transaction failed: ' + error.message);
-        }
-    });
 });
 
 // ✅ Switch to Binance Smart Chain (MetaMask only)
