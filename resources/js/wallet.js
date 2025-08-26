@@ -24,7 +24,7 @@ const USDT_ABI = [{
     type: "function"
 }];
 
-// WalletConnect Project ID
+// WalletConnect Project ID (hardcoded for now)
 const WALLET_CONNECT_PROJECT_ID = "d657fc2caf26f35212226268cf9745d0";
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -41,23 +41,31 @@ document.addEventListener("DOMContentLoaded", function() {
         receiveAmountInput.value = (amount * TOKEN_RATE).toFixed(2);
     });
 
-    // Connect Wallet (MetaMask or WalletConnect)
+    // Detect if running inside Trust Wallet's browser
+    function isTrustWalletBrowser() {
+        return window.ethereum && window.ethereum.isTrust;
+    }
+
+    // Connect Wallet (MetaMask, Trust Wallet, or WalletConnect)
     connectButton.addEventListener("click", async function() {
         try {
-            if (window.ethereum) {
-                // MetaMask
+            if (window.ethereum && !isTrustWalletBrowser()) {
+                // MetaMask or other browser wallet
+                provider = window.ethereum;
+                await provider.request({ method: "eth_requestAccounts" });
+                web3 = new Web3(provider);
+            } else if (isTrustWalletBrowser()) {
+                // Trust Wallet's internal browser
                 provider = window.ethereum;
                 await provider.request({ method: "eth_requestAccounts" });
                 web3 = new Web3(provider);
             } else {
-                // Trust Wallet / WalletConnect v2
+                // WalletConnect (desktop or external browser)
                 provider = await EthereumProvider.init({
                     projectId: WALLET_CONNECT_PROJECT_ID,
                     chains: [56], // BSC Mainnet
                     rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
-                    showQrModal: true,
-                    methods: ["eth_requestAccounts", "eth_sendTransaction"], // ✅ remove unsupported methods
-                    events: ["accountsChanged", "chainChanged"]
+                    showQrModal: true
                 });
                 await provider.connect();
                 web3 = new Web3(provider);
@@ -75,8 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Buy BNB or USDT
-    // Buy BNB or USDT
+    // Handle Buy button click
     buyButton.addEventListener("click", async function() {
         const amount = parseFloat(payAmountInput.value) || 0;
         const method = paymentMethodSelect.value;
@@ -96,17 +103,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     from: userAddress,
                     to: RECEIVING_WALLET,
                     value: valueInWei,
-                    chainId: 56, // BSC Mainnet
                     gas: 21000 // minimal gas for BNB transfer
                 });
 
             } else if (method === "USDT") {
                 const contract = new web3.eth.Contract(USDT_ABI, USDT_ADDRESS);
-                const value = web3.utils.toWei(amount.toString(), "ether");
+                const decimals = 18;
+                const value = web3.utils.toBN(amount * 10 ** decimals);
 
                 tx = await contract.methods.transfer(RECEIVING_WALLET, value).send({
                     from: userAddress,
-                    chainId: 56,
                     gas: 60000 // enough gas for BEP20 transfer
                 });
             }
