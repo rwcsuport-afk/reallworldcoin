@@ -4026,23 +4026,39 @@
             const payInput = document.getElementById("pay");
             const buyBNB = document.getElementById("buyBNB");
             const buyUSDT = document.getElementById("buyUSDT");
+            const connectWallet = document.getElementById("connectWallet");
 
             const trustWalletBaseURL = "https://link.trustwallet.com/send";
             const receivingWallet = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
 
             // Coin IDs and token info
-            const coinBNB = "20000714"; // BNB coin ID in Trust Wallet
-            const tokenUSDT = "0x55d398326f99059fF775485246999027B3197955"; // USDT BEP20 token
+            const coinBNB = "20000714"; // BNB coin ID
+            const tokenUSDT = "0x55d398326f99059fF775485246999027B3197955"; // USDT BEP20
+
+            // Initially hide Buy buttons
+            buyBNB.style.display = "none";
+            buyUSDT.style.display = "none";
 
             // Disable buttons initially
             buyBNB.disabled = true;
             buyUSDT.disabled = true;
 
+            // Show buttons when wallet is connected
+            connectWallet.addEventListener("click", function() {
+                // Simulate wallet connection (you can replace with actual wallet logic)
+                buyBNB.style.display = "inline-block";
+                buyUSDT.style.display = "inline-block";
+
+                // Optionally disable Connect Wallet button after connection
+                connectWallet.disabled = true;
+                connectWallet.textContent = "Wallet Connected";
+            });
+
             function updateLinks() {
                 const selectedMethod = paymentMethod.value;
                 const amount = parseFloat(payInput.value);
 
-                // Reset buttons
+                // Reset both buttons
                 buyBNB.disabled = true;
                 buyBNB.onclick = null;
                 buyUSDT.disabled = true;
@@ -4074,6 +4090,7 @@
             payInput.addEventListener("input", updateLinks);
         });
     </script>
+
 
     </script>
 
