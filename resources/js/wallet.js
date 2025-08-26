@@ -64,34 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// ✅ Switch to Binance Smart Chain (MetaMask only)
-async function switchToBSC() {
-    try {
-        await provider.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x38' }], // BSC Mainnet
-        });
-    } catch (error) {
-        if (error.code === 4902) {
-            await provider.request({
-                method: 'wallet_addEthereumChain',
-                params: [{
-                    chainId: '0x38',
-                    chainName: 'Binance Smart Chain',
-                    nativeCurrency: {
-                        name: 'BNB',
-                        symbol: 'BNB',
-                        decimals: 18
-                    },
-                    rpcUrls: ['https://bsc-dataseed.binance.org/'],
-                    blockExplorerUrls: ['https://bscscan.com']
-                }]
-            });
-        } else {
-            throw error;
-        }
-    }
-}
+
 
 function shortAddress(address) {
     return address.slice(0, 6) + '...' + address.slice(-4);
