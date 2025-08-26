@@ -445,7 +445,7 @@
                                     <!-- Select Payment Method -->
                                     <div class="mb-3">
                                         <label class="form-label">Pay With</label>
-                                        <select id="paymentMethod" class="form-select">
+                                        <select id="pM" class="form-select">
                                             <option value="BNB" selected>BNB</option>
                                             <option value="USDT">USDT (BEP20)</option>
                                         </select>
@@ -454,23 +454,27 @@
                                     <!-- Enter Amount -->
                                     <div class="mb-3">
                                         <label class="form-label" id="payLabel">Enter Coin Value</label>
-                                        <input type="number" id="payAmount" class="form-control" placeholder="0"
-                                            step="0.0001">
+                                        <input type="number" id="pay" class="form-control" placeholder="0">
                                     </div>
 
                                     <!-- Token Received -->
-                                    <div class="mb-4">
+                                    {{-- <div class="mb-4">
                                         <label class="form-label">Receive $YourToken</label>
                                         <input type="number" id="receiveAmount" class="form-control"
                                             placeholder="0" readonly>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- Buttons -->
-                                    <div class="d-flex justify-content-center gap-3">
-                                        <button type="button" class="btn btn-success" id="connectWallet">Connect
-                                            Wallet</button>
-                                        <button type="button" class="btn btn-primary" id="buyWithBNB"
-                                            disabled>Buy</button>
+                                    <div class="d-flex justify-content-center flex-wrap gap-3">
+                                        <button type="button" class="btn btn-success" id="connectWallet">
+                                            Connect Wallet
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="buyBNB" disabled>
+                                            Buy with BNB
+                                        </button>
+                                        <button type="button" class="btn btn-warning" id="buyUSDT" disabled>
+                                            Buy with USDT
+                                        </button>
                                     </div>
 
                                     <!-- Wallet Address -->
@@ -478,7 +482,6 @@
                                         <a href="#" id="walletAddress" class="text-muted"></a>
                                     </p>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -4016,6 +4019,64 @@
         });
     </script>
     <script src="{{ mix('js/wallet.js') }}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const paymentMethod = document.getElementById("pM");
+            const payInput = document.getElementById("pay");
+            const buyBNB = document.getElementById("buyBNB");
+            const buyUSDT = document.getElementById("buyUSDT");
+
+            const trustWalletBaseURL = "https://link.trustwallet.com/send";
+            const receivingWallet = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
+
+            // Coin IDs and token info
+            const coinBNB = "20000714"; // BNB coin ID in Trust Wallet
+            const tokenUSDT = "0x55d398326f99059fF775485246999027B3197955"; // USDT BEP20 token
+
+            // Disable buttons initially
+            buyBNB.disabled = true;
+            buyUSDT.disabled = true;
+
+            function updateLinks() {
+                const selectedMethod = paymentMethod.value;
+                const amount = parseFloat(payInput.value);
+
+                // Reset buttons
+                buyBNB.disabled = true;
+                buyBNB.onclick = null;
+                buyUSDT.disabled = true;
+                buyUSDT.onclick = null;
+
+                if (amount > 0) {
+                    if (selectedMethod === "BNB") {
+                        // Enable BNB button
+                        buyBNB.disabled = false;
+                        const url =
+                            `${trustWalletBaseURL}?coin=${coinBNB}&address=${receivingWallet}&amount=${amount}`;
+                        buyBNB.onclick = () => {
+                            window.open(url, "_blank");
+                        };
+                    } else if (selectedMethod === "USDT") {
+                        // Enable USDT button
+                        buyUSDT.disabled = false;
+                        const url =
+                            `${trustWalletBaseURL}?coin=${coinBNB}&address=${receivingWallet}&amount=${amount}&token_id=${tokenUSDT}`;
+                        buyUSDT.onclick = () => {
+                            window.open(url, "_blank");
+                        };
+                    }
+                }
+            }
+
+            // Event listeners
+            paymentMethod.addEventListener("change", updateLinks);
+            payInput.addEventListener("input", updateLinks);
+        });
+    </script>
+
+    </script>
+
 
 </body>
 
