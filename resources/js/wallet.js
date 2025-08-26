@@ -8,11 +8,11 @@ let provider = null;
 // Conversion rate: 1 BNB = 1000 Tokens
 const TOKEN_RATE = 1000;
 
-// Replace with your receiving wallet (your project wallet)
+// Receiving wallet
 const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
 
 // USDT BEP20 contract on BSC
-const USDT_ADDRESS = "0x55d398326f99059fF775485246999027B3197955"; // official BEP20 USDT
+const USDT_ADDRESS = "0x55d398326f99059fF775485246999027B3197955";
 const USDT_ABI = [{
     constant: false,
     inputs: [
@@ -24,8 +24,12 @@ const USDT_ABI = [{
     type: "function"
 }];
 
-// WalletConnect Project ID (from https://cloud.walletconnect.com/)
+// WalletConnect Project ID
 const WALLET_CONNECT_PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
+
+// Minimum amounts
+const MIN_BNB = 0.01;
+const MIN_USDT = 10;
 
 document.addEventListener("DOMContentLoaded", function() {
     const connectButton = document.getElementById("connectWallet");
@@ -35,23 +39,23 @@ document.addEventListener("DOMContentLoaded", function() {
     const walletAddressDisplay = document.getElementById("walletAddress");
     const paymentMethodSelect = document.getElementById("paymentMethod");
 
-    // ✅ Update token amount dynamically
+    // Update token amount dynamically
     payAmountInput.addEventListener("input", function() {
         const amount = parseFloat(payAmountInput.value) || 0;
         receiveAmountInput.value = (amount * TOKEN_RATE).toFixed(2);
     });
 
-    // ✅ Connect Wallet (WalletConnect v2)
+    // Connect Wallet
     connectButton.addEventListener("click", async function() {
         try {
             provider = await EthereumProvider.init({
                 projectId: WALLET_CONNECT_PROJECT_ID,
-                chains: [56], // BSC Mainnet
-                rpcMap: {
-                    56: "https://bsc-dataseed.binance.org/"
-                },
+                chains: [56],
+                rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
                 showQrModal: true,
+                methods: [], // leave empty
                 optionalMethods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
+                events: [],
                 optionalEvents: ["chainChanged", "accountsChanged"]
             });
 
@@ -71,42 +75,45 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // ✅ Buy with BNB or USDT
+    // Buy with BNB or USDT
     buyButton.addEventListener("click", async function() {
         const amount = parseFloat(payAmountInput.value) || 0;
-        if (!amount || !userAddress) {
-            alert("Enter amount and connect wallet first.");
+        const method = paymentMethodSelect.value;
+
+        // Minimum buy checks
+        if (method === "BNB" && amount < MIN_BNB) {
+            alert(`Minimum purchase is ${MIN_BNB} BNB`);
             return;
         }
-
-        const method = paymentMethodSelect.value;
+        if (method === "USDT" && amount < MIN_USDT) {
+            alert(`Minimum purchase is ${MIN_USDT} USDT`);
+            return;
+        }
+        if (!userAddress) {
+            alert("Connect your wallet first");
+            return;
+        }
 
         try {
             let tx;
 
             if (method === "BNB") {
-                // 🔹 Native BNB transaction
                 const valueInWei = web3.utils.toWei(amount.toString(), "ether");
-
                 tx = await web3.eth.sendTransaction({
                     from: userAddress,
                     to: RECEIVING_WALLET,
                     value: valueInWei
                 });
-
             } else if (method === "USDT") {
-                // 🔹 Token transaction (USDT)
                 const contract = new web3.eth.Contract(USDT_ABI, USDT_ADDRESS);
-                const decimals = 18; // USDT on BSC uses 18 decimals
-                const value = web3.utils.toWei(amount.toString(), "ether"); // convert amount to smallest unit
-
+                const value = web3.utils.toWei(amount.toString(), "ether");
                 tx = await contract.methods.transfer(RECEIVING_WALLET, value).send({ from: userAddress });
             }
 
             alert("✅ Transaction successful!\nHash: " + tx.transactionHash);
             console.log("Transaction:", tx);
 
-            // ✅ Send transaction details to Laravel backend
+            // Send transaction to backend
             await fetch("/api/save-transaction", {
                 method: "POST",
                 headers: {
