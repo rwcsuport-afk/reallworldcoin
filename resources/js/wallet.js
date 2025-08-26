@@ -25,7 +25,7 @@ const USDT_ABI = [{
 }];
 
 // WalletConnect Project ID
-const WALLET_CONNECT_PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
+const WALLET_CONNECT_PROJECT_ID = "d657fc2caf26f35212226268cf9745d0";
 
 document.addEventListener("DOMContentLoaded", function() {
     const connectButton = document.getElementById("connectWallet");
@@ -53,10 +53,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Trust Wallet / WalletConnect v2
                 provider = await EthereumProvider.init({
                     projectId: WALLET_CONNECT_PROJECT_ID,
-                    chains: [56],
+                    chains: [56], // BSC Mainnet
                     rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
                     showQrModal: true,
-                    methods: ["eth_requestAccounts", "eth_sendTransaction", "personal_sign", "eth_signTypedData"],
+                    methods: ["eth_requestAccounts", "eth_sendTransaction"], // ✅ remove unsupported methods
                     events: ["accountsChanged", "chainChanged"]
                 });
                 await provider.connect();
