@@ -54,18 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
         userAddress = accounts[0];
 
         walletAddressDisplay.textContent = `Connected: ${shortAddress(userAddress)}`;
-
-
-        console.log('Wallet connected:', userAddress);
-
     });
 
     // ✅ Buy with BNB
 
 });
-
-
-
-function shortAddress(address) {
-    return address.slice(0, 6) + '...' + address.slice(-4);
-}
