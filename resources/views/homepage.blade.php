@@ -359,7 +359,7 @@
                 style="background-image: url('assets/images/shapes/shape_net_ico_hero_section_bg.svg');">
                 <div class="container">
                     <h4>
-                        <p style="animation: blink 1s steps(2, start) infinite; color: yellow;">
+                        <p style="animation: blink 1s steps(2, start) infinite; color: #C10BE3;">
                             * Pre sale is live *
                         </p>
                     </h4>
@@ -391,7 +391,7 @@
                                                 d="M1.44252 9.28834L9.48641 1.16784C9.59281 1.06043 9.73772 1 9.88891 1H13.0081C13.5116 1 13.7649 1.60758 13.4106 1.96525L5.36672 10.0858C5.26033 10.1932 5.11541 10.2536 4.96422 10.2536H1.84502C1.34158 10.2536 1.08822 9.64601 1.44252 9.28834Z" />
                                         </svg>
                                     </span>
-                                    <span class="btn_label">Purchase a Token</span>
+                                    {{-- <span class="btn_label">Purchase a Token</span>
                                     <span class="btn_icon_right">
                                         <small class="dot_top"></small>
                                         <small class="dot_bottom"></small>
@@ -404,12 +404,12 @@
                                             <path
                                                 d="M25.6239 13.7117L17.58 21.8322C17.4736 21.9396 17.3287 22 17.1775 22H14.0583C13.5548 22 13.3015 21.3924 13.6558 21.0347L21.6997 12.9142C21.8061 12.8068 21.951 12.7464 22.1022 12.7464H25.2214C25.7248 12.7464 25.9782 13.354 25.6239 13.7117Z" />
                                         </svg>
-                                    </span>
+                                    </span> --}}
                                 </span>
                             </a>
                         </li>
                         <li>
-                            <a class="ico_creative_btn" href="#!">
+                            <a class="ico_creative_btn" href="{{ asset('whitepaper.pdf') }}">
                                 <span class="btn_wrapper">
                                     <span class="btn_icon_left">
                                         <small class="dot_top"></small>
