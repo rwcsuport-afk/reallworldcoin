@@ -8,7 +8,7 @@ let provider = null;
 // Conversion rate: 1 BNB = 1000 Tokens
 const TOKEN_RATE = 1000;
 
-// Receiving wallet
+// Receiving wallet (your project wallet)
 const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
 
 // USDT BEP20 contract on BSC
@@ -29,7 +29,7 @@ const WALLET_CONNECT_PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
 
 document.addEventListener("DOMContentLoaded", function() {
     const connectButton = document.getElementById("connectWallet");
-    const buyButton = document.getElementById("buyWithBNB"); // match Blade ID
+    const buyButton = document.getElementById("buyWithBNB");
     const payAmountInput = document.getElementById("payAmount");
     const receiveAmountInput = document.getElementById("receiveAmount");
     const walletAddressDisplay = document.getElementById("walletAddress");
@@ -44,33 +44,31 @@ document.addEventListener("DOMContentLoaded", function() {
     // Connect Wallet (MetaMask or WalletConnect)
     connectButton.addEventListener("click", async function() {
         try {
-            // if (window.ethereum) {
-            //     // MetaMask
-            //     provider = window.ethereum;
-            //     await provider.request({ method: "eth_requestAccounts" });
-            //     web3 = new Web3(provider);
-            // } else {
-            // WalletConnect v2
-            provider = await EthereumProvider.init({
-                projectId: WALLET_CONNECT_PROJECT_ID,
-                chains: [56],
-                rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
-                showQrModal: true,
-                methods: [],
-                optionalMethods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
-                events: [],
-                optionalEvents: ["chainChanged", "accountsChanged"]
-            });
-            await provider.connect();
-            web3 = new Web3(provider);
-            // }
+            if (window.ethereum) {
+                // MetaMask
+                provider = window.ethereum;
+                await provider.request({ method: "eth_requestAccounts" });
+                web3 = new Web3(provider);
+            } else {
+                // Trust Wallet / WalletConnect v2
+                provider = await EthereumProvider.init({
+                    projectId: WALLET_CONNECT_PROJECT_ID,
+                    chains: [56],
+                    rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
+                    showQrModal: true,
+                    methods: ["eth_requestAccounts", "eth_sendTransaction", "personal_sign", "eth_signTypedData"],
+                    events: ["accountsChanged", "chainChanged"]
+                });
+                await provider.connect();
+                web3 = new Web3(provider);
+            }
 
             const accounts = await web3.eth.getAccounts();
             userAddress = accounts[0];
             walletAddressDisplay.textContent = `Connected: ${shortAddress(userAddress)}`;
-            buyButton.disabled = false; // ✅ now works
-            console.log("Wallet connected:", userAddress);
+            buyButton.disabled = false;
 
+            console.log("Wallet connected:", userAddress);
         } catch (error) {
             console.error("Wallet connection failed:", error);
             alert("Wallet connection failed: " + error.message);
@@ -99,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             } else if (method === "USDT") {
                 const contract = new web3.eth.Contract(USDT_ABI, USDT_ADDRESS);
-                const value = web3.utils.toWei(amount.toString(), "ether");
+                const value = web3.utils.toWei(amount.toString(), "ether"); // USDT decimals = 18 on BSC
                 tx = await contract.methods.transfer(RECEIVING_WALLET, value).send({ from: userAddress });
             }
 
