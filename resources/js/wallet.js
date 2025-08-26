@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Buy BNB or USDT
+    // Buy BNB or USDT
     buyButton.addEventListener("click", async function() {
         const amount = parseFloat(payAmountInput.value) || 0;
         const method = paymentMethodSelect.value;
@@ -90,15 +91,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (method === "BNB") {
                 const valueInWei = web3.utils.toWei(amount.toString(), "ether");
+
                 tx = await web3.eth.sendTransaction({
                     from: userAddress,
                     to: RECEIVING_WALLET,
-                    value: valueInWei
+                    value: valueInWei,
+                    chainId: 56, // BSC Mainnet
+                    gas: 21000 // minimal gas for BNB transfer
                 });
+
             } else if (method === "USDT") {
                 const contract = new web3.eth.Contract(USDT_ABI, USDT_ADDRESS);
-                const value = web3.utils.toWei(amount.toString(), "ether"); // USDT decimals = 18 on BSC
-                tx = await contract.methods.transfer(RECEIVING_WALLET, value).send({ from: userAddress });
+                const value = web3.utils.toWei(amount.toString(), "ether");
+
+                tx = await contract.methods.transfer(RECEIVING_WALLET, value).send({
+                    from: userAddress,
+                    chainId: 56,
+                    gas: 60000 // enough gas for BEP20 transfer
+                });
             }
 
             alert("✅ Transaction successful!\nHash: " + tx.transactionHash);
@@ -124,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function() {
             alert("❌ Transaction failed: " + error.message);
         }
     });
+
 });
 
 function shortAddress(address) {
