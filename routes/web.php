@@ -21,13 +21,13 @@ use App\Http\Controllers\StakeController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // Route::get('/', function () {
-//     return redirect('/homepage');
+//     return view('welcome');
 // });
+
+Route::get('/', function () {
+    return redirect('/homepage');
+});
 
 Route::get('/reload-captcha', function () {
     return response()->json(['captcha' => captcha_img()]);
