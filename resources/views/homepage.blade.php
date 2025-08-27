@@ -16,6 +16,7 @@
     <meta name="author" content="xpressbuddy">
 
     <title>Real World Coin</title>
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
    
     <link rel="shortcut icon" href="{{ asset('assets/images/site_logo/favicon_1.svg') }}">
 
@@ -4035,11 +4036,7 @@
             setInterval(updateCountdown, 1000);
         });
     </script>
-    <script src="{{ mix('js/app.js') }}"></script>
-
-
-
-
+    <script src="{{ mix('js/app.js') }}" defer></script>
 </body>
 
 <!-- Mirrored from html.xpressbuddy.com/Real World Coin/index_ico.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Aug 2025 04:49:34 GMT -->
