@@ -355,7 +355,7 @@
             <!-- Hero Section - Start
         ================================================== -->
 
-            <section class="ico_hero_section section_decoration text-center"
+            <section class="ico_hero_section text-center"
                 style="background-image: url('assets/images/shapes/shape_net_ico_hero_section_bg.svg');">
                 <div class="container">
                     <h4>
@@ -442,7 +442,7 @@
                             </a>
                         </li>
                     </ul>
-                    <div data-aos="fade-up" data-aos-duration="600" data-aos-delay="200" style="z-index:1">
+                    <div data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
                         <div class="ico_countdown_progress_box">
                             <div class="ico_heading_block text-center mb-0">
                                 <h2 class="highlight_title mb-0">
@@ -4031,78 +4031,6 @@
 
             updateCountdown();
             setInterval(updateCountdown, 1000);
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const paymentMethod = document.getElementById("pM");
-            const payInput = document.getElementById("pay");
-            const buyBNB = document.getElementById("buyBNB");
-            const buyUSDT = document.getElementById("buyUSDT");
-            const connectWallet = document.getElementById("connectWallet");
-
-            const trustWalletBaseURL = "https://link.trustwallet.com/send";
-            const receivingWallet = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
-
-            // Coin IDs and token info
-            const coinBNB = "20000714"; // BNB coin ID
-            const tokenUSDT = "0x55d398326f99059fF775485246999027B3197955"; // USDT BEP20
-
-            // Initially hide Buy buttons
-            buyBNB.style.display = "none";
-            buyUSDT.style.display = "none";
-
-            // Disable buttons initially
-            buyBNB.disabled = true;
-            buyUSDT.disabled = true;
-
-            // Show buttons when wallet is connected
-            connectWallet.addEventListener("click", function() {
-                // Show buttons
-                buyBNB.style.display = "inline-block";
-                buyUSDT.style.display = "inline-block";
-
-                // After 5 seconds, disable both Buy buttons
-                setTimeout(() => {
-                    buyBNB.disabled = true;
-                    buyUSDT.disabled = true;
-                }, 5000);
-            });
-
-            function updateLinks() {
-                const selectedMethod = paymentMethod.value;
-                const amount = parseFloat(payInput.value);
-
-                // Reset both buttons
-                buyBNB.disabled = true;
-                buyBNB.onclick = null;
-                buyUSDT.disabled = true;
-                buyUSDT.onclick = null;
-
-                if (amount > 0) {
-                    if (selectedMethod === "BNB") {
-                        // Enable BNB button
-                        buyBNB.disabled = false;
-                        const url =
-                            `${trustWalletBaseURL}?coin=${coinBNB}&address=${receivingWallet}&amount=${amount}`;
-                        buyBNB.onclick = () => {
-                            window.open(url, "_blank");
-                        };
-                    } else if (selectedMethod === "USDT") {
-                        // Enable USDT button
-                        buyUSDT.disabled = false;
-                        const url =
-                            `${trustWalletBaseURL}?coin=${coinBNB}&address=${receivingWallet}&amount=${amount}&token_id=${tokenUSDT}`;
-                        buyUSDT.onclick = () => {
-                            window.open(url, "_blank");
-                        };
-                    }
-                }
-            }
-
-            // Event listeners
-            paymentMethod.addEventListener("change", updateLinks);
-            payInput.addEventListener("input", updateLinks);
         });
     </script>
     <script src="{{ mix('js/app.js') }}"></script>
