@@ -17,7 +17,6 @@
 
     <title>Real World Coin</title>
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-   
     <link rel="shortcut icon" href="{{ asset('assets/images/site_logo/favicon_1.svg') }}">
 
     <!-- Fraimwork - CSS Include -->
@@ -477,12 +476,10 @@
                                     <div class="container mt-4">
                                         <div class="row justify-content-center">
                                             <div class="col-md-6">
-                                                <!-- Card -->
-                                                <div class="card text-center shadow-lg"
-                                                    style="border-radius: 15px; background-color: #1a1a2e;">
+                                                <div class="card text-center shadow-lg">
                                                     <div class="card-body py-4">
-                                                        <h5 class="card-title mb-4 text-white fst-italic">Interact with
-                                                            Wallet</h5>
+                                                        <h5 class="card-title mb-4 fst-italic">Interact with Wallet
+                                                        </h5>
                                                         <div class="d-flex justify-content-center gap-3 flex-wrap">
                                                             <!-- AppKit Buttons -->
                                                             <appkit-button></appkit-button>
@@ -490,7 +487,9 @@
 
                                                             <!-- Custom Action -->
                                                             <button class="btn btn-success btn-lg"
-                                                                onclick="sendTransaction()">Send 0.0001</button>
+                                                                onclick="sendTransaction()">
+                                                                Send 0.0001 ETH
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
