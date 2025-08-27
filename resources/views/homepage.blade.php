@@ -16,8 +16,9 @@
     <meta name="author" content="xpressbuddy">
 
     <title>Real World Coin</title>
+   
     <link rel="shortcut icon" href="{{ asset('assets/images/site_logo/favicon_1.svg') }}">
-@vite('resources/js/app.js')
+
     <!-- Fraimwork - CSS Include -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
@@ -4034,7 +4035,7 @@
             setInterval(updateCountdown, 1000);
         });
     </script>
-    {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
+    <script src="{{ mix('js/app.js') }}"></script>
 
 
 
