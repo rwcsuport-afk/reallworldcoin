@@ -4036,6 +4036,7 @@
         });
     </script>
     <script src="{{ mix('js/app.js') }}" defer></script>
+    <script type="module" src="./js/cursor.js"></script>
 </body>
 
 <!-- Mirrored from html.xpressbuddy.com/Real World Coin/index_ico.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Aug 2025 04:49:34 GMT -->
