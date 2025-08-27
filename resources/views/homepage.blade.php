@@ -4035,7 +4035,7 @@
             setInterval(updateCountdown, 1000);
         });
     </script>
-    <script src="{{ mix('js/app.js') }}" defer></script>
+   <script type="module" src="{{ asset('js/app.js') }}"></script>
     <script type="module" src="./js/cursor.js"></script>
 </body>
 
