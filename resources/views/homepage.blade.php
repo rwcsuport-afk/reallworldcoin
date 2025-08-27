@@ -16,6 +16,7 @@
     <meta name="author" content="xpressbuddy">
 
     <title>Real World Coin</title>
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
    
     <link rel="shortcut icon" href="{{ asset('assets/images/site_logo/favicon_1.svg') }}">
 
