@@ -2,6 +2,7 @@
 <html lang="en">
 
 
+
 <!-- Mirrored from html.xpressbuddy.com/Real World Coin/index_ico.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Aug 2025 04:47:21 GMT -->
 
 <head>
@@ -16,7 +17,7 @@
 
     <title>Real World Coin</title>
     <link rel="shortcut icon" href="{{ asset('assets/images/site_logo/favicon_1.svg') }}">
-
+@vite('resources/js/app.js')
     <!-- Fraimwork - CSS Include -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
@@ -4033,7 +4034,7 @@
             setInterval(updateCountdown, 1000);
         });
     </script>
-    <script src="{{ mix('js/app.js') }}"></script>
+    {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
 
 
 
