@@ -21,9 +21,9 @@ use App\Http\Controllers\StakeController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::get('/', function () {
     return redirect('/homepage');
