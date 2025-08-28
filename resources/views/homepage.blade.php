@@ -4179,7 +4179,7 @@ async function buyTokens() {
 
 // ---------------- Event Listeners ----------------
 window.addEventListener("DOMContentLoaded", () => {
-    // document.getElementById("connectMetaMask").onclick = connectMetaMask;
+    document.getElementById("connectMetaMask").onclick = connectMetaMask;
     document.getElementById("connectWC").onclick = connectWalletConnect;
     document.getElementById("buyTokens").onclick = buyTokens;
 });
