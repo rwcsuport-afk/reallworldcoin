@@ -4068,7 +4068,109 @@
 <script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.10.4/dist/umd/index.min.js"></script> --}}
 
 {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
-<script src="{{ mix('/js/wallet.js') }}"></script>
+{{-- <script src="{{ mix('/js/wallet.js') }}"></script> --}}
+<!-- ✅ CDNs -->
+<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.10.0/dist/ethereum-provider.min.js"></script>
+
+<!-- ✅ Wallet JS -->
+<script>
+let web3;
+let provider = null;
+let userAddress = null;
+
+const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
+const TOKEN_RATE = 1000;
+
+// Connect MetaMask
+async function connectMetaMask() {
+    if (!window.ethereum) {
+        alert("MetaMask not found. Please install it.");
+        return;
+    }
+
+    try {
+        provider = window.ethereum;
+        await provider.request({ method: "eth_requestAccounts" });
+        web3 = new Web3(provider);
+
+        const accounts = await web3.eth.getAccounts();
+        userAddress = accounts[0];
+        document.getElementById("walletAddress").innerText = `Connected: ${userAddress}`;
+        console.log("MetaMask connected:", userAddress);
+    } catch (err) {
+        console.error(err);
+        alert("MetaMask connection failed!");
+    }
+}
+
+// Connect WalletConnect
+async function connectWalletConnect() {
+    try {
+        provider = await EthereumProvider.init({
+            projectId: "33238a5bc1832f91c6d3e33e4996f41f",
+            chains: [56],
+            rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
+            showQrModal: true,
+        });
+
+        await provider.connect({ showQrModal: true });
+        web3 = new Web3(provider);
+        const accounts = await web3.eth.getAccounts();
+        userAddress = accounts[0];
+
+        document.getElementById("walletAddress").innerText = `Connected: ${userAddress}`;
+        console.log("WalletConnect connected:", userAddress);
+
+        provider.on("disconnect", () => {
+            userAddress = null;
+            document.getElementById("walletAddress").innerText = "Disconnected";
+            console.log("WalletConnect disconnected");
+        });
+    } catch (err) {
+        console.error(err);
+        alert("WalletConnect connection failed!");
+    }
+}
+
+// Buy Tokens
+async function buyTokens() {
+    if (!web3 || !userAddress) {
+        alert("Please connect your wallet first!");
+        return;
+    }
+
+    const bnbAmount = parseFloat(document.getElementById("bnbAmount").value);
+    if (!bnbAmount || bnbAmount <= 0) {
+        alert("Enter a valid BNB amount.");
+        return;
+    }
+
+    try {
+        const valueInWei = web3.utils.toWei(bnbAmount.toString(), "ether");
+        const tx = await web3.eth.sendTransaction({
+            from: userAddress,
+            to: RECEIVING_WALLET,
+            value: valueInWei
+        });
+
+        const tokens = bnbAmount * TOKEN_RATE;
+        document.getElementById("result").innerText =
+            `✅ Transaction successful! You bought ${tokens} $PEPETO tokens. TxHash: ${tx.transactionHash}`;
+        console.log("Transaction successful:", tx);
+    } catch (err) {
+        console.error(err);
+        alert("Transaction failed. Check console for details.");
+    }
+}
+
+// Attach events
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("connectMetaMask").onclick = connectMetaMask;
+    document.getElementById("connectWC").onclick = connectWalletConnect;
+    document.getElementById("buyTokens").onclick = buyTokens;
+});
+</script>
 
 
 
