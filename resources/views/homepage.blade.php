@@ -4119,10 +4119,10 @@ async function connectMetaMask() {
 async function connectWalletConnect() {
     try {
         // Disconnect previous session if exists
-        if (provider && provider.disconnect) {
-            await provider.disconnect();
-            provider = null;
-        }
+        // if (provider && provider.disconnect) {
+        //     await provider.disconnect();
+        //     provider = null;
+        // }
 
         // Initialize WalletConnect provider
         provider = await WalletConnectProvider.init({
