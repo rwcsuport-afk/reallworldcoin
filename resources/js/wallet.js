@@ -1,58 +1,80 @@
-import Web3 from 'web3';
-import EthereumProvider from "@walletconnect/ethereum-provider";
-
 let web3;
 let userAddress = null;
 let provider = null;
 
-// Conversion rate: 1 BNB = 1000 Tokens
+// Receiving wallet (your BNB project wallet)
+const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
+
+// Conversion rate (example: 1 BNB = 1000 tokens)
 const TOKEN_RATE = 1000;
-// Replace with your receiving wallet
-const RECEIVING_WALLET = '0x0a1ad99042f75253faaaA5a448325e7c0069E9fd';
 
-// WalletConnect Project ID (get from https://cloud.walletconnect.com/)
-const WALLET_CONNECT_PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
+// Connect Wallet (MetaMask or WalletConnect)
+async function connectWallet(type = "metamask") {
+    if (type === "metamask" && window.ethereum) {
+        provider = window.ethereum;
+        await provider.request({ method: "eth_requestAccounts" });
+        web3 = new Web3(provider);
 
-document.addEventListener('DOMContentLoaded', function() {
-    const connectButton = document.getElementById('connectWallet');
-
-    // ✅ Update token amount dynamically
-    payAmountInput.addEventListener('input', function() {
-        const bnbAmount = parseFloat(payAmountInput.value) || 0;
-        receiveAmountInput.value = (bnbAmount * TOKEN_RATE).toFixed(2);
-    });
-
-    // ✅ Connect Wallet (MetaMask or WalletConnect)
-    connectButton.addEventListener('click', async function() {
-
-        // if (typeof window.ethereum !== 'undefined') {
-        //     // ✅ MetaMask
-        //     provider = window.ethereum;
-        //     await provider.request({ method: 'eth_requestAccounts' });
-        //     await switchToBSC();
-        // } else {
-        // ✅ WalletConnect v2
-        provider = await EthereumProvider.init({
-            projectId: WALLET_CONNECT_PROJECT_ID,
-            chains: [56], // BSC Mainnet
-            rpcMap: {
-                56: "https://bsc-dataseed.binance.org/"
+    } else if (type === "walletconnect") {
+        provider = new WalletConnectProvider.default({
+            rpc: {
+                56: "https://bsc-dataseed.binance.org/", // BSC Mainnet
+                97: "https://data-seed-prebsc-1-s1.binance.org:8545/" // BSC Testnet
             },
-            showQrModal: true,
-            methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
-            events: ["chainChanged", "accountsChanged"]
+            chainId: 56, // Mainnet (use 97 for Testnet)
         });
 
-        await provider.connect(); // ✅ v2 correct method
-        // }
-
+        await provider.enable();
         web3 = new Web3(provider);
-        const accounts = await web3.eth.getAccounts();
-        userAddress = accounts[0];
+    } else {
+        alert("No wallet provider found");
+        return;
+    }
 
-        walletAddressDisplay.textContent = `Connected: ${shortAddress(userAddress)}`;
+    const accounts = await web3.eth.getAccounts();
+    userAddress = accounts[0];
+    return userAddress;
+}
+
+// Buy Tokens
+async function buyTokens(amountInBNB) {
+    if (!userAddress) {
+        alert("Connect wallet first!");
+        return;
+    }
+
+    const valueInWei = web3.utils.toWei(amountInBNB.toString(), "ether");
+
+    const tx = await web3.eth.sendTransaction({
+        from: userAddress,
+        to: RECEIVING_WALLET,
+        value: valueInWei,
     });
 
-    // ✅ Buy with BNB
+    const tokensReceived = amountInBNB * TOKEN_RATE;
+    return { tx, tokensReceived };
+}
 
+// Event Listeners
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("connectMetaMask").onclick = async() => {
+        let addr = await connectWallet("metamask");
+        document.getElementById("walletAddress").innerText = "Connected: " + addr;
+    };
+
+    document.getElementById("connectWC").onclick = async() => {
+        let addr = await connectWallet("walletconnect");
+        document.getElementById("walletAddress").innerText = "Connected: " + addr;
+    };
+
+    document.getElementById("buyTokens").onclick = async() => {
+        let bnb = document.getElementById("bnbAmount").value;
+        if (!bnb || bnb <= 0) {
+            alert("Enter BNB amount");
+            return;
+        }
+        let result = await buyTokens(bnb);
+        document.getElementById("result").innerText =
+            `✅ Success! Tx Hash: ${result.tx.transactionHash} | You receive ${result.tokensReceived} tokens`;
+    };
 });

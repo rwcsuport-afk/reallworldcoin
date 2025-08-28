@@ -496,9 +496,26 @@
                                             </div>
                                         </div>
                                     </div> --}}
-                                    <button id="connectWallet">Connect Wallet</button>
-    <p id="walletAddress">Not connected</p>
-    <p id="balance"></p>
+                                   <div class="container text-center mt-5">
+    <h2>Buy $PEPETO Tokens</h2>
+
+    <!-- Connect Buttons -->
+    <button id="connectMetaMask" class="btn btn-primary m-2">Connect MetaMask</button>
+    <button id="connectWC" class="btn btn-success m-2">Connect WalletConnect</button>
+
+    <!-- Show Wallet Address -->
+    <p id="walletAddress" class="mt-3 text-info"></p>
+
+    <!-- Buy Section -->
+    <div class="mt-4">
+        <input type="number" id="bnbAmount" class="form-control w-25 mx-auto" placeholder="Enter BNB" />
+        <button id="buyTokens" class="btn btn-warning mt-2">Buy Tokens</button>
+    </div>
+
+    <!-- Result -->
+    <p id="result" class="mt-4 text-success"></p>
+</div>
+                                  
                                 
                                 </div>
                             </div>
@@ -4041,38 +4058,15 @@
     </script>
   <script src="{{ mix('js/app.js') }}" defer></script>
     <script type="module" src="./js/cursor.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
-<script>
-    const connectButton = document.getElementById('connectWallet');
-    const walletAddr = document.getElementById('walletAddress');
-    const balanceEl = document.getElementById('balance');
+    
+<!-- CDN for Web3 + WalletConnect -->
+<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
 
-    let provider;
-    let signer;
+<!-- Your custom script -->
+<script src="/js/wallet.js"></script>
 
-    connectButton.addEventListener('click', async () => {
-        if (window.ethereum) {
-            try {
-                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-                const account = accounts[0];
-                walletAddr.innerText = `Connected: ${account}`;
-
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                signer = provider.getSigner();
-
-                const balance = await provider.getBalance(account);
-                const bnb = ethers.utils.formatEther(balance);
-                balanceEl.innerText = `Balance: ${bnb} BNB`;
-            } catch (err) {
-                console.error('Connection rejected:', err);
-            }
-        } else {
-            alert('Please install MetaMask or Trust Wallet!');
-        }
-    });
-</script>
-
+    
 </body>
 
 <!-- Mirrored from html.xpressbuddy.com/Real World Coin/index_ico.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Aug 2025 04:49:34 GMT -->
