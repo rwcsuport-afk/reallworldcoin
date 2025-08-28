@@ -1,14 +1,44 @@
 import Web3 from "web3";
 import EthereumProvider from "@walletconnect/ethereum-provider";
+import "@walletconnect/modal";
 
 let web3;
-let provider;
+let provider = null;
 let userAddress = null;
 
 // Your receiving wallet (project wallet)
 const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
 // Conversion rate: 1 BNB = 1000 tokens (adjust if needed)
 const TOKEN_RATE = 1000;
+
+// ✅ Initialize WalletConnect provider ONCE
+async function initWalletConnect() {
+    if (!provider) {
+        provider = await EthereumProvider.init({
+            projectId: "33238a5bc1832f91c6d3e33e4996f41f", // your WC projectId
+            chains: [56], // REQUIRED → Binance Smart Chain (Mainnet)
+            optionalChains: [97], // OPTIONAL → BSC Testnet if you want
+            rpc: {
+                56: "https://bsc-dataseed.binance.org/", // Mainnet
+                97: "https://data-seed-prebsc-1-s1.binance.org:8545/", // Testnet
+            },
+            metadata: {
+                name: "My DApp",
+                description: "BNB to Token Swap",
+                url: "https://your-dapp.com", // must be a valid URL
+                icons: ["https://your-dapp.com/icon.png"], // small logo (optional)
+            },
+            showQrModal: true,
+        });
+
+        provider.on("disconnect", () => {
+            userAddress = null;
+            document.getElementById("walletAddress").innerText = "Disconnected";
+            console.log("WalletConnect disconnected");
+        });
+    }
+}
+
 
 async function connectMetaMask() {
     try {
@@ -35,18 +65,10 @@ async function connectMetaMask() {
 
 async function connectWalletConnect() {
     try {
-        provider = await EthereumProvider.init({
-            projectId: "33238a5bc1832f91c6d3e33e4996f41f", // your projectId
-            chains: [56], // Binance Smart Chain Mainnet
-            rpc: {
-                56: "https://bsc-dataseed.binance.org/",
-            },
-            showQrModal: true,
-        });
+        await initWalletConnect(); // ✅ only once
+        await provider.connect(); // ✅ triggers QR modal if not already paired
 
-        await provider.enable();
         web3 = new Web3(provider);
-
         const accounts = await web3.eth.getAccounts();
         userAddress = accounts[0];
 
@@ -86,7 +108,7 @@ async function buyTokens() {
         const tokens = bnbAmount * TOKEN_RATE;
 
         document.getElementById("result").innerText =
-            `Transaction successful! You bought ${tokens} $PEPETO tokens. TxHash: ${tx.transactionHash}`;
+            `✅ Transaction successful! You bought ${tokens} $PEPETO tokens. TxHash: ${tx.transactionHash}`;
 
         console.log("Transaction successful:", tx);
 
