@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1129],{61129:(c,e,l)=>{l.r(e),l.d(e,{mailSvg:()=>v});const v=l(97199).JW`<svg fill="none" viewBox="0 0 16 16">
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1129],{1129:(c,e,l)=>{l.r(e),l.d(e,{mailSvg:()=>v});const v=l(7199).JW`<svg fill="none" viewBox="0 0 16 16">
   <path
     fill="currentColor"
     fill-rule="evenodd"

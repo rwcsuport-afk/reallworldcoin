@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2342],{82342:(e,l,C)=>{C.r(l),C.d(l,{plusSvg:()=>s});const s=C(97199).JW`<svg
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2342],{2342:(e,l,C)=>{C.r(l),C.d(l,{plusSvg:()=>s});const s=C(7199).JW`<svg
   width="13"
   height="12"
   viewBox="0 0 13 12"

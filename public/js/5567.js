@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5567],{15567:(a,l,e)=>{e.r(l),e.d(l,{walletPlaceholderSvg:()=>v});const v=e(97199).JW`
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5567],{5567:(a,l,e)=>{e.r(l),e.d(l,{walletPlaceholderSvg:()=>v});const v=e(7199).JW`
   <svg fill="none" viewBox="0 0 48 44">
     <path
       style="fill: var(--wui-color-bg-300);"

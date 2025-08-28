@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6017],{6017:(e,l,n)=>{n.r(l),n.d(l,{chevronTopSvg:()=>o});const o=n(97199).JW`<svg fill="none" viewBox="0 0 16 16">
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6017],{6017:(e,l,n)=>{n.r(l),n.d(l,{chevronTopSvg:()=>o});const o=n(7199).JW`<svg fill="none" viewBox="0 0 16 16">
   <path
     fill="currentColor"
     fill-rule="evenodd"

@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3724],{63724:(l,h,f)=>{f.r(h),f.d(h,{xSvg:()=>a});const a=f(97199).JW`<svg fill="none" viewBox="0 0 41 40">
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3724],{3724:(l,h,f)=>{f.r(h),f.d(h,{xSvg:()=>a});const a=f(7199).JW`<svg fill="none" viewBox="0 0 41 40">
   <g clip-path="url(#a)">
     <path fill="#000" d="M.8 0h40v40H.8z" />
     <path

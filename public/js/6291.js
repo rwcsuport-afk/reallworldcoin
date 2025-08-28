@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6291],{86291:(C,e,l)=>{l.r(e),l.d(e,{copySvg:()=>s});const s=l(97199).JW`<svg
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6291],{6291:(C,e,l)=>{l.r(e),l.d(e,{copySvg:()=>s});const s=l(7199).JW`<svg
   xmlns="http://www.w3.org/2000/svg"
   width="16"
   height="16"

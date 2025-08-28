@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6401],{46401:(h,a,v)=>{v.r(a),v.d(a,{farcasterSvg:()=>f});const f=v(97199).JW`<svg style="border-radius: 9999px; overflow: hidden;"  fill="none" viewBox="0 0 1000 1000">
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6401],{6401:(h,a,v)=>{v.r(a),v.d(a,{farcasterSvg:()=>f});const f=v(7199).JW`<svg style="border-radius: 9999px; overflow: hidden;"  fill="none" viewBox="0 0 1000 1000">
   <rect width="1000" height="1000" rx="9999" ry="9999" fill="#855DCD"/>
   <path fill="#855DCD" d="M0 0h1000v1000H0V0Z" />
   <path

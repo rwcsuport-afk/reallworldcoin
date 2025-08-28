@@ -4067,8 +4067,8 @@
 <!-- Load WalletConnect Ethereum Provider -->
 <script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.10.4/dist/umd/index.min.js"></script> --}}
 
-<script src="{{ mix('js/app.js') }}"></script>
-<script src="{{ mix('js/wallet.js') }}"></script>
+{{-- <script src="{{ mix('js/app.js') }}"></script> --}}
+<script src="{{ mix('/js/wallet.js') }}"></script>
 
 
 

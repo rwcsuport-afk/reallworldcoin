@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2813],{2813:(l,c,i)=>{i.r(c),i.d(c,{githubSvg:()=>f});const f=i(97199).JW`<svg fill="none" viewBox="0 0 40 40">
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2813],{2813:(l,c,i)=>{i.r(c),i.d(c,{githubSvg:()=>f});const f=i(7199).JW`<svg fill="none" viewBox="0 0 40 40">
   <g clip-path="url(#a)">
     <g clip-path="url(#b)">
       <circle cx="20" cy="19.89" r="20" fill="#1B1F23" />

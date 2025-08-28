@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8952],{8952:(a,l,t)=>{t.r(l),t.d(l,{playStoreSvg:()=>f});const f=t(97199).JW` <svg
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8952],{8952:(a,l,t)=>{t.r(l),t.d(l,{playStoreSvg:()=>f});const f=t(7199).JW` <svg
   width="36"
   height="36"
   fill="none"

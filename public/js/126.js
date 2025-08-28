@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[126],{10126:(C,L,e)=>{e.r(L),e.d(L,{recycleHorizontalSvg:()=>l});const l=e(97199).JW`<svg
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[126],{126:(C,L,e)=>{e.r(L),e.d(L,{recycleHorizontalSvg:()=>l});const l=e(7199).JW`<svg
   fill="none"
   viewBox="0 0 21 20"
 >

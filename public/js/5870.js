@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5870],{75870:(C,e,l)=>{l.r(e),l.d(e,{arrowBottomCircleSvg:()=>o});const o=l(97199).JW`<svg
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5870],{5870:(C,e,l)=>{l.r(e),l.d(e,{arrowBottomCircleSvg:()=>o});const o=l(7199).JW`<svg
   fill="none"
   viewBox="0 0 21 20"
 >
