@@ -4107,32 +4107,49 @@ async function connectMetaMask() {
 // Connect WalletConnect
 async function connectWalletConnect() {
     try {
+        // ✅ If there's an active WalletConnect session, disconnect first
+        if (provider && provider.session) {
+            await provider.disconnect();
+            provider = null; // Reset provider
+        }
+
+        // ✅ Initialize a fresh provider instance
         provider = await EthereumProvider.init({
             projectId: "33238a5bc1832f91c6d3e33e4996f41f",
-            chains: [56],
-            rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
-            showQrModal: true,
+            chains: [56], // Binance Smart Chain
+            rpcMap: {
+                56: "https://bsc-dataseed.binance.org/"
+            },
+            methods: [
+                "eth_sendTransaction",
+                "personal_sign",
+                "eth_signTypedData"
+            ],
+            events: ["chainChanged", "accountsChanged"],
+            metadata: {
+                name: "My DApp",
+                description: "BNB to Token Swap",
+                url: window.location.origin,
+                icons: ["https://your-dapp.com/icon.png"]
+            },
+            showQrModal: true // ✅ Force show QR modal
         });
 
+        // ✅ Show QR Modal for a new connection
         await provider.connect({ showQrModal: true });
+
         web3 = new Web3(provider);
         const accounts = await web3.eth.getAccounts();
         userAddress = accounts[0];
 
         document.getElementById("walletAddress").innerText = `Connected: ${userAddress}`;
-        console.log("WalletConnect connected:", userAddress);
+        console.log("✅ WalletConnect connected:", userAddress);
 
-        provider.on("disconnect", () => {
-            userAddress = null;
-            document.getElementById("walletAddress").innerText = "Disconnected";
-            console.log("WalletConnect disconnected");
-        });
     } catch (err) {
-        console.error(err);
+        console.error("❌ WalletConnect connection error:", err);
         alert("WalletConnect connection failed!");
     }
 }
-
 // Buy Tokens
 async function buyTokens() {
     if (!web3 || !userAddress) {
