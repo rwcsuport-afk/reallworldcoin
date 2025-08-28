@@ -4,11 +4,10 @@ import { Ethers5Adapter } from "@reown/appkit-adapter-ethers5";
 import { mainnet, arbitrum, bsc } from "@reown/appkit/networks";
 import { ethers } from "ethers";
 
+// Wait for DOM to load before initializing AppKit
 document.addEventListener('DOMContentLoaded', () => {
-    // Reown Project ID
     const projectId = "d657fc2caf26f35212226268cf9745d0";
 
-    // App metadata
     const metadata = {
         name: "My Laravel 8 DApp",
         description: "Laravel 8 + AppKit",
@@ -28,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Expose globally for buttons
     window.appKit = appKit;
 
-    // 🔹 Debug: check if AppKit is initialized
+    // 🔹 Debug: check AppKit instance
     console.log('AppKit instance:', window.appKit);
 
     // Global sendTransaction function
