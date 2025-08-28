@@ -4082,6 +4082,7 @@
         let web3;
         let provider = null;
         let userAddress = null;
+        const EthereumProvider = window.EthereumProvider;
 
         const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
         const TOKEN_RATE = 1000;
