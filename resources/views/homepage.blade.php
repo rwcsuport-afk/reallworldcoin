@@ -4067,35 +4067,21 @@
 <script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.10.4/dist/umd/index.min.js"></script> --}}
 
     {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
-    {{-- <script src="{{ mix('/js/wallet.js') }}"></script> --}}
+    <script src="{{ mix('/js/wallet.js') }}"></script>
     <!-- ✅ CDNs -->
     <!-- CDN Scripts -->
-<!-- Load Web3 first -->
-<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+ {{-- <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.8/dist/umd/index.min.js"></script>
 
-<!-- Load WalletConnect Ethereum Provider v2 (MUST be here) -->
-<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.8/dist/umd/index.min.js"></script>
 
-<script>
-    const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
-    const TOKEN_RATE = 1000;
+ <script>
+    const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd"; // Change to your wallet
+    const TOKEN_RATE = 1000; // Number of tokens per 1 BNB
 
     let web3, provider, userAddress;
 
-    window.addEventListener("DOMContentLoaded", () => {
-      const WalletConnectProvider = window.WalletConnectEthereumProvider;
-
-      // Check if WalletConnect v2 is loaded
-      if (!WalletConnectProvider || typeof WalletConnectProvider.init !== "function") {
-        alert("❌ WalletConnect v2 Provider not loaded. Check your script tag.");
-        console.error("WalletConnectEthereumProvider not found or broken.");
-        return;
-      }
-
-      document.getElementById("connectMetaMask").onclick = connectMetaMask;
-      document.getElementById("connectWC").onclick = () => connectWalletConnect(WalletConnectProvider);
-      document.getElementById("buyTokens").onclick = buyTokens;
-    });
+    // ✅ WalletConnect v2 provider
+    const WalletConnectProvider = window.WalletConnectEthereumProvider;
 
     async function connectMetaMask() {
       try {
@@ -4119,7 +4105,7 @@
       }
     }
 
-    async function connectWalletConnect(WalletConnectProvider) {
+    async function connectWalletConnect() {
       try {
         if (provider && provider.disconnect) {
           await provider.disconnect();
@@ -4127,15 +4113,18 @@
         }
 
         provider = await WalletConnectProvider.init({
-          projectId: "33238a5bc1832f91c6d3e33e4996f41f", // Replace with your own
-          chains: [56],
-          rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
+          projectId: "33238a5bc1832f91c6d3e33e4996f41f", // Replace with your WalletConnect project ID
+          chains: [56], // BSC chain ID
+          rpcMap: {
+            56: "https://bsc-dataseed.binance.org/"
+          },
           showQrModal: true
         });
 
         await provider.connect();
 
         web3 = new Web3(provider);
+
         const accounts = await web3.eth.getAccounts();
         userAddress = accounts[0];
 
@@ -4147,10 +4136,9 @@
           document.getElementById("walletAddress").innerText = "Disconnected";
           console.log("WalletConnect disconnected");
         });
-
       } catch (err) {
         console.error("WalletConnect connection error:", err);
-        alert("WalletConnect connection failed! " + err.message);
+        alert("WalletConnect connection failed!");
       }
     }
 
@@ -4186,10 +4174,14 @@
         alert("Transaction failed! Check console for details.");
       }
     }
-  </script>
 
-
-
+    // Button Event Listeners
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("connectMetaMask").onclick = connectMetaMask;
+      document.getElementById("connectWC").onclick = connectWalletConnect;
+      document.getElementById("buyTokens").onclick = buyTokens;
+    });
+  </script> --}}
 
 </body>
 
