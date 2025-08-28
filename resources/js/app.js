@@ -1,14 +1,11 @@
-import './bootstrap'; // Laravel bootstrap
-
+import './bootstrap';
 import { createAppKit } from "@reown/appkit";
 import { Ethers5Adapter } from "@reown/appkit-adapter-ethers5";
 import { mainnet, arbitrum, bsc } from "@reown/appkit/networks";
 import { ethers } from "ethers";
 
-// Reown Project ID
 const projectId = "d657fc2caf26f35212226268cf9745d0";
 
-// Metadata
 const metadata = {
     name: "My Laravel 8 DApp",
     description: "Laravel 8 + AppKit",
@@ -16,7 +13,7 @@ const metadata = {
     icons: ["https://example.com/icon.png"],
 };
 
-// AppKit instance
+// Initialize AppKit
 const modal = createAppKit({
     adapters: [new Ethers5Adapter()],
     metadata,
@@ -24,6 +21,9 @@ const modal = createAppKit({
     projectId,
     features: { analytics: true },
 });
+
+// Make AppKit available globally for buttons
+window.appKit = modal;
 
 // Global sendTransaction function
 window.sendTransaction = async function() {
