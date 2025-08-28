@@ -4041,7 +4041,8 @@
     </script>
   <script src="{{ mix('js/app.js') }}" defer></script>
     <script type="module" src="./js/cursor.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
 <script>
     const connectButton = document.getElementById('connectWallet');
     const walletAddr = document.getElementById('walletAddress');
