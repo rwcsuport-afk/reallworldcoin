@@ -4074,15 +4074,14 @@
     {{-- <script src="{{ mix('/js/wallet.js') }}"></script> --}}
     <!-- ✅ CDNs -->
     <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.10.0/dist/ethereum-provider.min.js">
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.10.0/dist/ethereum-provider.min.js"></script>
 
     <!-- ✅ Wallet JS -->
     <script>
         let web3;
         let provider = null;
         let userAddress = null;
-        const EthereumProvider = window.EthereumProvider;
+        const EthereumProvider = window.EthereumProvider || window.WalletConnectProvider;
 
         const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
         const TOKEN_RATE = 1000;
