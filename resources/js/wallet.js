@@ -1,121 +1,104 @@
+import Web3 from "web3";
+import EthereumProvider from "@walletconnect/ethereum-provider";
+
 let web3;
+let provider;
 let userAddress = null;
-let provider = null;
 
-// Receiving wallet (your project BNB wallet)
+// Your receiving wallet (project wallet)
 const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
-
-// Conversion rate (1 BNB = 1000 tokens example)
+// Conversion rate: 1 BNB = 1000 tokens (adjust if needed)
 const TOKEN_RATE = 1000;
 
-// ✅ Switch to BSC
-async function switchToBSC() {
+async function connectMetaMask() {
     try {
-        await provider.request({
-            method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0x38" }], // BSC Mainnet
-        });
-    } catch (err) {
-        if (err.code === 4902) {
-            await provider.request({
-                method: "wallet_addEthereumChain",
-                params: [{
-                    chainId: "0x38",
-                    chainName: "Binance Smart Chain",
-                    rpcUrls: ["https://bsc-dataseed.binance.org/"],
-                    nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
-                    blockExplorerUrls: ["https://bscscan.com"],
-                }],
-            });
-        } else {
-            console.error("switchToBSC error:", err);
-        }
-    }
-}
-
-// ✅ Connect Wallet
-async function connectWallet(type = "metamask") {
-    try {
-        if (type === "metamask" && window.ethereum) {
-            provider = window.ethereum;
-            await provider.request({ method: "eth_requestAccounts" });
-            await switchToBSC();
-            web3 = new Web3(provider);
-
-        } else if (type === "walletconnect") {
-            const EthereumProvider = window.WalletConnectProvider; // ✅ correct global from UMD
-            provider = await EthereumProvider.init({
-                projectId: "d657fc2caf26f35212226268cf9745d0",
-                chains: [56],
-                rpc: { 56: "https://bsc-dataseed.binance.org/" },
-                showQrModal: true,
-            });
-
-            await provider.enable();
-            web3 = new Web3(provider);
-
-        } else {
-            alert("No wallet provider found.");
+        if (!window.ethereum) {
+            alert("MetaMask not found. Please install it.");
             return;
         }
+
+        provider = window.ethereum;
+        await provider.request({ method: "eth_requestAccounts" });
+        web3 = new Web3(provider);
 
         const accounts = await web3.eth.getAccounts();
         userAddress = accounts[0];
-        return userAddress;
+
+        document.getElementById("walletAddress").innerText = `Connected: ${userAddress}`;
+        console.log("MetaMask connected:", userAddress);
 
     } catch (err) {
-        console.error("Wallet connection error:", err); // 👀 check here in console
-        alert("Wallet connection failed. Check console for details.");
+        console.error("MetaMask connection error:", err);
+        alert("MetaMask connection failed!");
     }
 }
 
-// ✅ Buy Tokens
-async function buyTokens(amountInBNB) {
+async function connectWalletConnect() {
     try {
-        if (!userAddress) {
-            alert("Connect wallet first!");
+        provider = await EthereumProvider.init({
+            projectId: "33238a5bc1832f91c6d3e33e4996f41f", // your projectId
+            chains: [56], // Binance Smart Chain Mainnet
+            rpc: {
+                56: "https://bsc-dataseed.binance.org/",
+            },
+            showQrModal: true,
+        });
+
+        await provider.enable();
+        web3 = new Web3(provider);
+
+        const accounts = await web3.eth.getAccounts();
+        userAddress = accounts[0];
+
+        document.getElementById("walletAddress").innerText = `Connected: ${userAddress}`;
+        console.log("WalletConnect connected:", userAddress);
+
+    } catch (err) {
+        console.error("WalletConnect connection error:", err);
+        alert("WalletConnect connection failed!");
+    }
+}
+
+async function buyTokens() {
+    if (!web3 || !userAddress) {
+        alert("Please connect your wallet first!");
+        return;
+    }
+
+    try {
+        const bnbAmount = document.getElementById("bnbAmount").value;
+        if (!bnbAmount || bnbAmount <= 0) {
+            alert("Enter a valid BNB amount.");
             return;
         }
 
-        const valueInWei = web3.utils.toWei(amountInBNB.toString(), "ether");
+        // Convert BNB to Wei
+        const valueInWei = web3.utils.toWei(bnbAmount.toString(), "ether");
 
+        // Send BNB to project wallet
         const tx = await web3.eth.sendTransaction({
             from: userAddress,
             to: RECEIVING_WALLET,
             value: valueInWei,
         });
 
-        const tokensReceived = amountInBNB * TOKEN_RATE;
-        return { tx, tokensReceived };
+        // Calculate tokens
+        const tokens = bnbAmount * TOKEN_RATE;
+
+        document.getElementById("result").innerText =
+            `Transaction successful! You bought ${tokens} $PEPETO tokens. TxHash: ${tx.transactionHash}`;
+
+        console.log("Transaction successful:", tx);
 
     } catch (err) {
-        console.error("Transaction error:", err);
+        console.error("Transaction failed:", err);
         alert("Transaction failed. Check console for details.");
     }
 }
 
-// ✅ Attach events
-window.onload = function() {
-    document.getElementById("connectMetaMask").onclick = async() => {
-        let addr = await connectWallet("metamask");
-        if (addr) document.getElementById("walletAddress").innerText = "✅ Connected: " + addr;
-    };
-
-    document.getElementById("connectWC").onclick = async() => {
-        let addr = await connectWallet("walletconnect");
-        if (addr) document.getElementById("walletAddress").innerText = "✅ Connected: " + addr;
-    };
-
-    document.getElementById("buyTokens").onclick = async() => {
-        let bnb = document.getElementById("bnbAmount").value;
-        if (!bnb || bnb <= 0) {
-            alert("Enter BNB amount");
-            return;
-        }
-        let result = await buyTokens(bnb);
-        if (result) {
-            document.getElementById("result").innerText =
-                `✅ Success! Tx Hash: ${result.tx.transactionHash}\nYou receive ${result.tokensReceived} tokens`;
-        }
-    };
-};
+// Attach events to buttons
+window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("connectMetaMask").onclick = connectMetaMask;
+    document.getElementById("connectWC").onclick = connectWalletConnect;
+    document.getElementById("buyTokens").onclick = buyTokens;
+});

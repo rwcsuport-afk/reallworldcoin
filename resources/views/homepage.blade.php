@@ -4061,13 +4061,16 @@
     
 <!-- ✅ Load JS libraries before your wallet.js -->
 <!-- Web3.js -->
+{{-- <!-- Load Web3.js -->
 <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
 
-<!-- WalletConnect Ethereum Provider -->
-<script src="https://unpkg.com/@walletconnect/ethereum-provider/dist/index.min.js"></script>
+<!-- Load WalletConnect Ethereum Provider -->
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.10.4/dist/umd/index.min.js"></script> --}}
 
-<!-- Your wallet.js -->
-<script src="{{ asset('js/wallet.js') }}"></script>
+<script src="{{ mix('js/app.js') }}"></script>
+<script src="{{ mix('js/wallet.js') }}"></script>
+
+
 
     
 </body>
