@@ -4147,24 +4147,53 @@
 
         // ✅ Connect WalletConnect (force show QR modal, prevent auto-reconnect)
         async function connectWalletConnect() {
-    try {
-        provider = await EthereumProvider.init({
-            projectId: "33238a5bc1832f91c6d3e33e4996f41f",
-            chains: [56],
-            rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
-            showQrModal: true,
-        });
+            try {
+                // ✅ If there's an active WalletConnect session, disconnect first
+                if (provider && provider.session) {
+                    await provider.disconnect();
+                    provider = null; // Reset provider
+                }
 
-        await provider.connect({ showQrModal: true });
-        web3 = new Web3(provider);
-        const accounts = await web3.eth.getAccounts();
-        userAddress = accounts[0];
-        document.getElementById("walletAddress").innerText = `Connected: ${userAddress}`;
-    } catch (err) {
-        console.error("WalletConnect connection error:", err);
-        alert("WalletConnect connection failed!");
-    }
-}
+                // ✅ Initialize a fresh provider instance
+                provider = await EthereumProvider.init({
+                    projectId: "33238a5bc1832f91c6d3e33e4996f41f",
+                    chains: [56], // Binance Smart Chain
+                    rpcMap: {
+                        56: "https://bsc-dataseed.binance.org/"
+                    },
+                    methods: [
+                        "eth_sendTransaction",
+                        "personal_sign",
+                        "eth_signTypedData"
+                    ],
+                    events: ["chainChanged", "accountsChanged"],
+                    metadata: {
+                        name: "My DApp",
+                        description: "BNB to Token Swap",
+                        url: window.location.origin,
+                        icons: ["https://your-dapp.com/icon.png"]
+                    },
+                    showQrModal: true // ✅ Force show QR modal
+                });
+
+                // ✅ Show QR Modal for a new connection
+                await provider.connect({
+                    showQrModal: true
+                });
+
+                web3 = new Web3(provider);
+                const accounts = await web3.eth.getAccounts();
+                userAddress = accounts[0];
+
+                document.getElementById("walletAddress").innerText = `Connected: ${userAddress}`;
+                console.log("✅ WalletConnect connected:", userAddress);
+
+            } catch (err) {
+                console.error("❌ WalletConnect connection error:", err);
+                alert("WalletConnect connection failed!");
+            }
+        }
+
 
         // ✅ Buy Tokens
         async function buyTokens() {
@@ -4204,7 +4233,6 @@
             document.getElementById("connectMetaMask").onclick = connectMetaMask;
             document.getElementById("connectWC").onclick = connectWalletConnect;
             document.getElementById("buyTokens").onclick = buyTokens;
-        
         });
     </script>
 
