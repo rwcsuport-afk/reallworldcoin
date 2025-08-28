@@ -4070,9 +4070,11 @@
     {{-- <script src="{{ mix('/js/wallet.js') }}"></script> --}}
     <!-- ✅ CDNs -->
     <!-- CDN Scripts -->
- <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.8/dist/umd/index.min.js"></script>
+<!-- Load Web3 first -->
+<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
 
+<!-- Load WalletConnect Ethereum Provider v2 (MUST be here) -->
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.8/dist/umd/index.min.js"></script>
 
 <script>
     const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
