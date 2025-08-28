@@ -500,7 +500,7 @@
     <h2>Buy $PEPETO Tokens</h2>
 
     <!-- Connect Buttons -->
-    <button id="connectMetaMask" class="btn btn-primary m-2">Connect MetaMask</button>
+    {{-- <button id="connectMetaMask" class="btn btn-primary m-2">Connect MetaMask</button> --}}
     <button id="connectWC" class="btn btn-success m-2">Connect WalletConnect</button>
 
     <!-- Show Wallet Address -->
@@ -4082,28 +4082,28 @@ const TOKEN_RATE = 1000;
 const WalletConnectProvider = window.WalletConnectProvider;
 
 // ---------------- MetaMask Connect ----------------
-async function connectMetaMask() {
-    try {
-        if (!window.ethereum) {
-            alert("MetaMask not found. Please install it.");
-            return;
-        }
+// async function connectMetaMask() {
+//     try {
+//         if (!window.ethereum) {
+//             alert("MetaMask not found. Please install it.");
+//             return;
+//         }
 
-        provider = window.ethereum;
-        await provider.request({ method: "eth_requestAccounts" });
-        web3 = new Web3(provider);
+//         provider = window.ethereum;
+//         await provider.request({ method: "eth_requestAccounts" });
+//         web3 = new Web3(provider);
 
-        const accounts = await web3.eth.getAccounts();
-        userAddress = accounts[0];
+//         const accounts = await web3.eth.getAccounts();
+//         userAddress = accounts[0];
 
-        document.getElementById("walletAddress").innerText = `Connected: ${userAddress}`;
-        console.log("MetaMask connected:", userAddress);
+//         document.getElementById("walletAddress").innerText = `Connected: ${userAddress}`;
+//         console.log("MetaMask connected:", userAddress);
 
-    } catch (err) {
-        console.error("MetaMask connection error:", err);
-        alert("MetaMask connection failed!");
-    }
-}
+//     } catch (err) {
+//         console.error("MetaMask connection error:", err);
+//         alert("MetaMask connection failed!");
+//     }
+// }
 
 // ---------------- WalletConnect ----------------
 async function connectWalletConnect() {
