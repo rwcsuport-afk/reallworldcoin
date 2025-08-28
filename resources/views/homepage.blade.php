@@ -473,7 +473,7 @@
                                     <div class="mb-4">
                                         <h3 class="fst-italic" style="color: #18DB1B;">Buy RWC Token Now</h3>
                                     </div>
-                                    {{-- <div class="container mt-4">
+                                    <div class="container mt-4">
                                         <div class="row justify-content-center">
                                             <div class="col-md-6">
                                                 <div class="card text-center shadow-lg">
@@ -495,12 +495,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> --}}
-                                  <div id="wallet">
-    <button id="connectWallet" class="btn btn-primary">Connect Wallet</button>
-    <p id="walletAddress"></p>
-    <button onclick="sendTransaction()" class="btn btn-success mt-2">Send 0.0001 ETH/BNB</button>
-</div>
+                                    </div>
+                                
                                 </div>
                             </div>
                         </div>

@@ -1,72 +1,55 @@
-// Polyfills for Node.js modules required by ethers & Web3Modal
-import { Buffer } from 'buffer';
-import process from 'process';
-window.Buffer = Buffer;
-window.process = process;
-
+import './bootstrap';
+import { createAppKit } from "@reown/appkit";
+import { Ethers5Adapter } from "@reown/appkit-adapter-ethers5";
+import { mainnet, arbitrum, bsc } from "@reown/appkit/networks";
 import { ethers } from "ethers";
-import Web3Modal from "web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
 
-document.addEventListener("DOMContentLoaded", () => {
-    const connectBtn = document.getElementById("connectWallet");
-    const walletAddr = document.getElementById("walletAddress");
+// Wait for DOM to load before initializing AppKit
+document.addEventListener('DOMContentLoaded', () => {
+    const projectId = "d657fc2caf26f35212226268cf9745d0";
 
-    // Configure WalletConnect provider
-    const providerOptions = {
-        walletconnect: {
-            package: WalletConnectProvider,
-            options: {
-                rpc: {
-                    1: "https://mainnet.infura.io/v3/aca01372b7864ab293b991daa451a0a7", // Ethereum Mainnet
-                    56: "https://bsc-dataseed.binance.org/", // Binance Smart Chain
-                },
-            },
-        },
+    const metadata = {
+        name: "My Laravel 8 DApp",
+        description: "Laravel 8 + AppKit",
+        url: window.location.origin,
+        icons: ["https://example.com/icon.png"],
     };
 
-    // Initialize Web3Modal
-    const web3Modal = new Web3Modal({
-        cacheProvider: false,
-        providerOptions,
+    // Initialize AppKit
+    const appKit = createAppKit({
+        adapters: [new Ethers5Adapter()],
+        metadata,
+        networks: [mainnet, arbitrum, bsc],
+        projectId,
+        features: { analytics: true },
     });
 
-    let provider;
-    let signer;
+    // Expose globally for buttons
+    window.appKit = appKit;
 
-    // Connect Wallet button
-    connectBtn.addEventListener("click", async() => {
-        try {
-            const instance = await web3Modal.connect();
-            provider = new ethers.providers.Web3Provider(instance);
-            signer = provider.getSigner();
-
-            const address = await signer.getAddress();
-            walletAddr.innerText = "Connected: " + address;
-
-            console.log("✅ Wallet connected:", address);
-        } catch (err) {
-            console.error("❌ Wallet connection failed:", err);
-        }
-    });
+    // 🔹 Debug: check AppKit instance
+    console.log('AppKit instance:', window.appKit);
 
     // Global sendTransaction function
     window.sendTransaction = async function() {
-        if (!signer) {
-            alert("Please connect your wallet first!");
-            return;
-        }
-
         try {
+            const providerData = await appKit.subscribeProviders((state) => state["eip155"]);
+            const account = await appKit.subscribeAccount((state) => state);
+
+            if (!providerData) throw new Error("No provider found");
+            if (!account) throw new Error("No account found");
+
+            const provider = new ethers.providers.Web3Provider(providerData);
+            const signer = provider.getSigner();
+
             const tx = await signer.sendTransaction({
                 to: "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd",
                 value: ethers.utils.parseEther("0.0001"),
             });
+
             console.log("✅ Transaction sent:", tx);
-            alert("Transaction sent! Check console for details.");
-        } catch (err) {
-            console.error("❌ Transaction failed:", err);
-            alert("Transaction failed! See console for details.");
+        } catch (error) {
+            console.error("❌ Transaction failed:", error);
         }
     };
 });
