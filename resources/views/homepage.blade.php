@@ -473,7 +473,7 @@
                                     <div class="mb-4">
                                         <h3 class="fst-italic" style="color: #18DB1B;">Buy RWC Token Now</h3>
                                     </div>
-                                    <div class="container mt-4">
+                                    {{-- <div class="container mt-4">
                                         <div class="row justify-content-center">
                                             <div class="col-md-6">
                                                 <div class="card text-center shadow-lg">
@@ -495,7 +495,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
+                                    <button id="connectWallet">Connect Wallet</button>
+    <p id="walletAddress">Not connected</p>
+    <p id="balance"></p>
                                 
                                 </div>
                             </div>
@@ -4038,6 +4041,37 @@
     </script>
   <script src="{{ mix('js/app.js') }}" defer></script>
     <script type="module" src="./js/cursor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+<script>
+    const connectButton = document.getElementById('connectWallet');
+    const walletAddr = document.getElementById('walletAddress');
+    const balanceEl = document.getElementById('balance');
+
+    let provider;
+    let signer;
+
+    connectButton.addEventListener('click', async () => {
+        if (window.ethereum) {
+            try {
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                const account = accounts[0];
+                walletAddr.innerText = `Connected: ${account}`;
+
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                signer = provider.getSigner();
+
+                const balance = await provider.getBalance(account);
+                const bnb = ethers.utils.formatEther(balance);
+                balanceEl.innerText = `Balance: ${bnb} BNB`;
+            } catch (err) {
+                console.error('Connection rejected:', err);
+            }
+        } else {
+            alert('Please install MetaMask or Trust Wallet!');
+        }
+    });
+</script>
+
 </body>
 
 <!-- Mirrored from html.xpressbuddy.com/Real World Coin/index_ico.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Aug 2025 04:49:34 GMT -->
