@@ -2,18 +2,18 @@ let web3;
 let userAddress = null;
 let provider = null;
 
-// Receiving wallet (your project BNB wallet)
+// Receiving wallet (BNB project wallet)
 const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
 
-// Conversion rate (1 BNB = 1000 tokens example)
+// Conversion rate (example: 1 BNB = 1000 tokens)
 const TOKEN_RATE = 1000;
 
-// ✅ Switch to BSC
+// ✅ Switch to BSC if not already connected
 async function switchToBSC() {
     try {
         await provider.request({
             method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0x38" }], // BSC Mainnet
+            params: [{ chainId: "0x38" }], // BSC mainnet
         });
     } catch (err) {
         if (err.code === 4902) {
@@ -27,8 +27,6 @@ async function switchToBSC() {
                     blockExplorerUrls: ["https://bscscan.com"],
                 }],
             });
-        } else {
-            console.error("switchToBSC error:", err);
         }
     }
 }
@@ -43,10 +41,11 @@ async function connectWallet(type = "metamask") {
             web3 = new Web3(provider);
 
         } else if (type === "walletconnect") {
-            const EthereumProvider = window.WalletConnectProvider; // ✅ correct global from UMD
+            const EthereumProvider = window.WalletConnectEthereumProvider.default;
+
             provider = await EthereumProvider.init({
-                projectId: "d657fc2caf26f35212226268cf9745d0",
-                chains: [56],
+                projectId: "d657fc2caf26f35212226268cf9745d0", // 🔹 from cloud.walletconnect.com
+                chains: [56], // BSC mainnet
                 rpc: { 56: "https://bsc-dataseed.binance.org/" },
                 showQrModal: true,
             });
@@ -64,7 +63,7 @@ async function connectWallet(type = "metamask") {
         return userAddress;
 
     } catch (err) {
-        console.error("Wallet connection error:", err); // 👀 check here in console
+        console.error("Wallet connection error:", err);
         alert("Wallet connection failed. Check console for details.");
     }
 }
