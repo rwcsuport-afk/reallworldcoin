@@ -41,8 +41,6 @@
 
     <!-- Custom - CSS Include -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
-    <!-- AppKit CSS from CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@reown/appkit/dist/appkit.css">
     <style>
         .hero_title {
             font-style: italic;
@@ -475,7 +473,7 @@
                                     <div class="mb-4">
                                         <h3 class="fst-italic" style="color: #18DB1B;">Buy RWC Token Now</h3>
                                     </div>
-                                    <div class="container mt-4">
+                                    {{-- <div class="container mt-4">
                                         <div class="row justify-content-center">
                                             <div class="col-md-6">
                                                 <div class="card text-center shadow-lg">
@@ -497,7 +495,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
+                                  <div id="wallet">
+    <button id="connectWallet" class="btn btn-primary">Connect Wallet</button>
+    <p id="walletAddress"></p>
+    <button onclick="sendTransaction()" class="btn btn-success mt-2">Send 0.0001 ETH/BNB</button>
+</div>
                                 </div>
                             </div>
                         </div>
@@ -4039,26 +4042,6 @@
     </script>
   <script src="{{ mix('js/app.js') }}" defer></script>
     <script type="module" src="./js/cursor.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/@reown/appkit/dist/appkit.js" onload="initAppKit()"></script>
-<script>
-function initAppKit() {
-    const appKit = window.AppKit.createAppKit({
-        adapters: [new window.AppKit.Ethers5Adapter()],
-        metadata: {
-            name: "My Laravel 8 DApp",
-            description: "Laravel 8 + AppKit",
-            url: window.location.origin,
-            icons: ["https://example.com/icon.png"],
-        },
-        networks: [window.AppKit.mainnet, window.AppKit.arbitrum, window.AppKit.bsc],
-        projectId: "d657fc2caf26f35212226268cf9745d0",
-        features: { analytics: true },
-    });
-    window.appKit = appKit;
-    console.log('AppKit instance:', window.appKit);
-}
-</script>
-
 </body>
 
 <!-- Mirrored from html.xpressbuddy.com/Real World Coin/index_ico.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Aug 2025 04:49:34 GMT -->

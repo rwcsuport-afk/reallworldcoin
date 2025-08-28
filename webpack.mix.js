@@ -5,17 +5,14 @@ mix.js('resources/js/app.js', 'public/js')
     .version()
     .webpackConfig({
         resolve: {
-            extensions: ['.js', '.json', '.vue'], // ensures modules like ethers/AppKit are resolved
+            fallback: {
+                stream: require.resolve('stream-browserify'),
+                os: require.resolve('os-browserify/browser'),
+                http: require.resolve('stream-http'),
+                https: require.resolve('https-browserify'),
+                buffer: require.resolve('buffer/'),
+                process: require.resolve('process/browser'),
+            },
+            extensions: ['.js', '.json', '.vue'],
         },
-        output: {
-            chunkFilename: 'js/[name].js', // avoid hashed chunks for production
-        },
-    })
-    .options({
-        terser: { extractComments: false }, // keep production JS minified but avoid chunk issues
     });
-
-// Optional: full source maps for debugging in production
-if (!mix.inProduction()) {
-    mix.sourceMaps();
-}
