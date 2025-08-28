@@ -4075,7 +4075,7 @@
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.8.0/dist/ethers.umd.min.js"></script>
 
 <!-- WalletConnect -->
-<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.8/dist/ethereum-provider.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.8/dist/umd/index.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.7.0/dist/modal.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
 
@@ -4089,7 +4089,7 @@ const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
 const TOKEN_RATE = 1000;
 
 // Use WalletConnectProvider global
-const WalletConnectProvider = window.WalletConnectProvider;
+const WalletConnectProvider = window.WalletConnectEthereumProvider;
 
 // ---------------- MetaMask Connect ----------------
 async function connectMetaMask() {
