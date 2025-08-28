@@ -4074,14 +4074,26 @@
   <script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.8/dist/umd/index.min.js"></script>
 
 
- <script>
-    const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd"; // Change to your wallet
-    const TOKEN_RATE = 1000; // Number of tokens per 1 BNB
+<script>
+    const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
+    const TOKEN_RATE = 1000;
 
     let web3, provider, userAddress;
 
-    // ✅ WalletConnect v2 provider
-    const WalletConnectProvider = window.WalletConnectEthereumProvider;
+    window.addEventListener("DOMContentLoaded", () => {
+      const WalletConnectProvider = window.WalletConnectEthereumProvider;
+
+      // Check if WalletConnect v2 is loaded
+      if (!WalletConnectProvider || typeof WalletConnectProvider.init !== "function") {
+        alert("❌ WalletConnect v2 Provider not loaded. Check your script tag.");
+        console.error("WalletConnectEthereumProvider not found or broken.");
+        return;
+      }
+
+      document.getElementById("connectMetaMask").onclick = connectMetaMask;
+      document.getElementById("connectWC").onclick = () => connectWalletConnect(WalletConnectProvider);
+      document.getElementById("buyTokens").onclick = buyTokens;
+    });
 
     async function connectMetaMask() {
       try {
@@ -4105,7 +4117,7 @@
       }
     }
 
-    async function connectWalletConnect() {
+    async function connectWalletConnect(WalletConnectProvider) {
       try {
         if (provider && provider.disconnect) {
           await provider.disconnect();
@@ -4113,18 +4125,15 @@
         }
 
         provider = await WalletConnectProvider.init({
-          projectId: "33238a5bc1832f91c6d3e33e4996f41f", // Replace with your WalletConnect project ID
-          chains: [56], // BSC chain ID
-          rpcMap: {
-            56: "https://bsc-dataseed.binance.org/"
-          },
+          projectId: "33238a5bc1832f91c6d3e33e4996f41f", // Replace with your own
+          chains: [56],
+          rpcMap: { 56: "https://bsc-dataseed.binance.org/" },
           showQrModal: true
         });
 
         await provider.connect();
 
         web3 = new Web3(provider);
-
         const accounts = await web3.eth.getAccounts();
         userAddress = accounts[0];
 
@@ -4136,9 +4145,10 @@
           document.getElementById("walletAddress").innerText = "Disconnected";
           console.log("WalletConnect disconnected");
         });
+
       } catch (err) {
         console.error("WalletConnect connection error:", err);
-        alert("WalletConnect connection failed!");
+        alert("WalletConnect connection failed! " + err.message);
       }
     }
 
@@ -4174,13 +4184,6 @@
         alert("Transaction failed! Check console for details.");
       }
     }
-
-    // Button Event Listeners
-    window.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("connectMetaMask").onclick = connectMetaMask;
-      document.getElementById("connectWC").onclick = connectWalletConnect;
-      document.getElementById("buyTokens").onclick = buyTokens;
-    });
   </script>
 
 
