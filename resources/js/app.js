@@ -4,8 +4,10 @@ import { Ethers5Adapter } from "@reown/appkit-adapter-ethers5";
 import { mainnet, arbitrum, bsc } from "@reown/appkit/networks";
 import { ethers } from "ethers";
 
+// Reown Project ID
 const projectId = "d657fc2caf26f35212226268cf9745d0";
 
+// App metadata
 const metadata = {
     name: "My Laravel 8 DApp",
     description: "Laravel 8 + AppKit",
@@ -14,7 +16,7 @@ const metadata = {
 };
 
 // Initialize AppKit
-const modal = createAppKit({
+const appKit = createAppKit({
     adapters: [new Ethers5Adapter()],
     metadata,
     networks: [mainnet, arbitrum, bsc],
@@ -22,14 +24,14 @@ const modal = createAppKit({
     features: { analytics: true },
 });
 
-// Make AppKit available globally for buttons
-window.appKit = modal;
+// Expose globally for buttons
+window.appKit = appKit;
 
 // Global sendTransaction function
 window.sendTransaction = async function() {
     try {
-        const providerData = await modal.subscribeProviders((state) => state["eip155"]);
-        const account = await modal.subscribeAccount((state) => state);
+        const providerData = await appKit.subscribeProviders((state) => state["eip155"]);
+        const account = await appKit.subscribeAccount((state) => state);
 
         if (!providerData) throw new Error("No provider found");
         if (!account) throw new Error("No account found");
