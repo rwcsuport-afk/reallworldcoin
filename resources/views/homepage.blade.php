@@ -4070,8 +4070,18 @@
     {{-- <script src="{{ mix('/js/wallet.js') }}"></script> --}}
     <!-- ✅ CDNs -->
     <!-- CDN Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.10.0/dist/ethereum-provider.min.js"></script>
+<!-- Core dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/web3@4.16.0/dist/web3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.8.0/dist/ethers.umd.min.js"></script>
+
+<!-- WalletConnect -->
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.8/dist/ethereum-provider.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.7.0/dist/modal.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
+
+<!-- Web3Modal -->
+<script src="https://cdn.jsdelivr.net/npm/web3modal@1.9.12/dist/index.js"></script>
+
 
 <script>
 let web3, provider, userAddress;
