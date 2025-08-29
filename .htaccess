@@ -1,4 +1,13 @@
-# Enable Rewrite for React routing
+<IfModule mod_mime.c>
+    AddType text/javascript .js
+    AddType text/css .css
+    AddType application/json .json
+    AddType image/svg+xml .svg
+    AddType font/woff2 .woff2
+    AddType font/woff .woff
+    AddType font/ttf .ttf
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
@@ -7,12 +16,3 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule . /index.html [L]
 </IfModule>
-
-# Correct MIME types for React build
-AddType text/javascript .js
-AddType text/css .css
-AddType application/json .json
-AddType image/svg+xml .svg
-AddType font/woff2 .woff2
-AddType font/woff .woff
-AddType font/ttf .ttf
