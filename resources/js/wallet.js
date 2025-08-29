@@ -7,12 +7,13 @@ let userAddress = null;
 
 const RECEIVING_WALLET = "0x0a1ad99042f75253faaaA5a448325e7c0069E9fd";
 const TOKEN_RATE = 1000;
+const PROJECT_ID = process.env.MIX_WALLETCONNECT_PROJECT_ID;
 
 // ✅ Initialize WalletConnect provider (only once)
 async function initWalletConnect() {
     if (!provider) {
         provider = await EthereumProvider.init({
-            projectId: "d657fc2caf26f35212226268cf9745d0",
+            projectId: PROJECT_ID,
             chains: [56], // BSC
             rpcMap: {
                 56: "https://bsc-dataseed.binance.org/"
