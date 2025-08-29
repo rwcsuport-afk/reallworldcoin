@@ -1,3 +1,19 @@
+# -----------------------------
+# SPA Routing (React/Vite)
+# -----------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Serve index.html for all non-file requests
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
+</IfModule>
+
+# -----------------------------
+# Correct MIME types
+# -----------------------------
 <IfModule mod_mime.c>
     AddType text/javascript .js
     AddType text/css .css
@@ -8,11 +24,13 @@
     AddType font/ttf .ttf
 </IfModule>
 
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
-    RewriteRule ^index\.html$ - [L]
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule . /index.html [L]
+# -----------------------------
+# Optional: Caching for static assets
+# -----------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType application/json "access plus 1 year"
 </IfModule>
