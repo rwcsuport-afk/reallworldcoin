@@ -12,7 +12,7 @@ const TOKEN_RATE = 1000;
 async function initWalletConnect() {
     if (!provider) {
         provider = await EthereumProvider.init({
-            projectId: "33238a5bc1832f91c6d3e33e4996f41f",
+            projectId: "d657fc2caf26f35212226268cf9745d0",
             chains: [56], // BSC
             rpcMap: {
                 56: "https://bsc-dataseed.binance.org/"
