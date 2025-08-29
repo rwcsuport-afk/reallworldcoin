@@ -7,7 +7,7 @@
     AddType font/woff .woff
     AddType font/ttf .ttf
 </IfModule>
-
+aaaaaa
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
