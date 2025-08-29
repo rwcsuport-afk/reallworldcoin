@@ -70,25 +70,6 @@
                                 </a>
                             </div>
                         </div>
-                         <div class="container text-center mt-5">
-    <h2>Buy $PEPETO Tokens</h2>
-
-    <!-- Connect Buttons -->
-    <button id="connectMetaMask" class="btn btn-primary m-2">Connect MetaMask</button>
-    <button id="connectWC" class="btn btn-success m-2">WalletConnect</button>
-
-    <!-- Show Wallet Address -->
-    <p id="walletAddress" class="mt-3 text-info"></p>
-
-    <!-- Buy Section -->
-    <div class="mt-4">
-        <input type="number" id="bnbAmount" class="form-control w-25 mx-auto" placeholder="Enter BNB" />
-        <button id="buyTokens" class="btn btn-warning mt-2">Buy Tokens</button>
-    </div>
-
-    <!-- Result -->
-    <p id="result" class="mt-4 text-success"></p>
-</div>
                         <div class="col-lg-6 col-2">
                             <nav class="main_menu navbar navbar-expand-lg">
                                 <div class="main_menu_inner collapse navbar-collapse justify-content-center"
@@ -402,7 +383,6 @@
             }, 5000);
         @endif
     </script>
-    <script src="{{ mix('/js/wallet.js') }}"></script>
 
 </body>
 

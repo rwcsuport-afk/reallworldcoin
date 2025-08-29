@@ -202,7 +202,26 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-card">
+            
+<div class="container text-center mt-5">
+    <h2>Buy $PEPETO Tokens</h2>
 
+    <!-- Connect Buttons -->
+    <button id="connectMetaMask" class="btn btn-primary m-2">Connect MetaMask</button>
+    <button id="connectWC" class="btn btn-success m-2">WalletConnect</button>
+
+    <!-- Show Wallet Address -->
+    <p id="walletAddress" class="mt-3 text-info"></p>
+
+    <!-- Buy Section -->
+    <div class="mt-4">
+        <input type="number" id="bnbAmount" class="form-control w-25 mx-auto" placeholder="Enter BNB" />
+        <button id="buyTokens" class="btn btn-warning mt-2">Buy Tokens</button>
+    </div>
+
+    <!-- Result -->
+    <p id="result" class="mt-4 text-success"></p>
+</div>
             <!-- Mobile Header -->
             <div class="d-md-none d-flex justify-content-between align-items-center mb-4">
                 <i class="bi bi-list fs-3" id="openSidebar" style="cursor:pointer;"></i>
@@ -337,6 +356,7 @@
             document.getElementById("sidebar").classList.remove("show");
         });
     </script>
+    <script src="{{ mix('/js/wallet.js') }}"></script>
 </body>
 
 </html>
