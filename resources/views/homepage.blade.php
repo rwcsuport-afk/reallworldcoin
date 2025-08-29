@@ -501,7 +501,7 @@
 
     <!-- Connect Buttons -->
     <button id="connectMetaMask" class="btn btn-primary m-2">Connect MetaMask</button>
-    <button id="connectWC" class="btn btn-success m-2">Connect WalletConnect</button>
+    <button id="connectWC" class="btn btn-success m-2">WalletConnect</button>
 
     <!-- Show Wallet Address -->
     <p id="walletAddress" class="mt-3 text-info"></p>
