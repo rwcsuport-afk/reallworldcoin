@@ -1,4 +1,4 @@
-import{h as y,i as $,x as l,n as S,a as x,O as m,R as p,b as f,S as h,a4 as u,a1 as _,a6 as E,a7 as R}from"./index-fQWEVjpD.js";import{W as C}from"./index-Cfh0L0Xq.js";import{ReownAuthentication as v}from"./features-BZGRT03_.js";const D=y`
+import{h as y,i as $,x as l,n as S,a as x,O as m,R as p,b as f,S as h,a4 as u,a1 as _,a6 as E,a7 as R}from"./index-DfEpfaWJ.js";import{W as C}from"./index--6pwM2eP.js";import{ReownAuthentication as v}from"./features-BJJiBDw0.js";const D=y`
   .email-sufixes {
     display: flex;
     flex-direction: row;
