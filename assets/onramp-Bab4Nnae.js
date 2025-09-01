@@ -1,4 +1,4 @@
-import{c as T,i as g,aB as l,aC as P,ae as B,O as x,a3 as m,x as u,a8 as k,a4 as c,a as v,n as p,b as R,a0 as K,R as E,C as N,E as V,l as z,W as M,j as q,a2 as Y,S as D,d as Q}from"./index-DfEpfaWJ.js";import{E as w}from"./ExchangeController-BpoAHeS5.js";const X=T`
+import{c as T,i as g,b8 as l,b9 as P,aN as D,O as x,a1 as m,x as u,aH as k,a2 as c,a as v,n as p,b as R,Z as K,R as E,C as B,E as V,l as z,W as M,j as q,a0 as Y,S as N,d as H}from"./index-DAU8mbYm.js";import{E as w}from"./ExchangeController-CQ_al6oj.js";const Q=T`
   :host > wui-grid {
     max-height: 360px;
     overflow: auto;
@@ -19,7 +19,7 @@ import{c as T,i as g,aB as l,aC as P,ae as B,O as x,a3 as m,x as u,a8 as k,a4 as
     pointer-events: none;
     user-select: none;
   }
-`;var j=function(t,e,r,n){var s=arguments.length,i=s<3?e:n===null?n=Object.getOwnPropertyDescriptor(e,r):n,o;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(t,e,r,n);else for(var a=t.length-1;a>=0;a--)(o=t[a])&&(i=(s<3?o(i):s>3?o(e,r,i):o(e,r))||i);return s>3&&i&&Object.defineProperty(e,r,i),i};let O=class extends g{constructor(){super(),this.unsubscribe=[],this.selectedCurrency=l.state.paymentCurrency,this.currencies=l.state.paymentCurrencies,this.currencyImages=P.state.currencyImages,this.checked=B.state.isLegalCheckboxChecked,this.unsubscribe.push(l.subscribe(e=>{this.selectedCurrency=e.paymentCurrency,this.currencies=e.paymentCurrencies}),P.subscribeKey("currencyImages",e=>this.currencyImages=e),B.subscribeKey("isLegalCheckboxChecked",e=>{this.checked=e}))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){const{termsConditionsUrl:e,privacyPolicyUrl:r}=x.state,n=x.state.features?.legalCheckbox,o=!!(e||r)&&!!n&&!this.checked;return u`
+`;var j=function(t,e,r,n){var s=arguments.length,i=s<3?e:n===null?n=Object.getOwnPropertyDescriptor(e,r):n,o;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(t,e,r,n);else for(var a=t.length-1;a>=0;a--)(o=t[a])&&(i=(s<3?o(i):s>3?o(e,r,i):o(e,r))||i);return s>3&&i&&Object.defineProperty(e,r,i),i};let O=class extends g{constructor(){super(),this.unsubscribe=[],this.selectedCurrency=l.state.paymentCurrency,this.currencies=l.state.paymentCurrencies,this.currencyImages=P.state.currencyImages,this.checked=D.state.isLegalCheckboxChecked,this.unsubscribe.push(l.subscribe(e=>{this.selectedCurrency=e.paymentCurrency,this.currencies=e.paymentCurrencies}),P.subscribeKey("currencyImages",e=>this.currencyImages=e),D.subscribeKey("isLegalCheckboxChecked",e=>{this.checked=e}))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){const{termsConditionsUrl:e,privacyPolicyUrl:r}=x.state,n=x.state.features?.legalCheckbox,o=!!(e||r)&&!!n&&!this.checked;return u`
       <w3m-legal-checkbox></w3m-legal-checkbox>
       <wui-flex
         flexDirection="column"
@@ -38,7 +38,7 @@ import{c as T,i as g,aB as l,aC as P,ae as B,O as x,a3 as m,x as u,a8 as k,a4 as
         >
           <wui-text variant="md-medium" color="primary">${r.id}</wui-text>
         </wui-list-item>
-      `)}selectCurrency(e){e&&(l.setPaymentCurrency(e),k.close())}};O.styles=X;j([c()],O.prototype,"selectedCurrency",void 0);j([c()],O.prototype,"currencies",void 0);j([c()],O.prototype,"currencyImages",void 0);j([c()],O.prototype,"checked",void 0);O=j([v("w3m-onramp-fiat-select-view")],O);const H=T`
+      `)}selectCurrency(e){e&&(l.setPaymentCurrency(e),k.close())}};O.styles=Q;j([c()],O.prototype,"selectedCurrency",void 0);j([c()],O.prototype,"currencies",void 0);j([c()],O.prototype,"currencyImages",void 0);j([c()],O.prototype,"checked",void 0);O=j([v("w3m-onramp-fiat-select-view")],O);const X=T`
   button {
     padding: ${({spacing:t})=>t[3]};
     border-radius: ${({borderRadius:t})=>t[4]};
@@ -116,7 +116,7 @@ import{c as T,i as g,aB as l,aC as P,ae as B,O as x,a3 as m,x as u,a8 as k,a4 as
             </wui-flex>
           `)}
       </wui-flex>
-    `}};h.styles=[H];C([p({type:Boolean})],h.prototype,"disabled",void 0);C([p()],h.prototype,"color",void 0);C([p()],h.prototype,"name",void 0);C([p()],h.prototype,"label",void 0);C([p()],h.prototype,"feeRange",void 0);C([p({type:Boolean})],h.prototype,"loading",void 0);C([p()],h.prototype,"onClick",void 0);h=C([v("w3m-onramp-provider-item")],h);var F=function(t,e,r,n){var s=arguments.length,i=s<3?e:n===null?n=Object.getOwnPropertyDescriptor(e,r):n,o;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(t,e,r,n);else for(var a=t.length-1;a>=0;a--)(o=t[a])&&(i=(s<3?o(i):s>3?o(e,r,i):o(e,r))||i);return s>3&&i&&Object.defineProperty(e,r,i),i};let L=class extends g{constructor(){super(),this.unsubscribe=[],this.providers=l.state.providers,this.unsubscribe.push(l.subscribeKey("providers",e=>{this.providers=e}))}render(){return u`
+    `}};h.styles=[X];C([p({type:Boolean})],h.prototype,"disabled",void 0);C([p()],h.prototype,"color",void 0);C([p()],h.prototype,"name",void 0);C([p()],h.prototype,"label",void 0);C([p()],h.prototype,"feeRange",void 0);C([p({type:Boolean})],h.prototype,"loading",void 0);C([p()],h.prototype,"onClick",void 0);h=C([v("w3m-onramp-provider-item")],h);var F=function(t,e,r,n){var s=arguments.length,i=s<3?e:n===null?n=Object.getOwnPropertyDescriptor(e,r):n,o;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(t,e,r,n);else for(var a=t.length-1;a>=0;a--)(o=t[a])&&(i=(s<3?o(i):s>3?o(e,r,i):o(e,r))||i);return s>3&&i&&Object.defineProperty(e,r,i),i};let L=class extends g{constructor(){super(),this.unsubscribe=[],this.providers=l.state.providers,this.unsubscribe.push(l.subscribeKey("providers",e=>{this.providers=e}))}render(){return u`
       <wui-flex flexDirection="column" .padding=${["0","3","3","3"]} gap="2">
         ${this.onRampProvidersTemplate()}
       </wui-flex>
@@ -129,7 +129,7 @@ import{c as T,i as g,aB as l,aC as P,ae as B,O as x,a3 as m,x as u,a8 as k,a4 as
             ?disabled=${!e.url}
             data-testid=${`onramp-provider-${e.name}`}
           ></w3m-onramp-provider-item>
-        `)}onClickProvider(e){l.setSelectedProvider(e),E.push("BuyInProgress"),N.openHref(l.state.selectedProvider?.url||e.url,"popupWindow","width=600,height=800,scrollbars=yes"),V.sendEvent({type:"track",event:"SELECT_BUY_PROVIDER",properties:{provider:e.name,isSmartAccount:z(R.state.activeChain)===M.ACCOUNT_TYPES.SMART_ACCOUNT}})}};F([c()],L.prototype,"providers",void 0);L=F([v("w3m-onramp-providers-view")],L);const G=T`
+        `)}onClickProvider(e){l.setSelectedProvider(e),E.push("BuyInProgress"),B.openHref(l.state.selectedProvider?.url||e.url,"popupWindow","width=600,height=800,scrollbars=yes"),V.sendEvent({type:"track",event:"SELECT_BUY_PROVIDER",properties:{provider:e.name,isSmartAccount:z(R.state.activeChain)===M.ACCOUNT_TYPES.SMART_ACCOUNT}})}};F([c()],L.prototype,"providers",void 0);L=F([v("w3m-onramp-providers-view")],L);const G=T`
   :host > wui-grid {
     max-height: 360px;
     overflow: auto;
@@ -150,7 +150,7 @@ import{c as T,i as g,aB as l,aC as P,ae as B,O as x,a3 as m,x as u,a8 as k,a4 as
     pointer-events: none;
     user-select: none;
   }
-`;var S=function(t,e,r,n){var s=arguments.length,i=s<3?e:n===null?n=Object.getOwnPropertyDescriptor(e,r):n,o;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(t,e,r,n);else for(var a=t.length-1;a>=0;a--)(o=t[a])&&(i=(s<3?o(i):s>3?o(e,r,i):o(e,r))||i);return s>3&&i&&Object.defineProperty(e,r,i),i};let I=class extends g{constructor(){super(),this.unsubscribe=[],this.selectedCurrency=l.state.purchaseCurrencies,this.tokens=l.state.purchaseCurrencies,this.tokenImages=P.state.tokenImages,this.checked=B.state.isLegalCheckboxChecked,this.unsubscribe.push(l.subscribe(e=>{this.selectedCurrency=e.purchaseCurrencies,this.tokens=e.purchaseCurrencies}),P.subscribeKey("tokenImages",e=>this.tokenImages=e),B.subscribeKey("isLegalCheckboxChecked",e=>{this.checked=e}))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){const{termsConditionsUrl:e,privacyPolicyUrl:r}=x.state,n=x.state.features?.legalCheckbox,o=!!(e||r)&&!!n&&!this.checked;return u`
+`;var S=function(t,e,r,n){var s=arguments.length,i=s<3?e:n===null?n=Object.getOwnPropertyDescriptor(e,r):n,o;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(t,e,r,n);else for(var a=t.length-1;a>=0;a--)(o=t[a])&&(i=(s<3?o(i):s>3?o(e,r,i):o(e,r))||i);return s>3&&i&&Object.defineProperty(e,r,i),i};let I=class extends g{constructor(){super(),this.unsubscribe=[],this.selectedCurrency=l.state.purchaseCurrencies,this.tokens=l.state.purchaseCurrencies,this.tokenImages=P.state.tokenImages,this.checked=D.state.isLegalCheckboxChecked,this.unsubscribe.push(l.subscribe(e=>{this.selectedCurrency=e.purchaseCurrencies,this.tokens=e.purchaseCurrencies}),P.subscribeKey("tokenImages",e=>this.tokenImages=e),D.subscribeKey("isLegalCheckboxChecked",e=>{this.checked=e}))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){const{termsConditionsUrl:e,privacyPolicyUrl:r}=x.state,n=x.state.features?.legalCheckbox,o=!!(e||r)&&!!n&&!this.checked;return u`
       <w3m-legal-checkbox></w3m-legal-checkbox>
       <wui-flex
         flexDirection="column"
@@ -172,7 +172,7 @@ import{c as T,i as g,aB as l,aC as P,ae as B,O as x,a3 as m,x as u,a8 as k,a4 as
             <wui-text variant="sm-regular" color="secondary">${r.symbol}</wui-text>
           </wui-flex>
         </wui-list-item>
-      `)}selectToken(e){e&&(l.setPurchaseCurrency(e),k.close())}};I.styles=G;S([c()],I.prototype,"selectedCurrency",void 0);S([c()],I.prototype,"tokens",void 0);S([c()],I.prototype,"tokenImages",void 0);S([c()],I.prototype,"checked",void 0);I=S([v("w3m-onramp-token-select-view")],I);const J=T`
+      `)}selectToken(e){e&&(l.setPurchaseCurrency(e),k.close())}};I.styles=G;S([c()],I.prototype,"selectedCurrency",void 0);S([c()],I.prototype,"tokens",void 0);S([c()],I.prototype,"tokenImages",void 0);S([c()],I.prototype,"checked",void 0);I=S([v("w3m-onramp-token-select-view")],I);const Z=T`
   @keyframes shake {
     0% {
       transform: translateX(0);
@@ -295,10 +295,10 @@ import{c as T,i as g,aB as l,aC as P,ae as B,O as x,a3 as m,x as u,a8 as k,a4 as
           Copy link
         </wui-link>
       </wui-flex>
-    `}onTryAgain(){this.selectedOnRampProvider&&(this.error=!1,N.openHref(this.selectedOnRampProvider.url,"popupWindow","width=600,height=800,scrollbars=yes"))}tryAgainTemplate(){return this.selectedOnRampProvider?.url?u`<wui-button size="md" variant="accent" @click=${this.onTryAgain.bind(this)}>
+    `}onTryAgain(){this.selectedOnRampProvider&&(this.error=!1,B.openHref(this.selectedOnRampProvider.url,"popupWindow","width=600,height=800,scrollbars=yes"))}tryAgainTemplate(){return this.selectedOnRampProvider?.url?u`<wui-button size="md" variant="accent" @click=${this.onTryAgain.bind(this)}>
       <wui-icon color="inherit" slot="iconLeft" name="refresh"></wui-icon>
       Try again
-    </wui-button>`:null}loaderTemplate(){const e=Y.state.themeVariables["--w3m-border-radius-master"],r=e?parseInt(e.replace("px",""),10):4;return u`<wui-loading-thumbnail radius=${r*9}></wui-loading-thumbnail>`}onCopyUri(){if(!this.selectedOnRampProvider?.url){D.showError("No link found"),E.goBack();return}try{N.copyToClopboard(this.selectedOnRampProvider.url),D.showSuccess("Link copied")}catch{D.showError("Failed to copy")}}};d.styles=J;y([c()],d.prototype,"intervalId",void 0);y([c()],d.prototype,"selectedOnRampProvider",void 0);y([c()],d.prototype,"uri",void 0);y([c()],d.prototype,"ready",void 0);y([c()],d.prototype,"showRetry",void 0);y([c()],d.prototype,"buffering",void 0);y([c()],d.prototype,"error",void 0);y([p({type:Boolean})],d.prototype,"isMobile",void 0);y([p()],d.prototype,"onRetry",void 0);d=y([v("w3m-buy-in-progress-view")],d);var Z=function(t,e,r,n){var s=arguments.length,i=s<3?e:n===null?n=Object.getOwnPropertyDescriptor(e,r):n,o;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(t,e,r,n);else for(var a=t.length-1;a>=0;a--)(o=t[a])&&(i=(s<3?o(i):s>3?o(e,r,i):o(e,r))||i);return s>3&&i&&Object.defineProperty(e,r,i),i};let U=class extends g{render(){return u`
+    </wui-button>`:null}loaderTemplate(){const e=Y.state.themeVariables["--w3m-border-radius-master"],r=e?parseInt(e.replace("px",""),10):4;return u`<wui-loading-thumbnail radius=${r*9}></wui-loading-thumbnail>`}onCopyUri(){if(!this.selectedOnRampProvider?.url){N.showError("No link found"),E.goBack();return}try{B.copyToClopboard(this.selectedOnRampProvider.url),N.showSuccess("Link copied")}catch{N.showError("Failed to copy")}}};d.styles=Z;y([c()],d.prototype,"intervalId",void 0);y([c()],d.prototype,"selectedOnRampProvider",void 0);y([c()],d.prototype,"uri",void 0);y([c()],d.prototype,"ready",void 0);y([c()],d.prototype,"showRetry",void 0);y([c()],d.prototype,"buffering",void 0);y([c()],d.prototype,"error",void 0);y([p({type:Boolean})],d.prototype,"isMobile",void 0);y([p()],d.prototype,"onRetry",void 0);d=y([v("w3m-buy-in-progress-view")],d);var J=function(t,e,r,n){var s=arguments.length,i=s<3?e:n===null?n=Object.getOwnPropertyDescriptor(e,r):n,o;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(t,e,r,n);else for(var a=t.length-1;a>=0;a--)(o=t[a])&&(i=(s<3?o(i):s>3?o(e,r,i):o(e,r))||i);return s>3&&i&&Object.defineProperty(e,r,i),i};let U=class extends g{render(){return u`
       <wui-flex
         flexDirection="column"
         .padding=${["6","10","5","10"]}
@@ -320,11 +320,11 @@ import{c as T,i as g,aB as l,aC as P,ae as B,O as x,a3 as m,x as u,a8 as k,a4 as
           Buy
         </wui-button>
       </wui-flex>
-    `}};U=Z([v("w3m-what-is-a-buy-view")],U);var W=function(t,e,r,n){var s=arguments.length,i=s<3?e:n===null?n=Object.getOwnPropertyDescriptor(e,r):n,o;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(t,e,r,n);else for(var a=t.length-1;a>=0;a--)(o=t[a])&&(i=(s<3?o(i):s>3?o(e,r,i):o(e,r))||i);return s>3&&i&&Object.defineProperty(e,r,i),i};let A=class extends g{constructor(){super(),this.unsubscribe=[],this.activeCaipNetwork=R.state.activeCaipNetwork,this.features=x.state.features,this.remoteFeatures=x.state.remoteFeatures,this.exchangesLoading=w.state.isLoading,this.exchanges=w.state.exchanges,this.unsubscribe.push(x.subscribeKey("features",e=>this.features=e),x.subscribeKey("remoteFeatures",e=>this.remoteFeatures=e),R.subscribeKey("activeCaipNetwork",e=>{this.activeCaipNetwork=e,this.setDefaultPaymentAsset()}),w.subscribeKey("isLoading",e=>this.exchangesLoading=e),w.subscribeKey("exchanges",e=>this.exchanges=e))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}async firstUpdated(){w.isPayWithExchangeSupported()&&(await this.setDefaultPaymentAsset(),await w.fetchExchanges())}render(){return u`
+    `}};U=J([v("w3m-what-is-a-buy-view")],U);var W=function(t,e,r,n){var s=arguments.length,i=s<3?e:n===null?n=Object.getOwnPropertyDescriptor(e,r):n,o;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(t,e,r,n);else for(var a=t.length-1;a>=0;a--)(o=t[a])&&(i=(s<3?o(i):s>3?o(e,r,i):o(e,r))||i);return s>3&&i&&Object.defineProperty(e,r,i),i};let A=class extends g{constructor(){super(),this.unsubscribe=[],this.activeCaipNetwork=R.state.activeCaipNetwork,this.features=x.state.features,this.remoteFeatures=x.state.remoteFeatures,this.exchangesLoading=w.state.isLoading,this.exchanges=w.state.exchanges,this.unsubscribe.push(x.subscribeKey("features",e=>this.features=e),x.subscribeKey("remoteFeatures",e=>this.remoteFeatures=e),R.subscribeKey("activeCaipNetwork",e=>{this.activeCaipNetwork=e,this.setDefaultPaymentAsset()}),w.subscribeKey("isLoading",e=>this.exchangesLoading=e),w.subscribeKey("exchanges",e=>this.exchanges=e))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}async firstUpdated(){w.isPayWithExchangeSupported()&&(await this.setDefaultPaymentAsset(),await w.fetchExchanges())}render(){return u`
       <wui-flex flexDirection="column" .padding=${["1","3","3","3"]} gap="2">
         ${this.onrampTemplate()} ${this.receiveTemplate()} ${this.depositFromExchangeTemplate()}
       </wui-flex>
-    `}async setDefaultPaymentAsset(){if(!this.activeCaipNetwork)return;const e=await w.getAssetsForNetwork(this.activeCaipNetwork.caipNetworkId),r=e.find(n=>n.metadata.symbol==="USDC")||e[0];r&&w.setPaymentAsset(r)}onrampTemplate(){if(!this.activeCaipNetwork)return null;const e=this.remoteFeatures?.onramp,r=Q.ONRAMP_SUPPORTED_CHAIN_NAMESPACES.includes(this.activeCaipNetwork.chainNamespace);return!e||!r?null:u`
+    `}async setDefaultPaymentAsset(){if(!this.activeCaipNetwork)return;const e=await w.getAssetsForNetwork(this.activeCaipNetwork.caipNetworkId),r=e.find(n=>n.metadata.symbol==="USDC")||e[0];r&&w.setPaymentAsset(r)}onrampTemplate(){if(!this.activeCaipNetwork)return null;const e=this.remoteFeatures?.onramp,r=H.ONRAMP_SUPPORTED_CHAIN_NAMESPACES.includes(this.activeCaipNetwork.chainNamespace);return!e||!r?null:u`
       <wui-list-item
         @click=${this.onBuyCrypto.bind(this)}
         icon="card"
