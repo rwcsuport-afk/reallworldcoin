@@ -1,4 +1,4 @@
-import{c as k,r as $,e as C,n as x,a as y,i as v,x as c,A as p,b as u,S as m,a0 as h,a1 as N,a2 as g,a3 as R,l as A,W as S,R as I,C as T,a4 as f}from"./index-fQWEVjpD.js";const O=k`
+import{c as k,r as v,e as C,n as x,a as y,i as $,x as c,A as p,b as u,S as m,Z as h,$ as N,a0 as g,a1 as R,l as A,W as S,R as I,C as T,a2 as f}from"./index-DAU8mbYm.js";const O=k`
   button {
     width: 100%;
     display: flex;
@@ -59,7 +59,7 @@ import{c as k,r as $,e as C,n as x,a as y,i as v,x as c,A as p,b as u,S as m,a0 
     border-radius: ${({borderRadius:e})=>e[4]};
     box-shadow: inset 0 0 0 1px ${({tokens:e})=>e.core.glass010};
   }
-`;var b=function(e,t,o,r){var s=arguments.length,i=s<3?t:r===null?r=Object.getOwnPropertyDescriptor(t,o):r,n;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(e,t,o,r);else for(var a=e.length-1;a>=0;a--)(n=e[a])&&(i=(s<3?n(i):s>3?n(t,o,i):n(t,o))||i);return s>3&&i&&Object.defineProperty(t,o,i),i};let d=class extends v{constructor(){super(...arguments),this.networkImages=[""],this.text=""}render(){return c`
+`;var b=function(e,t,o,r){var s=arguments.length,i=s<3?t:r===null?r=Object.getOwnPropertyDescriptor(t,o):r,n;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(e,t,o,r);else for(var a=e.length-1;a>=0;a--)(n=e[a])&&(i=(s<3?n(i):s>3?n(t,o,i):n(t,o))||i);return s>3&&i&&Object.defineProperty(t,o,i),i};let d=class extends ${constructor(){super(...arguments),this.networkImages=[""],this.text=""}render(){return c`
       <button>
         <wui-text variant="md-regular" color="inherit">${this.text}</wui-text>
         <wui-flex>
@@ -69,7 +69,7 @@ import{c as k,r as $,e as C,n as x,a as y,i as v,x as c,A as p,b as u,S as m,a0 
       </button>
     `}networksTemplate(){const t=this.networkImages.slice(0,5);return c` <wui-flex class="networks">
       ${t?.map(o=>c` <wui-flex class="network-icon"> <wui-image src=${o}></wui-image> </wui-flex>`)}
-    </wui-flex>`}};d.styles=[$,C,O];b([x({type:Array})],d.prototype,"networkImages",void 0);b([x()],d.prototype,"text",void 0);d=b([y("wui-compatible-network")],d);const _=k`
+    </wui-flex>`}};d.styles=[v,C,O];b([x({type:Array})],d.prototype,"networkImages",void 0);b([x()],d.prototype,"text",void 0);d=b([y("wui-compatible-network")],d);const _=k`
   wui-compatible-network {
     margin-top: ${({spacing:e})=>e[4]};
     width: 100%;
@@ -83,7 +83,7 @@ import{c as k,r as $,e as C,n as x,a as y,i as v,x as c,A as p,b as u,S as m,a0 
   wui-icon {
     align-items: normal;
   }
-`;var w=function(e,t,o,r){var s=arguments.length,i=s<3?t:r===null?r=Object.getOwnPropertyDescriptor(t,o):r,n;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(e,t,o,r);else for(var a=e.length-1;a>=0;a--)(n=e[a])&&(i=(s<3?n(i):s>3?n(t,o,i):n(t,o))||i);return s>3&&i&&Object.defineProperty(t,o,i),i};let l=class extends v{constructor(){super(),this.unsubscribe=[],this.address=p.state.address,this.profileName=p.state.profileName,this.network=u.state.activeCaipNetwork,this.unsubscribe.push(p.subscribe(t=>{t.address?(this.address=t.address,this.profileName=t.profileName):m.showError("Account not found")}),u.subscribeKey("activeCaipNetwork",t=>{t?.id&&(this.network=t)}))}disconnectedCallback(){this.unsubscribe.forEach(t=>t())}render(){if(!this.address)throw new Error("w3m-wallet-receive-view: No account provided");const t=h.getNetworkImage(this.network);return c` <wui-flex
+`;var w=function(e,t,o,r){var s=arguments.length,i=s<3?t:r===null?r=Object.getOwnPropertyDescriptor(t,o):r,n;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")i=Reflect.decorate(e,t,o,r);else for(var a=e.length-1;a>=0;a--)(n=e[a])&&(i=(s<3?n(i):s>3?n(t,o,i):n(t,o))||i);return s>3&&i&&Object.defineProperty(t,o,i),i};let l=class extends ${constructor(){super(),this.unsubscribe=[],this.address=p.state.address,this.profileName=p.state.profileName,this.network=u.state.activeCaipNetwork,this.unsubscribe.push(p.subscribe(t=>{t.address?(this.address=t.address,this.profileName=t.profileName):m.showError("Account not found")}),u.subscribeKey("activeCaipNetwork",t=>{t?.id&&(this.network=t)}))}disconnectedCallback(){this.unsubscribe.forEach(t=>t())}render(){if(!this.address)throw new Error("w3m-wallet-receive-view: No account provided");const t=h.getNetworkImage(this.network);return c` <wui-flex
       flexDirection="column"
       .padding=${["0","4","4","4"]}
       alignItems="center"
