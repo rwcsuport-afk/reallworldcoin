@@ -254,9 +254,24 @@
 
                     <button type="submit" class="btn btn-success w-100 mt-2">Buy & Stake</button>
                 </form> --}}
+                <form action="{{ route('stake.store') }}" method="POST">
+                    @csrf
+
+                    <div class="mb-2">
+                        <label class="form-label">Stake Amount</label>
+                        <input type="number" class="form-control" name="coins_to_buy" placeholder="e.g. 50">
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-control" name="stake_date">
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 mt-2">Stake</button>
+                </form>
             </div>
 
-            <form action="{{ route('create.payment') }}" method="POST">
+            {{-- <form action="{{ route('create.payment') }}" method="POST">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                 <div class="mb-3">
@@ -292,7 +307,7 @@
                     <input name="email" type="email" value="{{ Auth::user()->email }}" class="form-control">
                 </div>
                 <button type="submit" class="btn btn-primary">Pay Now</button>
-            </form>
+            </form> --}}
 
 
             <!-- History -->
