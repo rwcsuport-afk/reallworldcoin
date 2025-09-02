@@ -1,24 +1,4 @@
 <IfModule mod_rewrite.c>
-<<<<<<< HEAD
-  RewriteEngine On
-  RewriteBase /
-
-  # Don’t rewrite for existing files
-  RewriteCond %{REQUEST_FILENAME} -f
-  RewriteRule ^ - [L]
-
-  # Don’t rewrite for existing directories
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
-
-  # Everything else goes to index.html (for React Router)
-  RewriteRule . /index.html [L]
-</IfModule>
-
-<IfModule mod_mime.c>
-  AddType application/javascript .js
-  AddType text/css .css
-=======
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
@@ -38,5 +18,4 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
->>>>>>> 2cf845e25ad28c7e98cfda456188036115a4f368
 </IfModule>
