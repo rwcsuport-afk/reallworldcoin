@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Logs
 logs
 *.log
@@ -27,7 +27,6 @@ dist-ssr
 /public/hot
 /public/storage
 /storage/*.key
-/vendor
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml
@@ -37,4 +36,4 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
->>>>>>> 2cf845e25ad28c7e98cfda456188036115a4f368
+
