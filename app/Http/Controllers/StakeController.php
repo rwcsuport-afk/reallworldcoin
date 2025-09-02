@@ -19,11 +19,12 @@ class StakeController extends Controller
 
         $user = auth()->user();
         $coinValue = \App\Models\Setting::where('key', 'coin_value_usd')->value('value') ?? 0;
-        $totalAmount = $request->coins_to_buy * $coinValue;
+        //$totalAmount = $request->coins_to_buy * $coinValue;
         Stake::create([
             'user_id'    => $user->id,
             'coin'       => $request->coins_to_buy,
-            'amount'     => $totalAmount,
+            //'amount'     => $totalAmount,
+            'amount' => $request->coins_to_buy,
             'start_date' => now(),
         ]);
 
