@@ -1,4 +1,5 @@
 <IfModule mod_rewrite.c>
+<<<<<<< HEAD
   RewriteEngine On
   RewriteBase /
 
@@ -17,4 +18,25 @@
 <IfModule mod_mime.c>
   AddType application/javascript .js
   AddType text/css .css
+=======
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+>>>>>>> 2cf845e25ad28c7e98cfda456188036115a4f368
 </IfModule>
