@@ -25,12 +25,16 @@ use App\Http\Controllers\StakeController;
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
-    return redirect('/homepage');
-});
+// Route::get('/', function () {
+//     return redirect('/homepage');
+// });
 
 Route::get('/reload-captcha', function () {
     return response()->json(['captcha' => captcha_img()]);
+});
+
+Route::get('/', function () {
+    return file_get_contents(public_path('index.html'));
 });
 
 Route::get('/buy-token', function () {
