@@ -352,12 +352,25 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Success Message -->
     @if (session('success'))
         <script>
             Swal.fire({
                 title: 'Success!',
                 text: '{{ session('success') }}',
                 icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
+
+    <!-- Error Message -->
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                title: 'Oops!',
+                text: '{{ session('error') }}',
+                icon: 'error',
                 confirmButtonText: 'OK'
             });
         </script>
