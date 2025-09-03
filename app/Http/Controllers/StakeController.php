@@ -14,7 +14,7 @@ class StakeController extends Controller
     {
         // Validate how many coins user wants to buy
         $request->validate([
-            'coins_to_buy' => 'required|integer|min:1',
+            'coins_to_buy' => 'required',
         ]);
 
         $user = auth()->user();
@@ -52,7 +52,7 @@ class StakeController extends Controller
         }
         //return redirect()->away('https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp');
         //return back()->with('success', 'Coins purchased and staking successful!');
-        return redirect()->away('trust://');
+        return redirect()->back()->with('success', 'Stake submitted successfully!');
     }
 
 }

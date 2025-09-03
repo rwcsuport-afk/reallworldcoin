@@ -202,7 +202,7 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-card">
-            
+
 
             <!-- Mobile Header -->
             <div class="d-md-none d-flex justify-content-between align-items-center mb-4">
@@ -216,6 +216,16 @@
                 <h5>Welcome <i class="bi bi-person-fill"></i> {{ Auth::user()->name }}</h5>
                 <div class="ref-id">Referral ID: {{ Auth::user()->unique_id }}</div>
             </div>
+            <form action="{{ route('stake.store') }}" method="POST"> @csrf <div class="mb-2">
+                    <label class="form-label fs-5">Staked Amount (USD)</label>
+                    <input type="text"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                        class="form-control" name="coins_to_buy" placeholder="e.g. 50">
+                </div>
+                <div class="mb-2"> <label class="form-label fs-5">Date</label> <input type="date"
+                        class="form-control" name="stake_date"> </div> <button type="submit"
+                    class="btn btn-success w-100 mt-2">Stake</button>
+            </form><br>
 
             <!-- ROI Section -->
             <h6 class="text-info fw-semibold mb-3">ROI & Stats</h6>
@@ -339,6 +349,19 @@
         });
     </script>
     <script src="{{ mix('/js/wallet.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
 </body>
 
 </html>
