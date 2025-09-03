@@ -50,8 +50,8 @@ class DashboardController extends Controller
         // Optional: if you want integer cents
         $usd_cents = (int) round($total_rwc);
         
-        $total_coin = Stake::sum('coin'); 
-        $tt = Stake::sum('amount');
+        $total_coin = Stake::where('user_id', $user->id)->sum('coin'); 
+        $tt = Stake::where('user_id', $user->id)->sum('amount');
         $total_earn_coin = $user->wallet_balance + $user->referral_bonus;
        
         $total_balance = $total_earn_coin + $total_staked;
