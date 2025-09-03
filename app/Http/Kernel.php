@@ -24,7 +24,7 @@ class Kernel extends HttpKernel
     protected function schedule(Schedule $schedule)
     {
         // Daily ROI at 9:21 AM
-        $schedule->command('roi:credit-daily')->dailyAt('09:21');
+        $schedule->command('roi:credit-daily')->dailyAt('23:10');
 
         // Generate login activity report at midnight (Eastern Time)
         $schedule->command('report:generate-login')
