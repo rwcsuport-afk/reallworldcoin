@@ -38,6 +38,11 @@ Route::get('/', function () {
     return Response::file(public_path('frontend/index.html'));
 });
 
+// React SPA routes (optional)
+Route::get('/{any}', function () {
+    return Response::file(public_path('frontend/index.html'));
+})->where('any', '^(?!login|register|api).*$');
+
 Route::get('/buy-token', function () {
     return view('buy-tokens');
 });
