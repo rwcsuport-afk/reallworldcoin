@@ -240,12 +240,21 @@
                     </div>
                 </div>
 
-                <div class="col-6">
+                {{-- <div class="col-6">
                     <div class="card-box d-flex align-items-center">
                         <img src="{{ asset('a.webp') }}" alt="Stake">
                         <div>
                             <h6>Total Staked</h6>
                             <p>${{ number_format($total_staked, 2) }}</p>
+                        </div>
+                    </div>
+                </div> --}}
+                 <div class="col-6">
+                    <div class="card-box d-flex align-items-center">
+                        <img src="{{ asset('a.webp') }}" alt="Stake">
+                        <div>
+                            <h6>Total Staked</h6>
+                            <p>${{ number_format($tt, 2) }}</p>
                         </div>
                     </div>
                 </div>
@@ -270,7 +279,7 @@
                     </div>
                 </div>
 
-                <div class="col-6">
+                {{-- <div class="col-6">
                     <div class="card-box d-flex align-items-center">
                         <img src="{{ asset('a.webp') }}" alt="Earned">
                         <div>
@@ -287,7 +296,7 @@
                             <p> ${{ $total_usd }}</p>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Referral Link -->

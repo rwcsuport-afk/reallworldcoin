@@ -51,6 +51,7 @@ class DashboardController extends Controller
         $usd_cents = (int) round($total_rwc);
         
         $total_coin = Stake::sum('coin'); 
+        $tt = Stake::sum('amount');
         $total_earn_coin = $user->wallet_balance + $user->referral_bonus;
        
         $total_balance = $total_earn_coin + $total_staked;
@@ -63,7 +64,8 @@ class DashboardController extends Controller
             'total_balance', 
             'total_coin', 
             'usd', 
-            'total_usd'
+            'total_usd',
+            'tt'
         ));
     }
 
