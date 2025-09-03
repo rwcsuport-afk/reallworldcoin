@@ -136,7 +136,7 @@
                                     </button>
                                 </li>
                                 <li>
-                                    <a class="ico_btn_outline" href="sign_in.html">
+                                    <a class="ico_btn_outline" href="{{ route('login') }}">
                                         <span class="btn_icon">
                                             <i class="fa-solid fa-user"></i>
                                         </span>
