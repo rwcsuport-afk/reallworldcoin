@@ -111,83 +111,12 @@
                                                 <span class="nav_link_label" data-text="Features">Features</span>
                                             </a>
                                         </li>
-                                        <li class="dropdown">
-                                            <a class="nav-link" href="#" id="help_submenu" role="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <span class="nav_link_label"
-                                                    data-text="My
-                                                            Account">My
-                                                    Account</span>
-                                                <span class="nav_link_icon">
-                                                    <i class="fa-solid fa-angle-down"></i>
-                                                </span>
+                                         <li>
+                                            <a class="nav-link" href="{{ route('register') }}">
+                                                <span class="nav_link_label" data-text="Register">Register</span>
                                             </a>
-                                            <ul class="dropdown-menu" aria-labelledby="help_submenu">
-                                                {{-- <li>
-                                                    <a class="dropdown-item scrollspy_btn"
-                                                        href="#id_ico_roadmap_section">
-                                                        <span class="nav_link_label">Roadmap</span>
-                                                    </a>
-                                                </li>
-                                                <li class="dropdown">
-                                                    <a class="dropdown-item" href="#" id="blog_submenu"
-                                                        role="button" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                        <span class="nav_link_label" data-text="Blog">Blog</span>
-                                                        <span class="nav_link_icon">
-                                                            <i class="fa-solid fa-angle-right"></i>
-                                                        </span>
-                                                    </a>
-                                                    <ul class="dropdown-menu" aria-labelledby="blog_submenu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="blog.html">
-                                                                <span class="nav_link_label">Blogs</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="blog_details.html">
-                                                                <span class="nav_link_label">Blog Details</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </li> --}}
-                                                {{-- <li>
-                                                    <a class="dropdown-item" href="contact.html">
-                                                        <span class="nav_link_label">Help Center</span>
-                                                    </a>
-                                                </li> --}}
-                                                <li class="dropdown">
-                                                    <a class="dropdown-item" href="{{ route('register') }}"
-                                                        id="register_submenu" role="button" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                        <span class="nav_link_label" data-text="Blog">Sign In</span>
-                                                        <span class="nav_link_icon">
-                                                            {{-- <i class="fa-solid fa-angle-right"></i> --}}
-                                                        </span>
-                                                    </a>
-                                                    <a class="dropdown-item" href="{{ route('login') }}"
-                                                        id="register_submenu" role="button"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <span class="nav_link_label" data-text="Blog">Sign Up</span>
-                                                        <span class="nav_link_icon">
-                                                            {{-- <i class="fa-solid fa-angle-right"></i> --}}
-                                                        </span>
-                                                    </a>
-                                                    {{-- <ul class="dropdown-menu" aria-labelledby="register_submenu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route('register') }}">
-                                                                <span class="nav_link_label">Sign In</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route('login') }}">
-                                                                <span class="nav_link_label">Sign Up</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul> --}}
-                                                </li>
-                                            </ul>
                                         </li>
+                                        
                                         <li>
                                             <a class="nav-link" href="{{ route('contact') }}">
                                                 <span class="nav_link_label" data-text="Contact">Contact</span>
@@ -207,7 +136,7 @@
                                     </button>
                                 </li>
                                 <li>
-                                    <a class="ico_btn_outline" href="sign_in.html">
+                                    <a class="ico_btn_outline" href="{{ route('login') }}">
                                         <span class="btn_icon">
                                             <i class="fa-solid fa-user"></i>
                                         </span>
