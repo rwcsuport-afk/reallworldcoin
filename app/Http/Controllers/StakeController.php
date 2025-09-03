@@ -6,6 +6,7 @@ use App\Models\ReferralBonus;
 use App\Models\ReferralSetting;
 use App\Models\Stake;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class StakeController extends Controller
@@ -19,10 +20,21 @@ class StakeController extends Controller
 
         $user = auth()->user();
         $coinValue = \App\Models\Setting::where('key', 'coin_value_usd')->value('value') ?? 0;
+        $stakeDate = Carbon::parse($request->stake_date)->format('Y-m-d');
+        $alreadyStaked = Stake::where('user_id', $user->id)
+            ->whereDate('created_at', $stakeDate)
+            ->exists();
+
+        if ($alreadyStaked) {
+            return back()->with('error', 'You can only stake once per day.');
+        }
+
+        $coins = $request->coins_to_buy * 100;
+
         //$totalAmount = $request->coins_to_buy * $coinValue;
         Stake::create([
             'user_id'    => $user->id,
-            'coin'       => $request->coins_to_buy,
+            'coin'       => $coins,
             //'amount'     => $totalAmount,
             'amount' => $request->coins_to_buy,
             'start_date' => now(),

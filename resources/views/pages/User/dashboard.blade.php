@@ -254,7 +254,7 @@
                     <div class="card-box d-flex align-items-center">
                         <img src="{{ asset('a.webp') }}" alt="Coin">
                         <div>
-                            <h6>Total Coin</h6>
+                            <h6>Total RWC</h6>
                             <p>{{ number_format($total_coin) }}</p>
                         </div>
                     </div>
