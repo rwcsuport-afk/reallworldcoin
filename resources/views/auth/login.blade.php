@@ -76,7 +76,7 @@
                                     id="main_menu_dropdown">
                                     <ul class="main_menu_list unordered_list text-uppercase">
                                         <li class="dropdown active">
-                                            <a class="nav-link" href="#" id="homes_submenu" role="button"
+                                            <a class="nav-link" href="https://reallworldcoin.com/" id="homes_submenu" role="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 <span class="nav_link_label" data-text="Home">Home</span>
                                                 {{-- <span class="nav_link_icon">
