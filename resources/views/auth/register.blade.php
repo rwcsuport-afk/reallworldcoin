@@ -70,7 +70,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-2">
+                        {{-- <div class="col-lg-6 col-2">
                             <nav class="main_menu navbar navbar-expand-lg">
                                 <div class="main_menu_inner collapse navbar-collapse justify-content-center"
                                     id="main_menu_dropdown">
@@ -79,27 +79,7 @@
                                             <a class="nav-link" href="https://reallworldcoin.com/" id="homes_submenu" role="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 <span class="nav_link_label" data-text="Home">Home</span>
-                                                {{-- <span class="nav_link_icon">
-                                                    <i class="fa-solid fa-angle-down"></i>
-                                                </span> --}}
                                             </a>
-                                            {{-- <ul class="dropdown-menu" aria-labelledby="homes_submenu">
-                                                <li class="active">
-                                                    <a class="dropdown-item" href="index_ico.html">
-                                                        <span class="nav_link_label">Real World Coin ICO</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="index_memecoin.html">
-                                                        <span class="nav_link_label">Memecoin</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="index_pepecoin.html">
-                                                        <span class="nav_link_label">Pepecoin</span>
-                                                    </a>
-                                                </li>
-                                            </ul> --}}
                                         </li>
                                         <li>
                                             <a class="nav-link scrollspy_btn" href="#id_ico_about_section">
@@ -144,7 +124,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
