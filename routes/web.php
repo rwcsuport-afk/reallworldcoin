@@ -26,22 +26,13 @@ use Illuminate\Support\Facades\Response;
 //     return view('welcome');
 // });
 
-// Route::get('/', function () {
-//     return redirect('/homepage');
-// });
+Route::get('/', function () {
+     return redirect('/homepage');
+});
 
 Route::get('/reload-captcha', function () {
     return response()->json(['captcha' => captcha_img()]);
 });
-
-Route::get('/', function () {
-    return Response::file(public_path('frontend/index.html'));
-});
-
-// React SPA routes (optional)
-Route::get('/{any}', function () {
-    return Response::file(public_path('frontend/index.html'));
-})->where('any', '^(?!login|register|api).*$');
 
 Route::get('/buy-token', function () {
     return view('buy-tokens');
