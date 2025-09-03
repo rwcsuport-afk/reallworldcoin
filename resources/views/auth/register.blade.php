@@ -63,13 +63,13 @@
             <div class="nav_wrapper">
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-lg-3 col-5 d-flex align-items-center">
+                        {{-- <div class="col-lg-3 col-5 d-flex align-items-center">
                             <div class="site_logo">
                                 <a class="site_link" href="index.html">
                                     <img loading="lazy" src="{{ asset('bb.png') }}" alt="ICO Site Logo">
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
                         {{-- <div class="col-lg-6 col-2">
                             <nav class="main_menu navbar navbar-expand-lg">
                                 <div class="main_menu_inner collapse navbar-collapse justify-content-center"
