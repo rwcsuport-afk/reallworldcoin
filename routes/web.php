@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController as ControllersHomeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StakeController;
+use Illuminate\Support\Facades\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +35,7 @@ Route::get('/reload-captcha', function () {
 });
 
 Route::get('/', function () {
-    return file_get_contents(public_path('index.html'));
+    return Response::file(public_path('frontend/index.html'));
 });
 
 Route::get('/buy-token', function () {
