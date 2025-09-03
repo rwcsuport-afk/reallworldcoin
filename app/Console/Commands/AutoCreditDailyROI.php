@@ -22,7 +22,7 @@ class AutoCreditDailyROI extends Command
         foreach ($stakes as $stake) {
             $user = $stake->user;
             if (!$user) continue;
-dd('hello');
+
             $roi = $stakes->sum('coin') * ($roiPercent / 100); // 1-day ROI
             // Avoid duplicate ROI credit for today
             $alreadyCredited = RoiLog::where('user_id', $user->id)
