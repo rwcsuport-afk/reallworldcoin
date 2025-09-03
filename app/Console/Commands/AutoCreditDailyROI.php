@@ -19,7 +19,7 @@ class AutoCreditDailyROI extends Command
         $roiPercent = Setting::getValue('daily_roi_percent', 1.0); // Default 1%
         $stakes = Stake::with('user')->get();
 
-        foreach ($stakes as $stake) {
+        foreach ($stakes as $stake) {dd('hello');
             $user = $stake->user;
             if (!$user) continue;
 
