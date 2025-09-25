@@ -11,9 +11,18 @@ class Stake extends Model
     protected $table = 'stakes';
     protected $fillable = [
         'user_id',
+        'hash',
+        'from_address',
+        'to_address',
+        'token_symbol',
+        'value',
+        'value_formatted',
+        'summary',
+        'block_timestamp',
+        'transaction_fee',
         'amount',
         'coin',
-        'start_date',
+        'start_date'
     ];
 
     public function user()

@@ -25,40 +25,78 @@ class AuthController extends Controller
         }
         // POST method - process login
         $request->validate([
-            'email'    => 'required|email',
+            'user_id'  => 'required',
             'password' => 'required',
             'captcha'  => 'required|captcha',
         ]);
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            Auth::user()->update(['active_status' => 1]);
+
+        // ✅ Find user by API Key (user_id)
+        $user = User::where('user_id', $request->user_id)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Login user manually
+            Auth::login($user);
+
+            // Update active status
+            $user->update(['active_status' => 1]);
+
+            // Detect OS / Device
             $os = UserAgentHelper::getOS($request->userAgent());
-            if (Auth::user()->user_type == 2) { 
-                $loginActivity = new LoginActivity();
-                $loginActivity->login_id = Auth::User()->id;
-                $loginActivity->user_agent = $request->userAgent();
-                $loginActivity->os = $os;
-                $loginActivity->ip = request()->ip();
-                $loginActivity->login_at = Carbon::now();
-                $loginActivity->save();
-                session(['loginActivityID' => $loginActivity->id]);
+
+            // Save login activity
+            $loginActivity = new LoginActivity();
+            $loginActivity->login_id = $user->id;
+            $loginActivity->user_agent = $request->userAgent();
+            $loginActivity->os = $os;
+            $loginActivity->ip = $request->ip();
+            $loginActivity->login_at = Carbon::now();
+            $loginActivity->save();
+
+            session(['loginActivityID' => $loginActivity->id]);
+
+            // Redirect based on role
+            if ($user->user_type == 2) {
                 return redirect()->route('user.dashboard');
-            } elseif (Auth::user()->user_type == 1) { 
-                $loginActivity = new LoginActivity();
-                $loginActivity->login_id = Auth::User()->id;
-                $loginActivity->user_agent = $request->userAgent();
-                $loginActivity->os = $os;
-                $loginActivity->ip = request()->ip();
-                $loginActivity->login_at = Carbon::now();
-                $loginActivity->save();
+            } elseif ($user->user_type == 1) {
                 return redirect()->route('admin.dashboard');
             } else {
                 Auth::logout();
                 return redirect()->route('login')->withErrors(['access' => 'Unauthorized user type']);
             }
-        } else {
-                return redirect()->route('login')->withErrors(['email' => 'Invalid credentials.']);
         }
+
+        // ❌ Invalid credentials
+        return redirect()->route('login')->withErrors(['user_id' => 'Invalid API Key or Password.']);
+            // $credentials = $request->only('user_id', 'password');
+            // if (Auth::attempt($credentials)) {
+            //     Auth::user()->update(['active_status' => 1]);
+            //     $os = UserAgentHelper::getOS($request->userAgent());
+            //     if (Auth::user()->user_type == 2) { 
+            //         $loginActivity = new LoginActivity();
+            //         $loginActivity->login_id = Auth::User()->id;
+            //         $loginActivity->user_agent = $request->userAgent();
+            //         $loginActivity->os = $os;
+            //         $loginActivity->ip = request()->ip();
+            //         $loginActivity->login_at = Carbon::now();
+            //         $loginActivity->save();
+            //         session(['loginActivityID' => $loginActivity->id]);
+            //         return redirect()->route('user.dashboard');
+            //     } elseif (Auth::user()->user_type == 1) { 
+            //         $loginActivity = new LoginActivity();
+            //         $loginActivity->login_id = Auth::User()->id;
+            //         $loginActivity->user_agent = $request->userAgent();
+            //         $loginActivity->os = $os;
+            //         $loginActivity->ip = request()->ip();
+            //         $loginActivity->login_at = Carbon::now();
+            //         $loginActivity->save();
+            //         return redirect()->route('admin.dashboard');
+            //     } else {
+            //         Auth::logout();
+            //         return redirect()->route('login')->withErrors(['access' => 'Unauthorized user type']);
+            //     }
+            // } else {
+            //         return redirect()->route('login')->withErrors(['email' => 'Invalid credentials.']);
+            // }
     }
 
     public function register(Request $request)
@@ -69,10 +107,24 @@ class AuthController extends Controller
         }
 
         $request->validate([
+            'user_id'   => 'required|string', // API Key
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
+
+        // ✅ Check if API key (user_id) exists in stakes.from_address
+        $exists = DB::table('stakes')->where('from_address', $request->user_id)->exists();
+
+        if (!$exists) {
+            return back()->withErrors(['user_id' => 'API Key not valid'])->withInput();
+        }
+
+        // ✅ Check if API key already used in users table
+        $existsInUsers = User::where('user_id', $request->user_id)->exists();
+        if ($existsInUsers) {
+            return back()->withErrors(['user_id' => 'This API Key is already registered'])->withInput();
+        }
 
         $referrer = null;
 
@@ -90,6 +142,7 @@ class AuthController extends Controller
             'user_type'   => 2,
             'unique_id'   => $uniqueFormId,
             'referral_id' => $request->referral_code,
+            'user_id'     => $request->user_id, // store API key in users table
         ]);
 
         return redirect()->route('login')->with('registered_user', [
@@ -97,6 +150,7 @@ class AuthController extends Controller
             'email' => $user->email,
             'unique_id' => $user->unique_id,
             'referral_id' => $user->referral_id,
+            'user_id'     => $user->user_id,
         ]);
     }
 

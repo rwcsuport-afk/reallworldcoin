@@ -148,6 +148,16 @@
                                 <form method="POST" action="{{ route('register') }}">
                                     @csrf
                                     <div class="form-group">
+                                        <label class="api_key" for="api_key">API key<sup>*</sup></label>
+                                        <input id="api_key"
+                                            class="form-control @error('user_id') is-invalid @enderror" type="text"
+                                            name="user_id" placeholder="API key" value="{{ old('user_id') }}"
+                                            required="">
+                                        @error('user_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <label class="input_name" for="input_name">Name<sup>*</sup></label>
                                         <input id="input_email" class="form-control" type="name" name="name"
                                             placeholder="Full Name" value="{{ old('name') }}" required="">
@@ -155,8 +165,7 @@
                                     <div class="form-group">
                                         <label class="input_email" for="input_email">Email<sup>*</sup></label>
                                         <input id="input_email" value="{{ old('email') }}" class="form-control"
-                                            type="email" name="email" placeholder="Enter Your Email"
-                                            required="">
+                                            type="email" name="email" placeholder="Enter Your Email" required="">
                                     </div>
                                     <div class="form-group">
                                         <label class="input_pass" for="input_pass">Password<sup>*</sup></label>

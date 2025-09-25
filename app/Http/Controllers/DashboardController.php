@@ -27,14 +27,19 @@ class DashboardController extends Controller
         $total_staked = Payment::where('user_id', $user->id)
                 ->sum(DB::raw('CAST(paid_amount AS DECIMAL(16,8))'));
         
+        //new calculate cent to RWC
         $coin_value_usd = DB::table('settings')
             ->where('key', 'coin_value_usd')
             ->value('value');
 
+        $total_amount = Stake::where('from_address', $user->user_id)->sum('amount');
+        $total_usd = ($total_amount * 100) / (float) $coin_value_usd;
+        //$total_usd = $total_amount * ((float) $coin_value_usd / 100);
+
         $total_coin = Stake::where('user_id', $user->id)
             ->sum(DB::raw('CAST(coin AS DECIMAL(12,2))'));
         
-        // calculate cent to RWC
+        //old calculate cent to RWC
         $total_earn_coin = 0;
         if ($coin_value_usd && is_numeric($coin_value_usd)) {
             $total_earn_coin = ($total_staked * 100) / (float) $coin_value_usd;
@@ -43,15 +48,22 @@ class DashboardController extends Controller
         $total_rwc = (float) $total_earn_coin + (float) $total_coin;
        
         // Convert RWC to USD
-        $usd = number_format($total_rwc / 100, 2, '.', '');
-        $total_usd = $usd - $user->amount_usd;
+        // $usd = number_format($total_rwc / 100, 2, '.', '');
+        // $total_usd = $usd - $user->amount_usd;
         //$total_usd = (15.08 - 12.00)
        
         // Optional: if you want integer cents
         $usd_cents = (int) round($total_rwc);
         
-        $total_coin = Stake::where('user_id', $user->id)->sum('coin'); 
-        $tt = Stake::where('user_id', $user->id)->sum('amount');
+        $total_coin = Stake::where('from_address', $user->user_id)->sum('coin'); 
+        $tt = Stake::where('from_address', $user->user_id)->sum('amount');
+
+        // Sum amounts grouped by coin
+        $totals = Stake::where('from_address', $user->user_id)
+            ->selectRaw('coin, SUM(amount) as total_amount')
+            ->groupBy('coin')
+            ->get();
+        
         $total_earn_coin = $user->wallet_balance + $user->referral_bonus;
        
         $total_balance = $total_earn_coin + $total_staked;
@@ -63,9 +75,10 @@ class DashboardController extends Controller
             'total_earn_coin',
             'total_balance', 
             'total_coin', 
-            'usd', 
+            // 'usd', 
             'total_usd',
-            'tt'
+            'tt',
+            'totals'
         ));
     }
 

@@ -76,8 +76,8 @@
                                     id="main_menu_dropdown">
                                     <ul class="main_menu_list unordered_list text-uppercase">
                                         <li class="dropdown active">
-                                            <a class="nav-link" href="https://reallworldcoin.com/" id="homes_submenu" role="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <a class="nav-link" href="https://reallworldcoin.com/" id="homes_submenu"
+                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <span class="nav_link_label" data-text="Home">Home</span>
                                             </a>
                                         </li>
@@ -91,12 +91,12 @@
                                                 <span class="nav_link_label" data-text="Features">Features</span>
                                             </a>
                                         </li>
-                                         <li>
+                                        <li>
                                             <a class="nav-link" href="{{ route('register') }}">
                                                 <span class="nav_link_label" data-text="Register">Register</span>
                                             </a>
                                         </li>
-                                        
+
                                         <li>
                                             <a class="nav-link" href="{{ route('contact') }}">
                                                 <span class="nav_link_label" data-text="Contact">Contact</span>
@@ -148,14 +148,20 @@
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
                                     <div class="form-group">
-                                        <label class="input_title" for="input_email">Email<sup>*</sup></label>
-                                        <input id="input_email" class="form-control" type="email" name="email"
-                                            placeholder="Enter Your Email" value="{{ old('email') }}" required="">
+                                        <label class="input_title" for="api_key">API Key<sup>*</sup></label>
+                                        <input id="api_key"
+                                            class="form-control @error('user_id') is-invalid @enderror" type="text"
+                                            name="user_id" placeholder="Enter Your API Key"
+                                            value="{{ old('user_id') }}" required="">
+                                        @error('user_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="input_title" for="input_pass">Password<sup>*</sup></label>
                                         <input id="input_pass" class="form-control" type="password" name="password"
-                                            placeholder="Enter Your password" value="{{ old('password') }}" required="">
+                                            placeholder="Enter Your password" value="{{ old('password') }}"
+                                            required="">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -206,6 +212,8 @@
                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
+                                                <p><strong>API key:</strong> {{ session('registered_user.user_id') }}
+                                                </p>
                                                 <p><strong>Name:</strong> {{ session('registered_user.name') }}</p>
                                                 <p><strong>Email:</strong> {{ session('registered_user.email') }}</p>
                                                 <p><strong>Referral ID:</strong>

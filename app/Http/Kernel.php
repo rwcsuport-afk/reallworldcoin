@@ -25,6 +25,7 @@ class Kernel extends HttpKernel
     {
         // Daily ROI at 9:21 AM
         $schedule->command('roi:credit-daily')->dailyAt('23:10');
+        $schedule->command('moralis:fetch-transactions')->everyTwentyMinutes();
 
         // Generate login activity report at midnight (Eastern Time)
         $schedule->command('report:generate-login')

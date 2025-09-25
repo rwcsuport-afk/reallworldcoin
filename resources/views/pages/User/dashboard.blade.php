@@ -215,8 +215,9 @@
             <div class="welcome-box">
                 <h5>Welcome <i class="bi bi-person-fill"></i> {{ Auth::user()->name }}</h5>
                 <div class="ref-id">Referral ID: {{ Auth::user()->unique_id }}</div>
+                <div class="ref-id">API Key: {{ Auth::user()->user_id }}</div>
             </div>
-            <form action="{{ route('stake.store') }}" method="POST"> @csrf <div class="mb-2">
+            {{-- <form action="{{ route('stake.store') }}" method="POST"> @csrf <div class="mb-2">
                     <label class="form-label fs-5">Staked Amount (USD)</label>
                     <input type="text"
                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
@@ -225,7 +226,7 @@
                 <div class="mb-2"> <label class="form-label fs-5">Date</label> <input type="date"
                         class="form-control" name="stake_date"> </div> <button type="submit"
                     class="btn btn-success w-100 mt-2">Stake</button>
-            </form><br>
+            </form><br> --}}
 
             <!-- ROI Section -->
             <h6 class="text-info fw-semibold mb-3">ROI & Stats</h6>
@@ -249,12 +250,16 @@
                         </div>
                     </div>
                 </div> --}}
-                 <div class="col-6">
+                <div class="col-6">
                     <div class="card-box d-flex align-items-center">
                         <img src="{{ asset('a.webp') }}" alt="Stake">
                         <div>
-                            <h6>Total Staked</h6>
-                            <p>${{ number_format($tt, 2) }}</p>
+                            <div>
+                                <h6>Total Staked</h6>
+                                @foreach ($totals as $row)
+                                    <p>{{ number_format($row->total_amount, 8) }} {{ $row->coin }}</p>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -264,7 +269,7 @@
                         <img src="{{ asset('a.webp') }}" alt="Coin">
                         <div>
                             <h6>Total RWC</h6>
-                            <p>{{ number_format($total_coin) }}</p>
+                            <p>{{ number_format($total_usd, 8) }}</p>
                         </div>
                     </div>
                 </div>

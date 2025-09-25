@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use GuzzleHttp\Client;
+use App\Models\Stake;
+
+class FetchMoralisTransactions extends Command
+{
+    protected $signature = 'moralis:fetch-stakes';
+    protected $description = 'Fetch wallet transactions from Moralis API and insert into stakes table';
+
+    public function handle()
+    {
+        $walletAddress = '0xbf614db09ce9763a69f2731aef99b1623410b926';
+        $apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjAyOTUzMzQ0LTFiYTQtNGIzOC05MzRjLWUwMGJlNTYzNTY3MiIsIm9yZ0lkIjoiNDcyMzE5IiwidXNlcklkIjoiNDg1ODgwIiwidHlwZUlkIjoiMmNmY2RmODctYzcwNy00ZTdhLWI5ZGQtYmEwMzc2Y2I4MzU1IiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3NTg3ODE5MzUsImV4cCI6NDkxNDU0MTkzNX0.UkFUd8C-547pdI7T36e0_yAzX1rHiLDSOiMXyEinCi0';
+
+        $client = new Client();
+
+        try {
+            $response = $client->request('GET', "https://deep-index.moralis.io/api/v2.2/wallets/$walletAddress/history", [
+                'query' => [
+                    'chain' => 'bsc',
+                    'order' => 'DESC',
+                    'limit' => 25
+                ],
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'X-API-Key' => $apiKey,
+                ],
+            ]);
+
+            $data = json_decode($response->getBody(), true);
+
+            if(!empty($data['result'])){
+                foreach($data['result'] as $tx){
+                    $transfer = $tx['native_transfers'][0] ?? $tx['erc20_transfers'][0] ?? null;
+                    // Check if transaction already exists
+                    if (!Stake::where('hash', $tx['hash'])->exists()) {
+                        Stake::create([
+                            'user_id' => null, // set if you have mapping of wallet to user
+                            'hash' => $tx['hash'],
+                            'from_address' => $tx['from_address'],
+                            'to_address' => $tx['to_address'],
+                            'token_symbol' => $transfer['token_symbol'] ?? $transfer['token_symbol'] ?? null, // USDT or BNB
+                            'value' => $transfer['value'] ?? null,
+                            'value_formatted' => $transfer['value_formatted'] ?? null,
+                            'summary' => $tx['summary'] ?? null,
+                            'block_timestamp' => $tx['block_timestamp'],
+                            'transaction_fee' => $tx['transaction_fee'] ?? null,
+                            'amount' => $transfer['value_formatted'] ?? null,
+                            'coin' => $transfer['token_symbol'] ?? null,
+                            'start_date' => now(), // you can customize if needed
+                        ]);
+                    }
+                }
+            }
+
+            $this->info('Transactions inserted into stakes table successfully.');
+
+        } catch (\Exception $e) {
+            $this->error('Error: '.$e->getMessage());
+        }
+    }
+}
