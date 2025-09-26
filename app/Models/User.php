@@ -68,4 +68,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+
+    public function stake()
+    {
+        return $this->hasMany(Stake::class, 'from_address', 'user_id');
+    }
+
 }

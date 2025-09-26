@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 use App\Models\Stake;
+use App\Models\WalletBalance;
+use Illuminate\Support\Facades\Http;
 
 class FetchMoralisTransactions extends Command
 {
@@ -52,7 +54,69 @@ class FetchMoralisTransactions extends Command
                             'amount' => $transfer['value_formatted'] ?? null,
                             'coin' => $transfer['token_symbol'] ?? null,
                             'start_date' => now(), // you can customize if needed
+                            'wallet_update_status' => 0
                         ]);
+                    }
+
+                    // Fetch all stakes with wallet_update_status = 0
+                    $pendingStakes = Stake::where('wallet_update_status', 0)->get();
+
+                    // Get BNB price in USD from CoinGecko
+                   // Get BNB and USDT price in USD from CoinGecko
+$response = Http::get('https://api.coingecko.com/api/v3/simple/price', [
+    'ids' => 'binancecoin,tether',
+    'vs_currencies' => 'usd',
+]);
+
+
+                   $prices = [];
+if ($response->successful()) {
+    $data = $response->json();
+    $prices['BNB'] = floatval($data['binancecoin']['usd'] ?? 0);
+    $prices['USDT'] = floatval($data['tether']['usd'] ?? 1); // USDT is usually 1 USD
+}
+
+                    foreach ($pendingStakes as $stake) {
+                        $fromAddress = $stake->from_address;
+                        $hash = $stake->hash;
+                        $amount = floatval($stake->amount ?? 0);
+
+                        // // Only convert if coin is BNB
+                        // if ($stake->coin === 'BNB') {
+                        //     $amountInUsd = round($amount * $bnbPriceUsd, 8);
+                        // } else {
+                        //     // If not BNB, keep original amount
+                        //     $amountInUsd = $amount;
+                        // }
+
+                         // Convert to USD if coin is BNB or USDT
+    if (isset($prices[$stake->coin])) {
+        $amountInUsd = round($amount * $prices[$stake->coin], 8);
+    } else {
+        // Keep original amount for unknown coins
+        $amountInUsd = $amount;
+    }
+
+                        // Check if wallet balance for this from_address exists
+                        $wallet = WalletBalance::where('from_address', $fromAddress)->first();
+
+                        if ($wallet) {
+                            // Update existing WalletBalance
+                            $wallet->update([
+                                'amount' => strval(floatval($wallet->amount) + $amountInUsd),
+                                'hash' => $hash,
+                                'updated_at' => now(),
+                            ]);
+                        } else {
+                            // Create new WalletBalance
+                            WalletBalance::create([
+                                'from_address' => $fromAddress,
+                                'hash' => $hash,
+                                'amount' => strval($amountInUsd),
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ]);
+                        }
                     }
                 }
             }

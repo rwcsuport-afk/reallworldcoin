@@ -11,11 +11,11 @@
      </a>
 
      <a href="{{ route('walletHistory') }}">
-         <i class="bi bi-wallet2 me-2"></i>Wallet History
+         <i class="bi bi-wallet2 me-2"></i>Staking History
      </a>
 
      <a href="{{ route('stake') }}">
-         <i class="bi bi-cash-stack me-2"></i>Staking and ROI
+         <i class="bi bi-cash-stack me-2"></i>Wallet History
      </a>
 
      <a href="{{ route('referral') }}">
@@ -23,12 +23,12 @@
      </a>
 
      <a href="{{ route('withdrawal') }}">
-         <i class="bi bi-arrow-up-circle me-2"></i>Withdrawal / Convert
+         <i class="bi bi-arrow-up-circle me-2"></i>Withdrawal
      </a>
 
-     <a href="{{ route('walletAddresses') }}">
+     {{-- <a href="{{ route('walletAddresses') }}">
          <i class="bi bi-geo-alt-fill me-2"></i>Withdrawal Address
-     </a>
+     </a> --}}
 
      <a href="{{ route('profitReports') }}">
          <i class="bi bi-bar-chart-fill me-2"></i>Profit Reports / Chart

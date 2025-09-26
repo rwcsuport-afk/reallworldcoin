@@ -20,8 +20,8 @@ class HomeController extends Controller
         $active_user = User::where('user_type', 2)->where('active_status', 1)->count();
         $total_user = User::where('user_type', 2)->count();
 
-        //$total_investment = Stake::sum('amount');
-        $total_investment = Payment::sum('paid_amount');
+        $total_investment = Stake::sum('amount');
+        //$total_investment = Payment::sum('paid_amount');
         $total_coin = Stake::sum('coin');
         $total_roi = \App\Models\RoiLog::sum('amount');
         $current_roi = DB::table('settings')
@@ -29,8 +29,14 @@ class HomeController extends Controller
             ->value('value') ?? 0;
 
         //$investments = Stake::with('user')->latest()->limit(10)->get();
-        $investments = Payment::with('user')->where('status', 'paid')->latest()->limit(10)->get();
-        return view("pages.Admin.dashboard", compact("total_user", "active_user", "total_investment", "total_roi", "investments","current_roi","total_coin"));
+        // $investments = Payment::with('user')->where('status', 'paid')->latest()->limit(10)->get();
+        $investments = Stake::orderBy('block_timestamp', 'desc')->get();
+        $coin_value_usd = DB::table('settings')
+            ->where('key', 'coin_value_usd')
+            ->value('value');
+        $total_amount = Stake::sum('amount');
+        $total_rwc_earn = ($total_amount * 100) / (float) $coin_value_usd;
+        return view("pages.Admin.dashboard", compact("total_user", "active_user", "total_investment", "total_roi", "investments","current_roi","total_coin", "total_rwc_earn"));
     }
 
     public function logout()

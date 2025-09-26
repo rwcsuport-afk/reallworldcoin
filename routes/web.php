@@ -69,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/walletHistory', [DashboardController::class,'walletHistory'])->name('walletHistory');
     Route::get('/profit-reports', [DashboardController::class,'profitReports'])->name('profitReports');
     Route::match(['get', 'post'],'/wallet-addresses', [DashboardController::class, 'walletAddress'])->name('walletAddresses');
+    Route::post('/stake/buy-rwc', [DashboardController::class, 'buyRwc'])->name('stake.buy_rwc');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {

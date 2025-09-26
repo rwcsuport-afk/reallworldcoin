@@ -213,7 +213,7 @@
                             style="width: 24px; height: 24px; margin-right: 10px;">
                         <div>
                             <div class="small">Total Investments</div>
-                            <div class="fs-5 fw-bold text-center">${{ number_format($total_investment, 2) }}</div>
+                            <div class="fs-5 fw-bold text-center">{{ number_format($total_investment, 8) }}</div>
                         </div>
                     </div>
                 </div>
@@ -222,8 +222,8 @@
                         <img src="https://cdn-icons-png.flaticon.com/512/1486/1486485.png" alt="ROI"
                             style="width: 24px; height: 24px; margin-right: 10px;">
                         <div>
-                            <div class="small">Total Coin Buy</div>
-                            <div class="fs-5 fw-bold text-center">{{ $total_coin }}</div>
+                            <div class="small">Total Earn RWC</div>
+                            <div class="fs-5 fw-bold text-center">{{ $total_rwc_earn }}</div>
                         </div>
                     </div>
                 </div>
@@ -236,31 +236,26 @@
                 <table id="investmentsTable" class="table table-dark table-striped table-bordered align-middle">
                     <thead>
                         <tr>
-                            <th>User</th>
-                            <th>Coin</th>
-                            <th>Amount (USD)</th>
+                            <th>Unique Id</th>
+                            <th>Address From</th>
+                            <th>Amount</th>
+                            <th>BNB/USDT</th>
+                            <th>Timestamp</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($investments as $stake)
-                            @if ($stake->user)
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://i.pravatar.cc/40?u={{ $stake->user->name }}"
-                                                alt="{{ $stake->user->name }}" class="rounded-circle me-2"
-                                                width="40" height="40">
-                                            <span>{{ $stake->user->name }}</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img src="{{ asset('a.jpeg') }}" alt="Coin"
-                                            style="width: 18px; height: 18px; margin-right: 6px;">
-                                        {{ $stake->coin }}
-                                    </td>
-                                    <td>${{ number_format($stake->amount, 2) }}</td>
-                                </tr>
-                            @endif
+                        @foreach ($investments as $key => $stake)
+                            <tr>
+                                <td>{{$stake->hash}}</td>
+                                <td>{{$stake->from_address}}</td>
+                                 <td>{{$stake->amount}}</td>
+                                <td>
+                                    <img src="{{ asset('a.jpeg') }}" alt="Coin"
+                                        style="width: 18px; height: 18px; margin-right: 6px;">
+                                    {{ $stake->coin }}
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($stake->block_timestamp)->format('d M Y, h:i A') }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -305,14 +300,14 @@
                 </div>
                 <i class="bi bi-chevron-right"></i>
             </div>
-            <div class="report-box">
+            {{-- <div class="report-box">
                 <div>
                     <a href="{{ route('activity.reports') }}" class="active"><i class="bi bi-download me-2"></i>
                         Download User Activity Report
                     </a>
                 </div>
                 <i class="bi bi-chevron-right"></i>
-            </div>
+            </div> --}}
 
         </div>
     </div>

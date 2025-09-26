@@ -217,16 +217,26 @@
                 <div class="ref-id">Referral ID: {{ Auth::user()->unique_id }}</div>
                 <div class="ref-id">API Key: {{ Auth::user()->user_id }}</div>
             </div>
-            {{-- <form action="{{ route('stake.store') }}" method="POST"> @csrf <div class="mb-2">
-                    <label class="form-label fs-5">Staked Amount (USD)</label>
-                    <input type="text"
-                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                        class="form-control" name="coins_to_buy" placeholder="e.g. 50">
+            <form action="{{ route('stake.buy_rwc') }}" method="POST">
+                @csrf
+                <input type="hidden" value="{{ Auth::user()->user_id }}" name="from_address">
+                {{-- Row 1: Display wallet balance --}}
+                <div class="mb-2">
+                    <label class="form-label fs-5">Wallet Balance (USD)</label>
+                    <input type="text" id="total_wallet_balance" class="form-control"
+                        value="{{ number_format((float) $total_wallet_balance, 8) }}" readonly>
                 </div>
-                <div class="mb-2"> <label class="form-label fs-5">Date</label> <input type="date"
-                        class="form-control" name="stake_date"> </div> <button type="submit"
-                    class="btn btn-success w-100 mt-2">Stake</button>
-            </form><br> --}}
+
+                {{-- Row 2: Input how many RWC coins to buy --}}
+                <div class="mb-2">
+                    <label class="form-label fs-5">How many RWC coins you want to buy</label>
+                    <input type="text" id="rwcCoins" oninput="validateCoins()" class="form-control"
+                        name="rwc_coins_to_buy" placeholder="e.g. 10">
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 mt-2">Buy RWC</button>
+            </form><br>
+
 
             <!-- ROI Section -->
             <h6 class="text-info fw-semibold mb-3">ROI & Stats</h6>
@@ -255,10 +265,11 @@
                         <img src="{{ asset('a.webp') }}" alt="Stake">
                         <div>
                             <div>
-                                <h6>Total Staked</h6>
-                                @foreach ($totals as $row)
+                                <h6>Total Available Wallet Balance</h6>
+                                {{-- @foreach ($totals as $row)
                                     <p>{{ number_format($row->total_amount, 8) }} {{ $row->coin }}</p>
-                                @endforeach
+                                @endforeach --}}
+                                <p>{{ number_format((float) $total_wallet_balance, 8) }}</p>
                             </div>
                         </div>
                     </div>
@@ -268,8 +279,8 @@
                     <div class="card-box d-flex align-items-center">
                         <img src="{{ asset('a.webp') }}" alt="Coin">
                         <div>
-                            <h6>Total RWC</h6>
-                            <p>{{ number_format($total_usd, 8) }}</p>
+                            <h6>Total RWC Buy</h6>
+                            <p>{{ number_format($new_rwc_coin, 8) }}</p>
                         </div>
                     </div>
                 </div>
@@ -365,6 +376,23 @@
     <script src="{{ mix('/js/wallet.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function validateCoins() {
+            let walletBalanceInput = document.getElementById('total_wallet_balance');
+            let rwcInput = document.getElementById('rwcCoins');
+
+            if (!walletBalanceInput || !rwcInput) return;
+
+            let walletBalance = parseFloat(walletBalanceInput.value.replace(/,/g, ''));
+            let rwcValue = parseFloat(rwcInput.value);
+
+            if (!isNaN(rwcValue) && rwcValue > walletBalance) {
+                alert("You cannot buy more than your wallet balance!");
+                rwcInput.value = ''; // clear the invalid input
+            }
+        }
+    </script>
 
     <!-- Success Message -->
     @if (session('success'))

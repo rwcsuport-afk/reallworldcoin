@@ -194,11 +194,9 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Total Investment</th>
-                                <th>Total Coin</th>
+                                <th>Total Amount</th>
                                 <th>User Type</th>
-                                <th>Joined</th>
-                                <th>Action</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -207,8 +205,8 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>${{ number_format($user->stakes->sum('amount'), 2) }}</td>
-                                    <td>{{ $user->stakes->sum('coin') }}</td>
+                                    <td>{{ number_format($user->stake->sum('amount'), 8) }}</td>
+                                    {{-- <td>{{ $user->stake->coin }}</td> --}}
                                     <td>
                                         @if ($user->user_type == 1)
                                             Admin
@@ -219,12 +217,12 @@
                                         @endif
                                     </td>
                                     <td>{{ $user->created_at->format('d M Y') }}</td>
-                                    <td>
+                                    {{-- <td>
                                         <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#growthModal{{ $user->id }}" title="Add Growth %">
                                             Set Growth %
                                         </button>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                                 <!-- Growth Modal -->
                                 <div class="modal fade" id="growthModal{{ $user->id }}" tabindex="-1"

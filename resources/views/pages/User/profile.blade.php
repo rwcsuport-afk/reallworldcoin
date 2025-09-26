@@ -171,6 +171,7 @@
                     <!-- User Info -->
                     <h5 class="mt-3">{{ Auth::user()->name }}</h5>
                     <p class="text small">Unique ID: {{ Auth::user()->unique_id }}</p>
+                    <p class="text small">Unique ID: {{ Auth::user()->user_id }}</p>
                 </div>
 
                 <hr class="bg-secondary">

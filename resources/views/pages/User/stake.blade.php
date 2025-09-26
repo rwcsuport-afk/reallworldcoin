@@ -221,7 +221,7 @@
 
             <!-- ✅ Staking Form -->
             <div class="bg-dark text-white rounded p-3 mb-4">
-                <h4 class="mb-3">Stake Now</h4>
+                <h4 class="mb-3">Wallet History</h4>
 
                 @if (session('success'))
                     <div class="alert alert-success">{{ session('success') }}</div>
@@ -236,93 +236,21 @@
                         </ul>
                     </div>
                 @endif
-
-                {{-- <form action="{{ route('stake.store') }}" method="POST">
-                    @csrf
-
-                    <div class="mb-2">
-                        <label for="coins_to_buy" class="form-label">How Many Coins Do You Want to Buy?</label>
-                        <input type="number" min="1" class="form-control" name="coins_to_buy" id="coins_to_buy"
-                            placeholder="e.g. 50" required>
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="amount" class="form-label">Amount to Stake (USD)</label>
-                        <input type="number" min="1" class="form-control" name="amount" id="amount"
-                            placeholder="Auto-calculated" readonly required>
-                    </div>
-
-                    <button type="submit" class="btn btn-success w-100 mt-2">Buy & Stake</button>
-                </form> --}}
-                <form action="{{ route('stake.store') }}" method="POST">
-                    @csrf
-
-                    <div class="mb-2">
-                        <label class="form-label">Stake Amount</label>
-                        <input type="number" class="form-control" name="coins_to_buy" placeholder="e.g. 50">
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">Date</label>
-                        <input type="date" class="form-control" name="stake_date">
-                    </div>
-
-                    <button type="submit" class="btn btn-success w-100 mt-2">Stake</button>
-                </form>
             </div>
 
-            {{-- <form action="{{ route('create.payment') }}" method="POST">
-                @csrf
-                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                <div class="mb-3">
-                    <label class="form-label">Currency (Fiat)</label>
-                    <select name="currency" class="form-control" required>
-                        <option value="USD">USD - US Dollar</option>
-                        <option value="EUR">EUR - Euro</option>
-                        <option value="INR">INR - Indian Rupee</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Coin (Wallet)</label>
-                    <select name="coin" class="form-control" required>
-                        <option value="TCN">TCN - Test Coin</option>
-                        <option value="BTC">BTC - Bitcoin</option>
-                        <option value="USDT">USDT - Tether</option>
-                        <option value="BNB">BNB (BNB)</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Amount</label>
-                    <input type="number" name="amount" class="form-control" placeholder="Enter amount" step="0.01"
-                        required>
-                </div>
-                <div class="mb-3">
-                    <label>Name</label>
-                    <input name="name" value="{{ Auth::user()->name }}" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label>Email</label>
-                    <input name="email" type="email" value="{{ Auth::user()->email }}" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">Pay Now</button>
-            </form> --}}
-
-
             <!-- History -->
-            <h5 class="mt-4 mb-3">Staking History</h5>
+            <h5 class="mt-4 mb-3">Wallet History</h5>
 
             @forelse($userStakes as $stake)
                 <div class="staking-history d-flex align-items-center gap-3 mb-3 p-2 border rounded">
                     <i class="bi bi-clock-history fs-4 text-primary"></i>
                     <div>
-                        <div class="roi fw-semibold">$
-                            {{ number_format($stake->amount, 2) }} Staked
+                        <div class="roi fw-semibold">
+                            {{ number_format($stake->amount_debited, 8) }} Debited
                         </div>
                         <div class="desc">
-                            RWC: {{ strtoupper($stake->coin) }} <br>
-                            Date: {{ \Carbon\Carbon::parse($stake->start_date)->format('M d, Y') }}
+                            {{-- RWC: {{ strtoupper($stake->coin) }} <br> --}}
+                            Date: {{ \Carbon\Carbon::parse($stake->updated_at)->format('M d, Y') }}
                         </div>
                     </div>
                 </div>

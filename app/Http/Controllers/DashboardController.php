@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\LoginActivity;
 use App\Models\Payment;
+use App\Models\RWCs;
 use App\Models\Setting;
 use App\Models\Stake;
 use App\Models\User;
 use App\Models\WalletAddress;
+use App\Models\WalletBalance;
 use App\Models\Withdrawan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -67,6 +69,10 @@ class DashboardController extends Controller
         $total_earn_coin = $user->wallet_balance + $user->referral_bonus;
        
         $total_balance = $total_earn_coin + $total_staked;
+
+        $total_wallet_balance = WalletBalance::where('from_address', $user->user_id)->value('amount');
+
+        $new_rwc_coin = RWCs::where('from_address', $user->user_id)->sum('rwc_coin');
         
         return view('pages.User.dashboard', compact(
             'stakes',
@@ -78,7 +84,9 @@ class DashboardController extends Controller
             // 'usd', 
             'total_usd',
             'tt',
-            'totals'
+            'totals',
+            'total_wallet_balance',
+            'new_rwc_coin'
         ));
     }
 
@@ -110,10 +118,11 @@ class DashboardController extends Controller
 
     public function stake(Request $request)
     {
+        $user = auth()->user();
         $coinValueSetting = Setting::where('key', 'coin_value_usd')->first();
         //$coinValue = $coinValueSetting ? floatval($coinValueSetting->value) : 0;
         $coinValue = $coinValueSetting ? $coinValueSetting->value : 0;
-        $userStakes = Stake::where('user_id', Auth::id())->latest()->take(10)->get();
+        $userStakes = WalletBalance::where('from_address', $user->user_id)->latest()->take(10)->get();
         
         return view('pages.User.stake', compact('coinValue', 'userStakes'));
     }
@@ -185,17 +194,17 @@ class DashboardController extends Controller
                 $withdrawan->save();
             }
 
-            return redirect()->route('withdrawal')
-                            ->with('success', 'Withdrawal request submitted successfully!');
+            return redirect()->route('withdrawal')->with('success', 'Withdrawal request submitted successfully!');
         }
     }
 
     public function walletHistory(Request $request)
     {
+        $user = auth()->user();
         $coinValueSetting = Setting::where('key', 'coin_value_usd')->first();
         //$coinValue = $coinValueSetting ? floatval($coinValueSetting->value) : 0;
         $coinValue = $coinValueSetting ? $coinValueSetting->value : 0;
-        $userStakes = Stake::where('user_id', Auth::id())->latest()->take(10)->get();
+        $userStakes = Stake::where('from_address', $user->user_id)->latest()->take(10)->get();
         return view('pages.User.walletHistory', compact('coinValueSetting', 'coinValue','userStakes'));
     }
 
@@ -266,5 +275,59 @@ class DashboardController extends Controller
         }
 
         return view('pages.User.withdrawan_address', compact('wallet'));
+    }
+
+    public function buyRwc(Request $request)
+    {
+        $request->validate([
+            'from_address' => 'required|string',
+            'rwc_coins_to_buy' => 'required|numeric|min:0.00000001',
+        ]);
+
+        $fromAddress = $request->from_address;
+        $coinsToBuy = (float) $request->rwc_coins_to_buy;
+
+        // Fetch wallet balance
+        $wallet = WalletBalance::where('from_address', $fromAddress)->first();
+
+        if (!$wallet) {
+            return back()->withErrors(['wallet' => 'Wallet not found.']);
+        }
+
+        $currentAmount = (float) $wallet->amount;
+        $currentDebited = (float) $wallet->amount_debited;
+
+        // Check balance
+        if ($coinsToBuy > $currentAmount) {
+            return back()->withErrors(['rwc_coins_to_buy' => 'Insufficient wallet balance']);
+        }
+
+        // Deduct from amount and add to amount_debited
+        $newAmount = round($currentAmount - $coinsToBuy, 8);
+        $newDebited = round($currentDebited + $coinsToBuy, 8);
+
+        // Update in DB
+        WalletBalance::where('from_address', $wallet->from_address)->update([
+            'amount' => $newAmount,
+            'amount_debited' => $newDebited,
+            'updated_at' => now(),
+        ]);
+
+        $coin_value_usd = DB::table('settings')
+            ->where('key', 'coin_value_usd')
+            ->value('value');
+
+        $total_amount = WalletBalance::where('from_address', $wallet->from_address)->value('amount_debited');
+        $total_rwc = ($total_amount * 100) / (float) $coin_value_usd;
+
+        // Insert into RWCs table
+        RWCs::create([
+            'from_address' => $wallet->from_address,
+            'rwc_coin' => $total_rwc,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Wallet balance updated successfully!');
     }
 }

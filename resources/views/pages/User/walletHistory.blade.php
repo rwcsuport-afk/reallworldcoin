@@ -229,12 +229,12 @@
                 <div class="staking-history d-flex align-items-center gap-3 mb-3 p-2 border rounded">
                     <i class="bi bi-clock-history fs-4 text-primary"></i>
                     <div>
-                        <div class="roi fw-semibold">$
-                            {{ number_format($stake->amount, 2) }} Staked
+                        <div class="roi fw-semibold">
+                            {{ number_format($stake->amount, 8) }} Staked
                         </div>
                         <div class="desc">
                             RWC: {{ strtoupper($stake->coin) }} <br>
-                            Date: {{ \Carbon\Carbon::parse($stake->start_date)->format('M d, Y') }}
+                            Date: {{ \Carbon\Carbon::parse($stake->block_timestamp)->format('M d, Y') }}
                         </div>
                     </div>
                 </div>

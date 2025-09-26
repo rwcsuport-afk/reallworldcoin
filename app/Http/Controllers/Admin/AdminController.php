@@ -41,7 +41,12 @@ class AdminController extends Controller
 
     public function viewAllUsers(Request $request)
     {
-        $all_users = User::with('stakes')->where('user_type', 2)->get();
+        //$all_users = User::with('stakes')->where('user_type', 2)->get();
+        $all_users = User::with('stake')
+            ->where('user_type', 2)
+            ->whereNotNull('user_id')
+            ->get();
+       
         return view('pages.Admin.viewuser', compact('all_users'));
     }
 
@@ -67,7 +72,7 @@ class AdminController extends Controller
 
     public function investmentReports(Request $request)
     {
-        $investment = Stake::with('user')->latest()->get();
+        $investment = Stake::latest()->get();
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pages.Admin.investment_reports_pdf', compact('investment'));
 

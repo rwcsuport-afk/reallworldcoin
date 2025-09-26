@@ -49,6 +49,7 @@ return array(
     'App\\Models\\Transaction' => $baseDir . '/app/Models/Transaction.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Models\\WalletAddress' => $baseDir . '/app/Models/WalletAddress.php',
+    'App\\Models\\WalletBalance' => $baseDir . '/app/Models/WalletBalance.php',
     'App\\Models\\Withdrawan' => $baseDir . '/app/Models/Withdrawan.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',

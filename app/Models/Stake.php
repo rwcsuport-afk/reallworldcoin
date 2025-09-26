@@ -22,7 +22,8 @@ class Stake extends Model
         'transaction_fee',
         'amount',
         'coin',
-        'start_date'
+        'start_date',
+        'wallet_update_status'
     ];
 
     public function user()
@@ -30,4 +31,8 @@ class Stake extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'from_address', 'user_id');
+    }
 }
