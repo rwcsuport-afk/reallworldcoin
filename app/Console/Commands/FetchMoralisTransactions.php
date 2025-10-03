@@ -35,8 +35,8 @@ class FetchMoralisTransactions extends Command
 
             $data = json_decode($response->getBody(), true);
 
-            if(!empty($data['result'])){
-                foreach($data['result'] as $tx){
+            if (!empty($data['result'])) {
+                foreach ($data['result'] as $tx) {
                     $transfer = $tx['native_transfers'][0] ?? $tx['erc20_transfers'][0] ?? null;
                     // Check if transaction already exists
                     if (!Stake::where('hash', $tx['hash'])->exists()) {
@@ -58,44 +58,26 @@ class FetchMoralisTransactions extends Command
                         ]);
                     }
 
+                    $bnbPrice = 1;
+                    $response = Http::get('https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT');
+                    if ($response->successful()) {
+                        $bnbPrice = floatval($response->json()['price']);
+                    }
+
                     // Fetch all stakes with wallet_update_status = 0
                     $pendingStakes = Stake::where('wallet_update_status', 0)->get();
-
-                    // Get BNB price in USD from CoinGecko
-                   // Get BNB and USDT price in USD from CoinGecko
-$response = Http::get('https://api.coingecko.com/api/v3/simple/price', [
-    'ids' => 'binancecoin,tether',
-    'vs_currencies' => 'usd',
-]);
-
-
-                   $prices = [];
-if ($response->successful()) {
-    $data = $response->json();
-    $prices['BNB'] = floatval($data['binancecoin']['usd'] ?? 0);
-    $prices['USDT'] = floatval($data['tether']['usd'] ?? 1); // USDT is usually 1 USD
-}
 
                     foreach ($pendingStakes as $stake) {
                         $fromAddress = $stake->from_address;
                         $hash = $stake->hash;
                         $amount = floatval($stake->amount ?? 0);
 
-                        // // Only convert if coin is BNB
-                        // if ($stake->coin === 'BNB') {
-                        //     $amountInUsd = round($amount * $bnbPriceUsd, 8);
-                        // } else {
-                        //     // If not BNB, keep original amount
-                        //     $amountInUsd = $amount;
-                        // }
-
-                         // Convert to USD if coin is BNB or USDT
-    if (isset($prices[$stake->coin])) {
-        $amountInUsd = round($amount * $prices[$stake->coin], 8);
-    } else {
-        // Keep original amount for unknown coins
-        $amountInUsd = $amount;
-    }
+                        // ✅ Apply conversion dynamically
+                        if ($stake->coin === 'BNB') {
+                            $amount = $amount * $bnbPrice; // use live price
+                        } elseif ($stake->coin === 'USDT') {
+                            $amount = $amount * 1;
+                        }
 
                         // Check if wallet balance for this from_address exists
                         $wallet = WalletBalance::where('from_address', $fromAddress)->first();
@@ -103,7 +85,7 @@ if ($response->successful()) {
                         if ($wallet) {
                             // Update existing WalletBalance
                             $wallet->update([
-                                'amount' => strval(floatval($wallet->amount) + $amountInUsd),
+                                'amount' => strval(floatval($wallet->amount) + $amount),
                                 'hash' => $hash,
                                 'updated_at' => now(),
                             ]);
@@ -112,10 +94,16 @@ if ($response->successful()) {
                             WalletBalance::create([
                                 'from_address' => $fromAddress,
                                 'hash' => $hash,
-                                'amount' => strval($amountInUsd),
+                                'amount' => strval($amount),
                                 'created_at' => now(),
                                 'updated_at' => now(),
                             ]);
+                        }
+
+                        // Update wallet_update_status in stakes table
+                        if ($stake) {
+                            $stake->wallet_update_status = 1;
+                            $stake->save();
                         }
                     }
                 }
