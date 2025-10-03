@@ -40,6 +40,7 @@ return array(
     'App\\Models\\LoginActivity' => $baseDir . '/app/Models/LoginActivity.php',
     'App\\Models\\Notification' => $baseDir . '/app/Models/Notification.php',
     'App\\Models\\Payment' => $baseDir . '/app/Models/Payment.php',
+    'App\\Models\\RWCs' => $baseDir . '/app/Models/RWCs.php',
     'App\\Models\\ReferralBonus' => $baseDir . '/app/Models/ReferralBonus.php',
     'App\\Models\\ReferralSetting' => $baseDir . '/app/Models/ReferralSetting.php',
     'App\\Models\\RoiLog' => $baseDir . '/app/Models/RoiLog.php',

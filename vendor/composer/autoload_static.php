@@ -591,6 +591,7 @@ class ComposerStaticInitd473ed159a179dfc6df31abb5f1520b2
         'App\\Models\\LoginActivity' => __DIR__ . '/../..' . '/app/Models/LoginActivity.php',
         'App\\Models\\Notification' => __DIR__ . '/../..' . '/app/Models/Notification.php',
         'App\\Models\\Payment' => __DIR__ . '/../..' . '/app/Models/Payment.php',
+        'App\\Models\\RWCs' => __DIR__ . '/../..' . '/app/Models/RWCs.php',
         'App\\Models\\ReferralBonus' => __DIR__ . '/../..' . '/app/Models/ReferralBonus.php',
         'App\\Models\\ReferralSetting' => __DIR__ . '/../..' . '/app/Models/ReferralSetting.php',
         'App\\Models\\RoiLog' => __DIR__ . '/../..' . '/app/Models/RoiLog.php',
