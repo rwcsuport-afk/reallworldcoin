@@ -65,7 +65,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-5 d-flex align-items-center">
                             <div class="site_logo">
-                                <a class="site_link" href="https://reallworldcoin.com/">
+                                <a class="site_link" href="http://reallworldcoin.com/">
                                     <img loading="lazy" src="{{ asset('bb.png') }}" alt="ICO Site Logo">
                                 </a>
                             </div>
@@ -76,7 +76,7 @@
                                     id="main_menu_dropdown">
                                     <ul class="main_menu_list unordered_list text-uppercase">
                                         <li class="dropdown active">
-                                            <a class="nav-link" href="https://reallworldcoin.com/" id="homes_submenu"
+                                            <a class="nav-link" href="http://reallworldcoin.com/" id="homes_submenu"
                                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <span class="nav_link_label" data-text="Home">Home</span>
                                             </a>
@@ -174,7 +174,7 @@
                                             </div>
                                         </div>
                                         {{-- CAPTCHA --}}
-                                        <div class="mb-3">
+                                        {{-- <div class="mb-3">
                                             <label for="captcha"
                                                 class="form-label d-block text-white">Captcha</label>
                                             <div class="d-flex align-items-center mb-2">
@@ -188,7 +188,7 @@
                                             @if ($errors->has('captcha'))
                                                 <span class="text-danger small">{{ $errors->first('captcha') }}</span>
                                             @endif
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <button class="btn" type="submit">
                                         <span class="btn_label">Login</span>

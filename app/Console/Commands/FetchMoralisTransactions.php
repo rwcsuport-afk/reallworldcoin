@@ -15,7 +15,7 @@ class FetchMoralisTransactions extends Command
 
     public function handle()
     {
-        $walletAddress = '0xbf614db09ce9763a69f2731aef99b1623410b926';
+        $walletAddress = '0x0a1ad99042f75253faaaA5a448325e7c0069E9fd';
         $apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjAyOTUzMzQ0LTFiYTQtNGIzOC05MzRjLWUwMGJlNTYzNTY3MiIsIm9yZ0lkIjoiNDcyMzE5IiwidXNlcklkIjoiNDg1ODgwIiwidHlwZUlkIjoiMmNmY2RmODctYzcwNy00ZTdhLWI5ZGQtYmEwMzc2Y2I4MzU1IiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3NTg3ODE5MzUsImV4cCI6NDkxNDU0MTkzNX0.UkFUd8C-547pdI7T36e0_yAzX1rHiLDSOiMXyEinCi0';
 
         $client = new Client();

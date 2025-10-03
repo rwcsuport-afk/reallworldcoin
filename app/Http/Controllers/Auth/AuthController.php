@@ -27,7 +27,7 @@ class AuthController extends Controller
         $request->validate([
             'user_id'  => 'required',
             'password' => 'required',
-            'captcha'  => 'required|captcha',
+            // 'captcha'  => 'required|captcha',
         ]);
 
         // ✅ Find user by API Key (user_id)
