@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $stakes = Payment::where('user_id', $user->id)->get();
         $total_staked = Payment::where('user_id', $user->id)
                 ->sum(DB::raw('CAST(paid_amount AS DECIMAL(16,8))'));
-        
+
         //new calculate cent to RWC
         $coin_value_usd = DB::table('settings')
             ->where('key', 'coin_value_usd')
@@ -40,7 +40,7 @@ class DashboardController extends Controller
 
         $total_coin = Stake::where('user_id', $user->id)
             ->sum(DB::raw('CAST(coin AS DECIMAL(12,2))'));
-        
+
         //old calculate cent to RWC
         $total_earn_coin = 0;
         if ($coin_value_usd && is_numeric($coin_value_usd)) {
@@ -48,16 +48,16 @@ class DashboardController extends Controller
         }
 
         $total_rwc = (float) $total_earn_coin + (float) $total_coin;
-       
+
         // Convert RWC to USD
         // $usd = number_format($total_rwc / 100, 2, '.', '');
         // $total_usd = $usd - $user->amount_usd;
         //$total_usd = (15.08 - 12.00)
-       
+
         // Optional: if you want integer cents
         $usd_cents = (int) round($total_rwc);
-        
-        $total_coin = Stake::where('from_address', $user->user_id)->sum('coin'); 
+
+        $total_coin = Stake::where('from_address', $user->user_id)->sum('coin');
         $tt = Stake::where('from_address', $user->user_id)->sum('amount');
 
         // Sum amounts grouped by coin
@@ -65,23 +65,23 @@ class DashboardController extends Controller
             ->selectRaw('coin, SUM(amount) as total_amount')
             ->groupBy('coin')
             ->get();
-        
+
         $total_earn_coin = $user->wallet_balance + $user->referral_bonus;
-       
+
         $total_balance = $total_earn_coin + $total_staked;
 
         $total_wallet_balance = WalletBalance::where('from_address', $user->user_id)->value('amount');
 
         $new_rwc_coin = RWCs::where('from_address', $user->user_id)->sum('rwc_coin');
-        
+
         return view('pages.User.dashboard', compact(
             'stakes',
             'roiPercent',
             'total_staked',
             'total_earn_coin',
-            'total_balance', 
-            'total_coin', 
-            // 'usd', 
+            'total_balance',
+            'total_coin',
+            // 'usd',
             'total_usd',
             'tt',
             'totals',
@@ -112,7 +112,7 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         $referrals = $user->referredUsers;
-        
+
         return view('pages.User.referral', compact('referrals'));
     }
 
@@ -123,7 +123,7 @@ class DashboardController extends Controller
         //$coinValue = $coinValueSetting ? floatval($coinValueSetting->value) : 0;
         $coinValue = $coinValueSetting ? $coinValueSetting->value : 0;
         $userStakes = WalletBalance::where('from_address', $user->user_id)->latest()->take(10)->get();
-        
+
         return view('pages.User.stake', compact('coinValue', 'userStakes'));
     }
 
@@ -205,7 +205,7 @@ class DashboardController extends Controller
         //$coinValue = $coinValueSetting ? floatval($coinValueSetting->value) : 0;
         $coinValue = $coinValueSetting ? $coinValueSetting->value : 0;
         $userStakes = Stake::where('from_address', $user->user_id)->latest()->take(10)->get();
-        return view('pages.User.walletHistory', compact('coinValueSetting', 'coinValue','userStakes'));
+        return view('pages.User.walletHistory', compact('coinValueSetting', 'coinValue', 'userStakes'));
     }
 
     public function profitReports(Request $request)
@@ -217,7 +217,7 @@ class DashboardController extends Controller
         $stakes = Payment::where('user_id', $user->id)->get();
         $total_staked = Payment::where('user_id', $user->id)
                 ->sum(DB::raw('CAST(paid_amount AS DECIMAL(16,8))'));
-       
+
         $coin_value_usd = DB::table('settings')
             ->where('key', 'coin_value_usd')
             ->value('value');
@@ -234,16 +234,16 @@ class DashboardController extends Controller
         $total_rwc = (float) $total_earn_coin + (float) $total_coin;
 
         // Convert RWC to USD
-        $usd = number_format($total_rwc / 100, 2, '.', ''); 
+        $usd = number_format($total_rwc / 100, 2, '.', '');
         $total_usd = $usd - $user->amount_usd;
-        
+
         // Optional: if you want integer cents
         $usd_cents = (int) round($total_rwc);
 
-        $total_coin = Stake::sum('coin'); 
+        $total_coin = Stake::sum('coin');
         $total_earn_coin = $user->wallet_balance + $user->referral_bonus;
         $total_balance = $total_earn_coin + $total_staked;
-        
+
         return view('pages.User.profitReports', compact('total_usd', 'total_coin', 'total_earn_coin'));
     }
 
@@ -281,7 +281,7 @@ class DashboardController extends Controller
     {
         $request->validate([
             'from_address' => 'required|string',
-            'rwc_coins_to_buy' => 'required|numeric|min:0.00000001',
+            'rwc_coins_to_buy' => 'required|numeric|min:0.000000000001',
         ]);
 
         $fromAddress = $request->from_address;
@@ -330,4 +330,39 @@ class DashboardController extends Controller
 
         return redirect()->back()->with('success', 'Wallet balance updated successfully!');
     }
+
+    public function withdrawal_referral(Request $request)
+    {
+        // Get the logged-in user
+        $user = auth()->user();
+
+        if ($request->isMethod('post')) {
+            // Validate the input
+            $request->validate([
+                'amount_usd' => 'required|numeric|min:0.01|max:' . $user->referral_bonus,
+            ]);
+
+            $amount = $request->amount_usd;
+
+            // Deduct from referral_bonus
+            $user->referral_bonus -= $amount;
+            $user->save();
+
+            // Insert into referral_bonuses table
+            DB::table('referral_bonuses')->insert([
+                'user_id'          => $user->id,              // The current user withdrawing
+                'referred_user_id' => $user->id,              // You can adjust if you have the referred user
+                'bonus_amount'     => $amount,
+                'created_at'       => now(),
+                'updated_at'       => now(),
+            ]);
+
+            return redirect()->back()->with('status', 'Referral bonus withdrawn successfully!');
+        }
+
+        // For GET request, just show the page
+        $referralBonus = $user->referral_bonus ?? 0;
+        return view('pages.User.withdrawal_referral', compact('referralBonus'));
+    }
+
 }

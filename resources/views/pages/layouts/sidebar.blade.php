@@ -26,6 +26,10 @@
          <i class="bi bi-arrow-up-circle me-2"></i>Withdrawal
      </a>
 
+     <a href="{{ route('withdrawal_referral') }}">
+         <i class="bi bi-arrow-up-circle me-2"></i>Withdrawal Referral Bonus
+     </a>
+
      {{-- <a href="{{ route('walletAddresses') }}">
          <i class="bi bi-geo-alt-fill me-2"></i>Withdrawal Address
      </a> --}}

@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ReferralBonus extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'referred_user_id', 'bonus_amount'];
+    protected $fillable = ['user_id', 'referred_user_id', 'bonus_amount', 'status'];
 }

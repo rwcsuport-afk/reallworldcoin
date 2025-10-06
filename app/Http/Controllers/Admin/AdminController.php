@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\LoginActivity;
 use App\Models\Notification;
+use App\Models\ReferralBonus;
 use App\Models\ReferralSetting;
 use App\Models\Setting;
 use App\Models\Stake;
@@ -22,7 +23,7 @@ class AdminController extends Controller
         $coinValue = Setting::getCoinValue();
         $bonus = ReferralSetting::first();
         $presaleEndDate = Setting::getValue('presale_end_date', now()->toDateString());
-        
+
         return view('pages.Admin.settings', compact('roi', 'bonus', 'coinValue', 'presaleEndDate'));
     }
 
@@ -46,7 +47,7 @@ class AdminController extends Controller
             ->where('user_type', 2)
             ->whereNotNull('user_id')
             ->get();
-       
+
         return view('pages.Admin.viewuser', compact('all_users'));
     }
 
@@ -61,7 +62,7 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Referral bonus updated successfully.');
     }
 
-    public function activityReports(Request $request) 
+    public function activityReports(Request $request)
     {
         $activities = LoginActivity::with('user')->latest()->get();
 
@@ -130,8 +131,23 @@ class AdminController extends Controller
     public function withdrawalRequest(Request $request)
     {
         //$all_users = User::with('stakes')->where('user_type', 2)->whereIn('withdrawan_status', [1, 2, 3])->get();
+        $referral_bonus = DB::table('referral_bonuses')
+        ->leftJoin('users', 'referral_bonuses.user_id', '=', 'users.id')
+        ->select(
+            'referral_bonuses.id',
+            'referral_bonuses.user_id',
+            'users.name as user_name',
+            'users.user_id as user_api_key',
+            'referral_bonuses.referred_user_id',
+            'referral_bonuses.bonus_amount',
+            'referral_bonuses.created_at',
+            'referral_bonuses.updated_at',
+            'referral_bonuses.status',
+        )
+        ->orderBy('referral_bonuses.created_at', 'desc')
+        ->get();
         $all_users = Withdrawan::with('user')->whereIn('status', [1, 2, 3])->get();
-        return view('pages.Admin.withdrawal_request', compact('all_users'));
+        return view('pages.Admin.withdrawal_request', compact('all_users', 'referral_bonus'));
     }
 
     public function acceptWithdrawal($id)
@@ -156,5 +172,23 @@ class AdminController extends Controller
     {
         $all_users = WalletAddress::with('user')->get();
         return view('pages.Admin.wallet_address', compact('all_users'));
+    }
+
+    public function racceptWithdrawal($id)
+    {
+        $user = ReferralBonus::findOrFail($id);
+        $user->status = 2; // Accepted
+        $user->save();
+
+        return back()->with('success', 'Withdrawal request accepted.');
+    }
+
+    public function rrejectWithdrawal($id)
+    {
+        $user = ReferralBonus::findOrFail($id);
+        $user->status = 3; // Rejected
+        $user->save();
+
+        return back()->with('error', 'Withdrawal request rejected.');
     }
 }

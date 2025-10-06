@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profit-reports', [DashboardController::class,'profitReports'])->name('profitReports');
     Route::match(['get', 'post'],'/wallet-addresses', [DashboardController::class, 'walletAddress'])->name('walletAddresses');
     Route::post('/stake/buy-rwc', [DashboardController::class, 'buyRwc'])->name('stake.buy_rwc');
+    Route::match(['get', 'post'],'/withdrawal_referral', [DashboardController::class, 'withdrawal_referral'])->name('withdrawal_referral');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -86,6 +87,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/withdrawal/accept/{id}', [\App\Http\Controllers\Admin\AdminController::class, 'acceptWithdrawal'])->name('admin.withdrawal.accept');
     Route::post('/admin/withdrawal/reject/{id}', [\App\Http\Controllers\Admin\AdminController::class, 'rejectWithdrawal'])->name('admin.withdrawal.reject');
     Route::get('/wallet-address', [\App\Http\Controllers\Admin\AdminController::class,'walletAddress'])->name('walletAddress');
+    Route::post('/admin/rwithdrawal/accept/{id}', [\App\Http\Controllers\Admin\AdminController::class, 'racceptWithdrawal'])->name('admin.rwithdrawal.accept');
+    Route::post('/admin/rwithdrawal/reject/{id}', [\App\Http\Controllers\Admin\AdminController::class, 'rrejectWithdrawal'])->name('admin.rwithdrawal.reject');
 
     Route::get('/admin/growth/user/{user}', [\App\Http\Controllers\Admin\AdminController::class, 'showUserGrowthForm'])->name('admin.growth.user.form');
     Route::post('/admin/growth/user/{user}', [\App\Http\Controllers\Admin\AdminController::class, 'updateUserGrowth'])->name('admin.growth.user.update');

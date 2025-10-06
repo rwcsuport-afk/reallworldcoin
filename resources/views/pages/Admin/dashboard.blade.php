@@ -162,6 +162,26 @@
                 padding-bottom: 80px;
             }
         }
+
+        @media (max-width: 767px) {
+            #investmentsTable td[data-label] {
+                display: flex;
+                justify-content: space-between;
+                padding-left: 50%;
+                position: relative;
+                text-align: left;
+            }
+
+            #investmentsTable td[data-label]::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 45%;
+                padding-left: 10px;
+                font-weight: 600;
+                color: #cbd5e1;
+            }
+        }
     </style>
 </head>
 
@@ -236,7 +256,7 @@
                 <table id="investmentsTable" class="table table-dark table-striped table-bordered align-middle">
                     <thead>
                         <tr>
-                            <th>Unique Id</th>
+                            {{-- <th>Unique Id</th> --}}
                             <th>Address From</th>
                             <th>Amount</th>
                             <th>BNB/USDT</th>
@@ -246,9 +266,9 @@
                     <tbody>
                         @foreach ($investments as $key => $stake)
                             <tr>
-                                <td>{{$stake->hash}}</td>
-                                <td>{{$stake->from_address}}</td>
-                                 <td>{{$stake->amount}}</td>
+                                {{-- <td data-label="Unique Id">{{ $stake->hash }}</td> --}}
+                                <td data-label="Address From">{{ $stake->from_address }}</td>
+                                <td>{{ $stake->amount }}</td>
                                 <td>
                                     <img src="{{ asset('a.jpeg') }}" alt="Coin"
                                         style="width: 18px; height: 18px; margin-right: 6px;">

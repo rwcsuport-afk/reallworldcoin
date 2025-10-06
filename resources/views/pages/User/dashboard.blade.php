@@ -215,7 +215,10 @@
             <div class="welcome-box">
                 <h5>Welcome <i class="bi bi-person-fill"></i> {{ Auth::user()->name }}</h5>
                 <div class="ref-id">Referral ID: {{ Auth::user()->unique_id }}</div>
-                <div class="ref-id">API Key: {{ Auth::user()->user_id }}</div>
+                <div class="ref-id text-sm-center text-start text-truncate">
+                    Wallet Address: {{ Auth::user()->user_id }}
+                </div>
+
             </div>
             <form action="{{ route('stake.buy_rwc') }}" method="POST">
                 @csrf
@@ -229,7 +232,7 @@
 
                 {{-- Row 2: Input how many RWC coins to buy --}}
                 <div class="mb-2">
-                    <label class="form-label fs-5">How many RWC coins you want to buy</label>
+                    <label class="form-label fs-5">Stake Dollers to Buy RWC</label>
                     <input type="text" id="rwcCoins" oninput="validateCoins()" class="form-control"
                         name="rwc_coins_to_buy" placeholder="e.g. 10">
                 </div>
@@ -241,7 +244,7 @@
             <!-- ROI Section -->
             <h6 class="text-info fw-semibold mb-3">ROI & Stats</h6>
             <div class="row g-3 mb-3">
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                     <div class="card-box d-flex align-items-center">
                         <img src="{{ asset('a.webp') }}" alt="ROI">
                         <div>
@@ -251,31 +254,32 @@
                     </div>
                 </div>
 
-                {{-- <div class="col-6">
-                    <div class="card-box d-flex align-items-center">
-                        <img src="{{ asset('a.webp') }}" alt="Stake">
-                        <div>
-                            <h6>Total Staked</h6>
-                            <p>${{ number_format($total_staked, 2) }}</p>
-                        </div>
-                    </div>
-                </div> --}}
-                <div class="col-6">
+                {{-- <div class="col-12 col-sm-6">
+        <div class="card-box d-flex align-items-center">
+            <img src="{{ asset('a.webp') }}" alt="Stake">
+            <div>
+                <h6>Total Staked</h6>
+                <p>${{ number_format($total_staked, 2) }}</p>
+            </div>
+        </div>
+    </div> --}}
+
+                <div class="col-12 col-sm-6">
                     <div class="card-box d-flex align-items-center">
                         <img src="{{ asset('a.webp') }}" alt="Stake">
                         <div>
                             <div>
                                 <h6>Total Available Wallet Balance</h6>
                                 {{-- @foreach ($totals as $row)
-                                    <p>{{ number_format($row->total_amount, 8) }} {{ $row->coin }}</p>
-                                @endforeach --}}
+                        <p>{{ number_format($row->total_amount, 8) }} {{ $row->coin }}</p>
+                    @endforeach --}}
                                 <p>{{ number_format((float) $total_wallet_balance, 8) }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                     <div class="card-box d-flex align-items-center">
                         <img src="{{ asset('a.webp') }}" alt="Coin">
                         <div>
@@ -285,7 +289,7 @@
                     </div>
                 </div>
 
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                     <div class="card-box d-flex align-items-center">
                         <img src="{{ asset('a.webp') }}" alt="Earned">
                         <div>
@@ -295,25 +299,26 @@
                     </div>
                 </div>
 
-                {{-- <div class="col-6">
-                    <div class="card-box d-flex align-items-center">
-                        <img src="{{ asset('a.webp') }}" alt="Earned">
-                        <div>
-                            <h6>Total Earn</h6>
-                            <p>{{ $total_earn_coin + $total_coin }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="card-box d-flex align-items-center">
-                        <img src="{{ asset('a.webp') }}" alt="Earned">
-                        <div>
-                            <h6>Total Available USD</h6>
-                            <p> ${{ $total_usd }}</p>
-                        </div>
-                    </div>
-                </div> --}}
+                {{-- <div class="col-12 col-sm-6">
+        <div class="card-box d-flex align-items-center">
+            <img src="{{ asset('a.webp') }}" alt="Earned">
+            <div>
+                <h6>Total Earn</h6>
+                <p>{{ $total_earn_coin + $total_coin }}</p>
             </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6">
+        <div class="card-box d-flex align-items-center">
+            <img src="{{ asset('a.webp') }}" alt="Earned">
+            <div>
+                <h6>Total Available USD</h6>
+                <p> ${{ $total_usd }}</p>
+            </div>
+        </div>
+    </div> --}}
+            </div>
+
 
             <!-- Referral Link -->
             <h6 class="text-info fw-semibold mb-3">Your Referral Link</h6>

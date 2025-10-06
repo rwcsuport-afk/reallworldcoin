@@ -151,7 +151,7 @@
                                         <label class="api_key" for="api_key">Wallet Address<sup>*</sup></label>
                                         <input id="api_key"
                                             class="form-control @error('user_id') is-invalid @enderror" type="text"
-                                            name="user_id" placeholder="API key" value="{{ old('user_id') }}"
+                                            name="user_id" placeholder="Wallet Address" value="{{ old('user_id') }}"
                                             required="">
                                         @error('user_id')
                                             <div class="invalid-feedback">{{ $message }}</div>

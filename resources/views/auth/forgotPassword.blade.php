@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Forgot Password - Real World Coin</title>
+    <title>Reset Password - Real World Coin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -87,12 +87,21 @@
         <form method="POST" action="{{ route('forgot.password') }}">
             @csrf
             <div class="mb-3">
-                <input type="email" name="email" class="form-control" placeholder="Enter your email" required
-                    value="{{ old('email') }}" />
+                <input type="text" name="user_id" class="form-control" placeholder="Enter your User ID" required
+                    value="{{ old('user_id') }}" />
+            </div>
+
+            <div class="mb-3">
+                <input type="password" name="new_password" class="form-control" placeholder="New Password" required />
+            </div>
+
+            <div class="mb-3">
+                <input type="password" name="new_password_confirmation" class="form-control"
+                    placeholder="Confirm Password" required />
             </div>
 
             <div class="d-grid mb-3">
-                <button type="submit" class="btn btn-reset">Send Reset Link</button>
+                <button type="submit" class="btn btn-reset">Reset Password</button>
             </div>
 
             <div class="text-center">

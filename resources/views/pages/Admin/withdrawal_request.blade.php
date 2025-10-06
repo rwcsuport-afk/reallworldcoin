@@ -238,108 +238,177 @@
                 </div>
 
                 <!-- DataTable -->
+            </div><br>
+            <div class="section-title">Withdrawal Referral Lists</div>
+            <div class="card shadow bg-dark text-white p-3">
+                <div class="table-responsive">
+                    <table id="withdrawTable"
+                        class="table table-bordered table-hover table-dark text-white align-middle">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>User ID</th>
+                                <th>Referred User ID</th>
+                                <th>Bonus Amount (USD)</th>
+                                <th>Created At</th>
+                                {{-- <th>Action</th> --}}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($referral_bonus as $bonus)
+                                <tr>
+                                    <td>{{ $bonus->user_name ?? '-' }}</td>
+                                    <td>{{ $bonus->user_api_key ?? '-' }}</td>
+                                    <td>{{ $bonus->referred_user_id }}</td>
+                                    <td>${{ number_format($bonus->bonus_amount, 2) }}</td>
+                                    <td>{{ $bonus->created_at }}</td>
+                                    {{-- <td class="text-center">
+                                        <form action="{{ route('admin.rwithdrawal.accept', $bonus->id) }}" method="POST"
+                                            class="d-inline accept-form">
+                                            @csrf
+                                            <button type="button" class="btn btn-sm btn-success"
+                                                {{ $bonus->status == 2 ? 'disabled' : '' }}>
+                                                Accept
+                                            </button>
+                                        </form>
+
+                                        <form action="{{ route('admin.rwithdrawal.reject', $bonus->id) }}" method="POST"
+                                            class="d-inline reject-form">
+                                            @csrf
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                {{ $bonus->status == 3 ? 'disabled' : '' }}>
+                                                Reject
+                                            </button>
+                                        </form>
+                                    </td> --}}
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
+
+            <!-- Alerts -->
+            <div class="card-box text-white">
+                @if (session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+
+            <!-- DataTable -->
         </div>
+    </div>
 
-        <!-- Bottom Nav for Mobile -->
-        <div class="bottom-nav d-md-none">
-            <a href="{{ route('admin.dashboard') }}">
-                <i class="bi bi-house-door-fill d-block"></i>
-                Dashboard
-            </a>
-            <a href="{{ route('view.all.users') }}" class="active">
-                <i class="bi bi-person-fill d-block"></i>
-                Users
-            </a>
-            <a href="{{ route('admin.settings') }}">
-                <i class="bi bi-gear-fill d-block"></i>
-                Settings
-            </a>
-            <a href="#">
-                <i class="bi bi-file-earmark-text d-block"></i>
-                Reports
-            </a>
-        </div>
+    <!-- Bottom Nav for Mobile -->
+    <div class="bottom-nav d-md-none">
+        <a href="{{ route('admin.dashboard') }}">
+            <i class="bi bi-house-door-fill d-block"></i>
+            Dashboard
+        </a>
+        <a href="{{ route('view.all.users') }}" class="active">
+            <i class="bi bi-person-fill d-block"></i>
+            Users
+        </a>
+        <a href="{{ route('admin.settings') }}">
+            <i class="bi bi-gear-fill d-block"></i>
+            Settings
+        </a>
+        <a href="#">
+            <i class="bi bi-file-earmark-text d-block"></i>
+            Reports
+        </a>
+    </div>
 
-        <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <script>
-            $(document).ready(function() {
-                $('#usersTable').DataTable({
-                    responsive: true
+    <script>
+        $(document).ready(function() {
+            $('#usersTable').DataTable({
+                responsive: true
+            });
+        });
+
+        document.getElementById("openSidebar").addEventListener("click", function() {
+            document.getElementById("sidebar").classList.add("show");
+        });
+
+        document.getElementById("closeSidebar").addEventListener("click", function() {
+            document.getElementById("sidebar").classList.remove("show");
+        });
+    </script>
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#withdrawTable').DataTable({
+                "pageLength": 10,
+                "order": [
+                    [2, "desc"]
+                ], // order by amount desc
+            });
+        });
+    </script>
+
+    <script>
+        // Accept button
+        document.querySelectorAll('.accept-form button').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to accept this withdrawal!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, accept it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit();
+                    }
                 });
             });
+        });
 
-            document.getElementById("openSidebar").addEventListener("click", function() {
-                document.getElementById("sidebar").classList.add("show");
-            });
-
-            document.getElementById("closeSidebar").addEventListener("click", function() {
-                document.getElementById("sidebar").classList.remove("show");
-            });
-        </script>
-
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $('#withdrawTable').DataTable({
-                    "pageLength": 10,
-                    "order": [
-                        [2, "desc"]
-                    ], // order by amount desc
+        // Reject button
+        document.querySelectorAll('.reject-form button').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to reject this withdrawal!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, reject it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit();
+                    }
                 });
             });
-        </script>
-
-        <script>
-            // Accept button
-            document.querySelectorAll('.accept-form button').forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You want to accept this withdrawal!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#28a745',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, accept it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            this.closest('form').submit();
-                        }
-                    });
-                });
-            });
-
-            // Reject button
-            document.querySelectorAll('.reject-form button').forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You want to reject this withdrawal!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#6c757d',
-                        confirmButtonText: 'Yes, reject it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            this.closest('form').submit();
-                        }
-                    });
-                });
-            });
-        </script>
+        });
+    </script>
 </body>
 
 </html>

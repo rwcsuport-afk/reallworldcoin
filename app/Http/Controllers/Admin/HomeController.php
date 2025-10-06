@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\LoginActivity;
 use App\Models\Payment;
+use App\Models\RWCs;
 use App\Models\Stake;
 use App\Models\User;
 use Carbon\Carbon;
@@ -35,7 +36,8 @@ class HomeController extends Controller
             ->where('key', 'coin_value_usd')
             ->value('value');
         $total_amount = Stake::sum('amount');
-        $total_rwc_earn = ($total_amount * 100) / (float) $coin_value_usd;
+        //$total_rwc_earn = ($total_amount * 100) / (float) $coin_value_usd;
+        $total_rwc_earn = RWCs::sum('rwc_coin');
         return view("pages.Admin.dashboard", compact("total_user", "active_user", "total_investment", "total_roi", "investments","current_roi","total_coin", "total_rwc_earn"));
     }
 

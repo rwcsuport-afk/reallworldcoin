@@ -151,7 +151,7 @@
                                         <label class="input_title" for="api_key">Wallet Address<sup>*</sup></label>
                                         <input id="api_key"
                                             class="form-control @error('user_id') is-invalid @enderror" type="text"
-                                            name="user_id" placeholder="Enter Your API Key"
+                                            name="user_id" placeholder="Enter Your Wallet Address"
                                             value="{{ old('user_id') }}" required="">
                                         @error('user_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -197,6 +197,9 @@
                                 </form>
                                 <div class="text-center">
                                     <a href="{{ route('register') }}">Don't have an account? Sign up</a>
+                                </div>
+                                <div class="text-center">
+                                    <a href="{{ route('forgot.password') }}">Forgot Password ? Click</a>
                                 </div>
                             </div>
                             {{-- Registration Success Modal --}}
