@@ -148,7 +148,7 @@
                                 <form method="POST" action="{{ route('register') }}">
                                     @csrf
                                     <div class="form-group">
-                                        <label class="api_key" for="api_key">API key<sup>*</sup></label>
+                                        <label class="api_key" for="api_key">Wallet Address<sup>*</sup></label>
                                         <input id="api_key"
                                             class="form-control @error('user_id') is-invalid @enderror" type="text"
                                             name="user_id" placeholder="API key" value="{{ old('user_id') }}"
