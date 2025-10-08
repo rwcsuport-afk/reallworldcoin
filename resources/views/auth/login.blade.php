@@ -63,10 +63,10 @@
             <div class="nav_wrapper">
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-lg-3 col-5 d-flex align-items-center">
+                        <div class="col-lg-3 col-8 d-flex align-items-center">
                             <div class="site_logo">
                                 <a class="site_link" href="http://reallworldcoin.com/">
-                                    <img loading="lazy" src="{{ asset('new.png') }}" alt="ICO Site Logo">
+                                    <img loading="lazy" src="{{ asset('vvvvvvv.png') }}" alt="ICO Site Logo">
                                 </a>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                                 </div>
                             </nav>
                         </div>
-                        <div class="col-lg-3 col-5">
+                        <div class="col-lg-3 col-2">
                             <ul class="btns_group unordered_list p-0 justify-content-end">
                                 <li class="d-lg-none">
                                     <button class="mobile_menu_btn" type="button" data-bs-toggle="collapse"
