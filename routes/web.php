@@ -26,9 +26,9 @@ use Illuminate\Support\Facades\Response;
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
-     return redirect('/homepage');
-});
+// Route::get('/', function () {
+//      return redirect('/homepage');
+// });
 
 Route::get('/reload-captcha', function () {
     return response()->json(['captcha' => captcha_img()]);
