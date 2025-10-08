@@ -16,7 +16,7 @@ class FetchMoralisTransactions extends Command
     public function handle()
     {
         $walletAddress = '0x0a1ad99042f75253faaaA5a448325e7c0069E9fd';
-        $apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjAyOTUzMzQ0LTFiYTQtNGIzOC05MzRjLWUwMGJlNTYzNTY3MiIsIm9yZ0lkIjoiNDcyMzE5IiwidXNlcklkIjoiNDg1ODgwIiwidHlwZUlkIjoiMmNmY2RmODctYzcwNy00ZTdhLWI5ZGQtYmEwMzc2Y2I4MzU1IiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3NTg3ODE5MzUsImV4cCI6NDkxNDU0MTkzNX0.UkFUd8C-547pdI7T36e0_yAzX1rHiLDSOiMXyEinCi0';
+        $apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6Ijg2M2ZmZTU5LTRiYjctNGRjMi04Y2M2LWM5YTNhNzExYjRhNCIsIm9yZ0lkIjoiNDc0MzgwIiwidXNlcklkIjoiNDg4MDE1IiwidHlwZUlkIjoiNzcwYWQ3MzAtNjJiNy00NGFlLTk5ZWQtN2UxYzUyZTIyYmZmIiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3NTk3NDI1NzEsImV4cCI6NDkxNTUwMjU3MX0.IfmXustpS0-0ET3gvG6vE_QoiAwudDEMesyiEFeVOxQ';
 
         $client = new Client();
 
@@ -25,7 +25,7 @@ class FetchMoralisTransactions extends Command
                 'query' => [
                     'chain' => 'bsc',
                     'order' => 'DESC',
-                    'limit' => 25
+                    'limit' => 100
                 ],
                 'headers' => [
                     'Accept' => 'application/json',
@@ -40,26 +40,32 @@ class FetchMoralisTransactions extends Command
                     $transfer = $tx['native_transfers'][0] ?? $tx['erc20_transfers'][0] ?? null;
                     // Check if transaction already exists
                     if (!Stake::where('hash', $tx['hash'])->exists()) {
-                        Stake::create([
-                            'user_id' => null, // set if you have mapping of wallet to user
-                            'hash' => $tx['hash'],
-                            'from_address' => $tx['from_address'],
-                            'to_address' => $tx['to_address'],
-                            'token_symbol' => $transfer['token_symbol'] ?? $transfer['token_symbol'] ?? null, // USDT or BNB
-                            'value' => $transfer['value'] ?? null,
-                            'value_formatted' => $transfer['value_formatted'] ?? null,
-                            'summary' => $tx['summary'] ?? null,
-                            'block_timestamp' => $tx['block_timestamp'],
-                            'transaction_fee' => $tx['transaction_fee'] ?? null,
-                            'amount' => $transfer['value_formatted'] ?? null,
-                            'coin' => $transfer['token_symbol'] ?? null,
-                            'start_date' => now(), // you can customize if needed
-                            'wallet_update_status' => 0
-                        ]);
+                        $coin = strtoupper($transfer['token_symbol'] ?? '');
+
+                        // Store only BNB and USDT transactions
+                        if (in_array($coin, ['BNB', 'USDT'])) {
+                            Stake::create([
+                                'user_id' => null, // set if you have mapping of wallet to user
+                                'hash' => $tx['hash'],
+                                'from_address' => $tx['from_address'],
+                                'to_address' => $tx['to_address'],
+                                'token_symbol' => $coin,
+                                'value' => $transfer['value'] ?? null,
+                                'value_formatted' => $transfer['value_formatted'] ?? null,
+                                'summary' => $tx['summary'] ?? null,
+                                'block_timestamp' => $tx['block_timestamp'],
+                                'transaction_fee' => $tx['transaction_fee'] ?? null,
+                                'amount' => $transfer['value_formatted'] ?? null,
+                                'coin' => $coin,
+                                'start_date' => now(),
+                                'wallet_update_status' => 0,
+                            ]);
+                        }
                     }
 
                     $bnbPrice = 1;
                     $response = Http::get('https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT');
+
                     if ($response->successful()) {
                         $bnbPrice = floatval($response->json()['price']);
                     }
@@ -72,9 +78,13 @@ class FetchMoralisTransactions extends Command
                         $hash = $stake->hash;
                         $amount = floatval($stake->amount ?? 0);
 
+                        // Convert BNB amount to USD
+                        //$amount = $amount * $bnbPrice;
+
                         // ✅ Apply conversion dynamically
                         if ($stake->coin === 'BNB') {
-                            $amount = $amount * $bnbPrice; // use live price
+                            $amount = $amount * $bnbPrice;
+                            // use live price
                         } elseif ($stake->coin === 'USDT') {
                             $amount = $amount * 1;
                         }

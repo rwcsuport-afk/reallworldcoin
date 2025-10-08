@@ -8,11 +8,13 @@ use App\Models\Payment;
 use App\Models\RWCs;
 use App\Models\Stake;
 use App\Models\User;
+use App\Models\WalletBalance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
 {
@@ -38,7 +40,7 @@ class HomeController extends Controller
         $total_amount = Stake::sum('amount');
         //$total_rwc_earn = ($total_amount * 100) / (float) $coin_value_usd;
         $total_rwc_earn = RWCs::sum('rwc_coin');
-        return view("pages.Admin.dashboard", compact("total_user", "active_user", "total_investment", "total_roi", "investments","current_roi","total_coin", "total_rwc_earn"));
+        return view("pages.Admin.dashboard", compact("total_user", "active_user", "total_investment", "total_roi", "investments", "current_roi", "total_coin", "total_rwc_earn"));
     }
 
     public function logout()
@@ -61,6 +63,54 @@ class HomeController extends Controller
         }
 
         return redirect()->route('login')->with('success', 'Logged out successfully.');
+    }
+
+    public function test()
+    {
+        $bnbPrice = 1;
+        $response = Http::get('https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT');
+
+        if ($response->successful()) {
+            $bnbPrice = floatval($response->json()['price']);
+        }
+
+        // Group stakes by from_address and sum their amounts per coin
+        $pendingStakes = Stake::where('wallet_update_status', 0)
+            ->select('from_address', 'coin', DB::raw('SUM(amount) as total_amount'))
+            ->groupBy('from_address', 'coin')
+            ->get();
+
+        foreach ($pendingStakes as $stake) {
+            $fromAddress = $stake->from_address;
+            $totalAmount = floatval($stake->total_amount);
+
+            // Convert based on coin type
+            if ($stake->coin === 'BNB') {
+                $totalAmount = $totalAmount * $bnbPrice;
+            } 
+            elseif ($stake->coin === 'USDT') {
+                $totalAmount = $totalAmount * 1;
+            }
+
+            // Check if wallet balance exists
+            $wallet = WalletBalance::where('from_address', $fromAddress)->first();
+
+            if ($wallet) {
+                // Update existing wallet
+                $wallet->update([
+                    'amount' => strval(floatval($wallet->amount) + $totalAmount),
+                    'updated_at' => now(),
+                ]);
+            } else {
+                // Create new wallet
+                WalletBalance::create([
+                    'from_address' => $fromAddress,
+                    'amount' => strval($totalAmount),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
     }
 
 }

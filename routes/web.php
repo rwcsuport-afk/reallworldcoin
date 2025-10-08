@@ -48,6 +48,8 @@ Route::get('/buy-token', function () {
     return view('buy-tokens');
 });
 
+Route::get('/test', [HomeController::class, 'test'])->name('test');
+
 Route::match(['get', 'post'],'/login', [AuthController::class, 'login'])->name('login');
 Route::match(['get', 'post'],'/register', [AuthController::class, 'register'])->name('register');
 Route::get('/check-referral', [AuthController::class, 'checkReferral']);
