@@ -66,7 +66,7 @@
                         <div class="col-lg-3 col-5 d-flex align-items-center">
                             <div class="site_logo">
                                 <a class="site_link" href="http://reallworldcoin.com/">
-                                    <img loading="lazy" src="{{ asset('bb.png') }}" alt="ICO Site Logo">
+                                    <img loading="lazy" src="{{ asset('new.png') }}" alt="ICO Site Logo">
                                 </a>
                             </div>
                         </div>
