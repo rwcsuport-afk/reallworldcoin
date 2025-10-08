@@ -63,18 +63,19 @@
             <div class="nav_wrapper">
                 <div class="container">
                     <div class="row align-items-center">
-                        {{-- <div class="col-lg-3 col-5 d-flex align-items-center">
+                        <div class="col-lg-3 col-5 d-flex align-items-center">
                             <div class="site_logo">
-                                <a class="site_link" href="index.html">
+                                <a class="site_link" href="http://reallworldcoin.com/">
                                     <img loading="lazy" src="{{ asset('bb.png') }}" alt="ICO Site Logo">
                                 </a>
                             </div>
-                        </div> --}}
-                        {{-- <div class="col-lg-6 col-2">
+                        </div>
+                        <div class="col-lg-6 col-2">
                             <nav class="main_menu navbar navbar-expand-lg">
                                 <div class="main_menu_inner collapse navbar-collapse justify-content-center"
                                     id="main_menu_dropdown">
                                     <ul class="main_menu_list unordered_list text-uppercase">
+                                        
                                         <li class="dropdown active">
                                             <a class="nav-link" href="https://reallworldcoin.com/" id="homes_submenu" role="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -86,11 +87,11 @@
                                                 <span class="nav_link_label" data-text="About ICO">About</span>
                                             </a>
                                         </li>
-                                        <li>
+                                        {{-- <li>
                                             <a class="nav-link scrollspy_btn" href="#id_ico_service_section">
                                                 <span class="nav_link_label" data-text="Features">Features</span>
                                             </a>
-                                        </li>
+                                        </li> --}}
                                          <li>
                                             <a class="nav-link" href="{{ route('register') }}">
                                                 <span class="nav_link_label" data-text="Register">Register</span>
@@ -100,6 +101,16 @@
                                         <li>
                                             <a class="nav-link" href="{{ route('contact') }}">
                                                 <span class="nav_link_label" data-text="Contact">Contact</span>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown active">
+                                            <a class="nav-link" href="http://dashboard.reallworldcoin.com/login">
+                                                <span class="nav_link_label" data-text="Login">Login</span>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown active">
+                                            <a class="nav-link" href="http://dashboard.reallworldcoin.com/register">
+                                                <span class="nav_link_label" data-text="Register">Register</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -115,16 +126,16 @@
                                         <i class="far fa-bars"></i>
                                     </button>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a class="ico_btn_outline" href="{{ route('login') }}">
                                         <span class="btn_icon">
                                             <i class="fa-solid fa-user"></i>
                                         </span>
                                         <span class="btn_label">Login</span>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -148,40 +159,40 @@
                                 <form method="POST" action="{{ route('register') }}">
                                     @csrf
                                     <div class="form-group">
-                                        <label class="api_key" for="api_key">Wallet Address<sup>*</sup></label>
+                                        {{-- <label class="api_key" for="api_key">Wallet Address<sup>*</sup></label> --}}
                                         <input id="api_key"
                                             class="form-control @error('user_id') is-invalid @enderror" type="text"
-                                            name="user_id" placeholder="Wallet Address" value="{{ old('user_id') }}"
+                                            name="user_id" placeholder="Enter Wallet Address" value="{{ old('user_id') }}"
                                             required="">
                                         @error('user_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label class="input_name" for="input_name">Name<sup>*</sup></label>
+                                        {{-- <label class="input_name" for="input_name">Name<sup>*</sup></label> --}}
                                         <input id="input_email" class="form-control" type="name" name="name"
                                             placeholder="Full Name" value="{{ old('name') }}" required="">
                                     </div>
                                     <div class="form-group">
-                                        <label class="input_email" for="input_email">Email<sup>*</sup></label>
+                                        {{-- <label class="input_email" for="input_email">Email<sup>*</sup></label> --}}
                                         <input id="input_email" value="{{ old('email') }}" class="form-control"
                                             type="email" name="email" placeholder="Enter Your Email" required="">
                                     </div>
                                     <div class="form-group">
-                                        <label class="input_pass" for="input_pass">Password<sup>*</sup></label>
+                                        {{-- <label class="input_pass" for="input_pass">Password<sup>*</sup></label> --}}
                                         <input id="input_pass" value="{{ old('password') }}" class="form-control"
                                             type="password" name="password" placeholder="Password" required="">
                                     </div>
                                     <div class="form-group">
-                                        <label class="input_comfirm" for="input_confirm">Confirm
-                                            Password<sup>*</sup></label>
+                                        {{-- <label class="input_comfirm" for="input_confirm">Confirm
+                                            Password<sup>*</sup></label> --}}
                                         <input id="input_comfirm" class="form-control" type="password_confirmation"
                                             name="password_confirmation" placeholder="Confirm Password"
                                             required="">
                                     </div>
                                     <div class="form-group">
-                                        <label class="input_title" for="input_email">Referral Code
-                                            <sup>*</sup></label>
+                                        {{-- <label class="input_title" for="input_email">Referral Code
+                                            <sup>*</sup></label> --}}
                                         <input type="text" name="referral_code" id="referral_code"
                                             class="form-control @error('referral_code') is-invalid @enderror"
                                             placeholder="Referral Code (Optional)"

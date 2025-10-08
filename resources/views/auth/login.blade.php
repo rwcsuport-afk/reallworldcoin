@@ -86,11 +86,11 @@
                                                 <span class="nav_link_label" data-text="About ICO">About</span>
                                             </a>
                                         </li>
-                                        <li>
+                                        {{-- <li>
                                             <a class="nav-link scrollspy_btn" href="#id_ico_service_section">
                                                 <span class="nav_link_label" data-text="Features">Features</span>
                                             </a>
-                                        </li>
+                                        </li> --}}
                                         <li>
                                             <a class="nav-link" href="{{ route('register') }}">
                                                 <span class="nav_link_label" data-text="Register">Register</span>
@@ -100,6 +100,16 @@
                                         <li>
                                             <a class="nav-link" href="{{ route('contact') }}">
                                                 <span class="nav_link_label" data-text="Contact">Contact</span>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown active">
+                                            <a class="nav-link" href="http://dashboard.reallworldcoin.com/login">
+                                                <span class="nav_link_label" data-text="Login">Login</span>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown active">
+                                            <a class="nav-link" href="http://dashboard.reallworldcoin.com/register">
+                                                <span class="nav_link_label" data-text="Register">Register</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -115,14 +125,14 @@
                                         <i class="far fa-bars"></i>
                                     </button>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a class="ico_btn_outline" href="{{ route('login') }}">
                                         <span class="btn_icon">
                                             <i class="fa-solid fa-user"></i>
                                         </span>
                                         <span class="btn_label">Login</span>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </div>
@@ -148,7 +158,7 @@
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
                                     <div class="form-group">
-                                        <label class="input_title" for="api_key">Wallet Address<sup>*</sup></label>
+                                        {{-- <label class="input_title" for="api_key">Wallet Address<sup>*</sup></label> --}}
                                         <input id="api_key"
                                             class="form-control @error('user_id') is-invalid @enderror" type="text"
                                             name="user_id" placeholder="Enter Your Wallet Address"
@@ -158,7 +168,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label class="input_title" for="input_pass">Password<sup>*</sup></label>
+                                        {{-- <label class="input_title" for="input_pass">Password<sup>*</sup></label> --}}
                                         <input id="input_pass" class="form-control" type="password" name="password"
                                             placeholder="Enter Your password" value="{{ old('password') }}"
                                             required="">
