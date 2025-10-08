@@ -26,9 +26,9 @@ use Illuminate\Support\Facades\Response;
 //     return view('welcome');
 // });
 
-// Route::get('/', function () {
-//      return redirect('/homepage');
-// });
+Route::get('/', function () {
+     return redirect('/homepage');
+});
 
 Route::get('/reload-captcha', function () {
     return response()->json(['captcha' => captcha_img()]);
@@ -55,7 +55,7 @@ Route::match(['get', 'post'],'/register', [AuthController::class, 'register'])->
 Route::get('/check-referral', [AuthController::class, 'checkReferral']);
 Route::match(['get', 'post'],'/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot.password');
 Route::match(['get', 'post'], '/reset-password', [AuthController::class, 'resetPassword'])->name('reset.password');
-//Route::get('homepage', [HomepageController::class, 'homepage'])->name('homepage');
+Route::get('homepage', [HomepageController::class, 'homepage'])->name('homepage');
 Route::get('oldhomepage', [HomepageController::class, 'oldhomepage'])->name('oldhomepage');
 Route::get('/about', [HomepageController::class, 'about'])->name('about');
 Route::get('/contact', [HomepageController::class, 'contact'])->name('contact');
