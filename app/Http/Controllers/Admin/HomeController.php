@@ -33,7 +33,10 @@ class HomeController extends Controller
 
         //$investments = Stake::with('user')->latest()->limit(10)->get();
         // $investments = Payment::with('user')->where('status', 'paid')->latest()->limit(10)->get();
-        $investments = Stake::orderBy('block_timestamp', 'desc')->get();
+        $investments = Stake::whereIn('coin', ['BNB', 'USDT'])
+            ->orderBy('block_timestamp', 'desc')
+            ->get();
+
         $coin_value_usd = DB::table('settings')
             ->where('key', 'coin_value_usd')
             ->value('value');
@@ -87,8 +90,7 @@ class HomeController extends Controller
             // Convert based on coin type
             if ($stake->coin === 'BNB') {
                 $totalAmount = $totalAmount * $bnbPrice;
-            } 
-            elseif ($stake->coin === 'USDT') {
+            } elseif ($stake->coin === 'USDT') {
                 $totalAmount = $totalAmount * 1;
             }
 

@@ -43,7 +43,7 @@ class FetchMoralisTransactions extends Command
                         $coin = strtoupper($transfer['token_symbol'] ?? '');
 
                         // Store only BNB and USDT transactions
-                        if (in_array($coin, ['BNB', 'USDT'])) {
+                        if (isset($tx['hash']) && in_array($coin, ['BNB', 'USDT'])) {
                             Stake::create([
                                 'user_id' => null, // set if you have mapping of wallet to user
                                 'hash' => $tx['hash'],
