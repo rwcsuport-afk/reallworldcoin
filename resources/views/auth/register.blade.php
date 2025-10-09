@@ -65,7 +65,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-8 d-flex align-items-center">
                             <div class="site_logo">
-                                <a class="site_link" href="http://reallworldcoin.com/">
+                                <a class="site_link" href="https://reallworldcoin.com/">
                                     <img loading="lazy" src="{{ asset('vvvvvvv.png') }}" alt="ICO Site Logo">
                                 </a>
                             </div>
@@ -92,24 +92,24 @@
                                                 <span class="nav_link_label" data-text="Features">Features</span>
                                             </a>
                                         </li> --}}
-                                         <li>
+                                         {{-- <li>
                                             <a class="nav-link" href="{{ route('register') }}">
                                                 <span class="nav_link_label" data-text="Register">Register</span>
                                             </a>
-                                        </li>
+                                        </li> --}}
                                         
                                         <li>
-                                            <a class="nav-link" href="{{ route('contact') }}">
+                                            <a class="nav-link" href="https://dashboard.reallworldcoin.com/contact">
                                                 <span class="nav_link_label" data-text="Contact">Contact</span>
                                             </a>
                                         </li>
                                         <li class="dropdown active">
-                                            <a class="nav-link" href="http://dashboard.reallworldcoin.com/login">
+                                            <a class="nav-link" href="https://dashboard.reallworldcoin.com/login">
                                                 <span class="nav_link_label" data-text="Login">Login</span>
                                             </a>
                                         </li>
                                         <li class="dropdown active">
-                                            <a class="nav-link" href="http://dashboard.reallworldcoin.com/register">
+                                            <a class="nav-link" href="https://dashboard.reallworldcoin.com/register">
                                                 <span class="nav_link_label" data-text="Register">Register</span>
                                             </a>
                                         </li>

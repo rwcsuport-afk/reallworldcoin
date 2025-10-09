@@ -43,12 +43,13 @@ class AdminController extends Controller
     public function viewAllUsers(Request $request)
     {
         // $all_users = User::with('stakes')->where('user_type', 2)->get();
-        $all_users = User::with('stake')
-            ->where('user_type', 2)
-            ->whereNotNull('user_id')
+        // $all_users = User::with('stake')
+        //     ->where('user_type', 2)
+        //     ->whereNotNull('user_id')
+        //     ->get();
+        $all_users = User::leftJoin('wallet_balances', 'users.user_id', '=', 'wallet_balances.from_address')
+            ->select('users.*', 'wallet_balances.*')
             ->get();
-        // $all_users = User::leftJoin('users', 'users.user_id', '=', 'wallet_balances.from_address')
-        //     ->select('users.name')
 
         return view('pages.Admin.viewuser', compact('all_users'));
     }

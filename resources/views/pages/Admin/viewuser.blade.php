@@ -205,7 +205,7 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ number_format($user->stake->sum('amount'), 8) }}</td>
+                                    <td>{{ $user->amount ?? 'N/A' }}</td>
                                     {{-- <td>{{ $user->stake->coin }}</td> --}}
                                     <td>
                                         @if ($user->user_type == 1)
@@ -216,7 +216,10 @@
                                             Unknown
                                         @endif
                                     </td>
-                                    <td>{{ $user->created_at->format('d M Y') }}</td>
+                                    <td>
+                                        {{ $user->created_at ? $user->created_at->format('d M Y') : 'N/A' }}
+                                    </td>
+
                                     {{-- <td>
                                         <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#growthModal{{ $user->id }}" title="Add Growth %">
@@ -225,7 +228,7 @@
                                     </td> --}}
                                 </tr>
                                 <!-- Growth Modal -->
-                                <div class="modal fade" id="growthModal{{ $user->id }}" tabindex="-1"
+                                {{-- <div class="modal fade" id="growthModal{{ $user->id }}" tabindex="-1"
                                     aria-labelledby="growthModalLabel{{ $user->id }}" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <form method="POST"
@@ -260,7 +263,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                </div>
+                                </div> --}}
                             @endforeach
                         </tbody>
                     </table>
