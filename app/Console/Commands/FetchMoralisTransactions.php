@@ -16,8 +16,7 @@ class FetchMoralisTransactions extends Command
     public function handle()
     {
         $walletAddress = '0x0a1ad99042f75253faaaA5a448325e7c0069E9fd';
-        $apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6Ijg2M2ZmZTU5LTRiYjctNGRjMi04Y2M2LWM5YTNhNzExYjRhNCIsIm9yZ0lkIjoiNDc0MzgwIiwidXNlcklkIjoiNDg4MDE1IiwidHlwZUlkIjoiNzcwYWQ3MzAtNjJiNy00NGFlLTk5ZWQtN2UxYzUyZTIyYmZmIiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3NTk3NDI1NzEsImV4cCI6NDkxNTUwMjU3MX0.IfmXustpS0-0ET3gvG6vE_QoiAwudDEMesyiEFeVOxQ';
-
+        $apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjdkNTA4Y2ZiLWQxYmItNDU0OS1iNzY3LTJlOTFlMWNlYjMwNCIsIm9yZ0lkIjoiNDc1NjY2IiwidXNlcklkIjoiNDg5MzQyIiwidHlwZUlkIjoiOTJiYzY3ODYtYWM1NS00YjlkLWE0MWEtZjYxMmJmOTY0NDQ3IiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3NjAzNTEwMzYsImV4cCI6NDkxNjExMTAzNn0.jBZQpVlGZE7uXd9W02sxmWvEEyz18mc4lY4Zi7WekIg';
         $client = new Client();
 
         try {
