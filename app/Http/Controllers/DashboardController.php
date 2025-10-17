@@ -362,7 +362,13 @@ class DashboardController extends Controller
 
         // For GET request, just show the page
         $referralBonus = $user->referral_bonus ?? 0;
-        return view('pages.User.withdrawal_referral', compact('referralBonus'));
+
+        // Check if user has pending (status = 2) withdrawals
+        $pendingWithdrawals = DB::table('referral_bonuses')
+            ->where('user_id', $user->id)
+            ->where('status', 2)
+            ->get();
+        return view('pages.User.withdrawal_referral', compact('referralBonus', 'pendingWithdrawals'));
     }
 
 }

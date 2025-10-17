@@ -251,7 +251,7 @@
                                 <th>Referred User ID</th>
                                 <th>Bonus Amount (USD)</th>
                                 <th>Created At</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -262,7 +262,7 @@
                                     <td>{{ $bonus->referred_user_id }}</td>
                                     <td>${{ number_format($bonus->bonus_amount, 2) }}</td>
                                     <td>{{ $bonus->created_at }}</td>
-                                    {{-- <td class="text-center">
+                                    <td class="text-center">
                                         <form action="{{ route('admin.rwithdrawal.accept', $bonus->id) }}" method="POST"
                                             class="d-inline accept-form">
                                             @csrf
@@ -280,7 +280,7 @@
                                                 Reject
                                             </button>
                                         </form>
-                                    </td> --}}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

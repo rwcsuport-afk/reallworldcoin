@@ -199,16 +199,13 @@
     <div class="main-wrapper">
         <!-- Sidebar -->
         @include('pages.layouts.sidebar')
-        {{-- @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif --}}
+
         @if (session('error'))
             <div class="alert alert-success">
                 {{ session('error') }}
             </div>
         @endif
+
         <!-- Dashboard Content -->
         <div class="dashboard-card">
             <!-- Mobile Header -->
@@ -217,27 +214,68 @@
                 <h5 class="mb-0 fw-bold text-light">Profile</h5>
                 <div style="width: 24px;"></div>
             </div>
+
             <h4 class="fw-bold mb-3 text-light">Withdrawal Referral</h4>
-            <form id="withdrawalForm" method="POST" action="{{ route('withdrawal_referral') }}"
-                class="p-3 border rounded bg-dark text-light">
-                @csrf
-                <div class="mb-3">
-                    <label class="form-label text-light">Amount (USD)</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-secondary text-white">$</span>
-                        <input type="number" step="0.01" min="0.01" max="{{ $referralBonus }}" name="amount_usd"
-                            class="form-control bg-dark text-light border-secondary @error('amount_usd') is-invalid @enderror"
-                            placeholder="Enter amount in USD" value="{{ old('amount_usd', $referralBonus) }}" required>
-                        @error('amount_usd')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
+
+            {{-- ✅ Show pending table if status = 2 --}}
+            @if(isset($pendingWithdrawals) && $pendingWithdrawals->count() > 0)
+                <div class="alert alert-warning">
+                    You have a pending withdrawal request. Please wait until it is processed.
                 </div>
 
-                <div class="d-grid">
-                    <button type="button" id="submitWithdrawal" class="btn btn-primary">Submit Withdrawal</button>
+                <div class="table-responsive">
+                    <table class="table table-dark table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Amount (USD)</th>
+                                <th>Status</th>
+                                <th>Requested On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($pendingWithdrawals as $index => $withdrawal)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>${{ number_format($withdrawal->bonus_amount, 2) }}</td>
+                                    <td>
+                                        @if($withdrawal->status == 2)
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        @elseif($withdrawal->status == 1)
+                                            <span class="badge bg-success">Approved</span>
+                                        @elseif($withdrawal->status == 0)
+                                            <span class="badge bg-danger">Rejected</span>
+                                        @endif
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($withdrawal->created_at)->format('d M Y, h:i A') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            </form>
+            @else
+                {{-- ✅ Show withdrawal form only if no pending requests --}}
+                <form id="withdrawalForm" method="POST" action="{{ route('withdrawal_referral') }}"
+                    class="p-3 border rounded bg-dark text-light">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label text-light">Amount (USD)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-secondary text-white">$</span>
+                            <input type="number" step="0.01" min="0.01" max="{{ $referralBonus }}" name="amount_usd"
+                                class="form-control bg-dark text-light border-secondary @error('amount_usd') is-invalid @enderror"
+                                placeholder="Enter amount in USD" value="{{ old('amount_usd', $referralBonus) }}" required>
+                            @error('amount_usd')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="button" id="submitWithdrawal" class="btn btn-primary">Submit Withdrawal</button>
+                    </div>
+                </form>
+            @endif
         </div>
     </div>
 
@@ -262,7 +300,7 @@
         });
     </script>
     <script>
-        document.getElementById('submitWithdrawal').addEventListener('click', function() {
+        document.getElementById('submitWithdrawal')?.addEventListener('click', function() {
             let form = document.getElementById('withdrawalForm');
             let amount = form.querySelector('input[name="amount_usd"]').value;
 
