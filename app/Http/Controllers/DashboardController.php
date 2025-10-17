@@ -66,7 +66,7 @@ class DashboardController extends Controller
             ->groupBy('coin')
             ->get();
 
-        $total_earn_coin = $user->wallet_balance + $user->referral_bonus;
+        $total_earn_coin = $user->wallet_balance;
 
         $total_balance = $total_earn_coin + $total_staked;
 

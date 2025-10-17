@@ -131,15 +131,22 @@ class AuthController extends Controller
 
         if ($request->filled('referral_code')) {
             $referrer = User::where('unique_id', $request->referral_code)->first();
+
             if (!$referrer) {
                 return back()->withErrors(['referral_code' => 'Referral code not valid'])->withInput();
             }
+
             // Fetch bonus percent from referral_settings table
-            $referralSetting = DB::table('referral_settings')->first(); // assuming only one row
-            if ($referralSetting && isset($referralSetting->bonus_percent)) {
-                $referralBonus = $referralSetting->bonus_percent;
+            $referralSetting = DB::table('referral_settings')->first(); // assuming one row
+            $referralBonus = $referralSetting->bonus_percent ?? 0;
+
+            // ✅ Update the referrer’s referral_bonus column
+            if ($referralBonus > 0) {
+                $referrer->referral_bonus = $referrer->referral_bonus + $referralBonus;
+                $referrer->save(); // ✅ this actually updates
             }
         }
+
         $uniqueFormId = $this->generateUniqueFormId();
         $user = User::create([
             'name'        => $request->name,
@@ -149,7 +156,7 @@ class AuthController extends Controller
             'unique_id'   => $uniqueFormId,
             'referral_id' => $request->referral_code,
             'user_id'     => $request->user_id, // store API key in users table
-            'referral_bonus'  => $referralBonus,    // set bonus if referral exists
+            //'referral_bonus'  => $referralBonus,    // set bonus if referral exists
         ]);
 
         return redirect()->route('login')->with('registered_user', [

@@ -199,7 +199,7 @@
                     <div class="mb-3">
                         <label for="bonus_percent" class="form-label">Referral Bonus %</label>
                         <input type="number" name="bonus_percent" step="0.1" min="0" max="100"
-                            class="form-control" value="{{ $bonus->bonus_percent ?? 5 }}" required>
+                            class="form-control" value="{{ $bonus->bonus_percent ?? 25 }}" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Update Bonus</button>
                 </form>
