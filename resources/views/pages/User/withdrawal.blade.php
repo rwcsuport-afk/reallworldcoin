@@ -258,7 +258,7 @@
                                     ${{ number_format($user->amount, 2) }}
                                 </td>
                                 <td>
-                                    @if ($user->status == 1)
+                                    @if ($user->status == 0)
                                         <span class="badge bg-warning text-dark">Pending</span>
                                     @elseif($user->status == 2)
                                         <span class="badge bg-success">Accepted</span>
