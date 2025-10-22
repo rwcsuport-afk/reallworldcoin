@@ -219,9 +219,9 @@
 
             {{-- ✅ Show pending table if status = 2 --}}
             @if(isset($pendingWithdrawals) && $pendingWithdrawals->count() > 0)
-                <div class="alert alert-warning">
+                {{-- <div class="alert alert-warning">
                     You have a pending withdrawal request. Please wait until it is processed.
-                </div>
+                </div> --}}
 
                 <div class="table-responsive">
                     <table class="table table-dark table-bordered table-striped">
