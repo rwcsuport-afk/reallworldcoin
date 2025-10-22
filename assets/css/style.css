@@ -7415,8 +7415,8 @@ input[type=search]::-webkit-search-results-decoration {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    background-image: -webkit-gradient(linear, left bottom, left top, from(#070710), to(#006400));
-    background-image: linear-gradient(0deg, #070710, #006400);
+    background-image: -webkit-gradient(linear, left bottom, left top, from(#070710), to(#591AA9));
+    background-image: linear-gradient(0deg, #070710, #591AA9);
 }
 
 .register_section .shape_flower {

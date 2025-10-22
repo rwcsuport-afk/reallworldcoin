@@ -239,11 +239,11 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>${{ number_format($withdrawal->bonus_amount, 2) }}</td>
                                     <td>
-                                        @if($withdrawal->status == 2)
+                                        @if($withdrawal->status == 1)
                                             <span class="badge bg-warning text-dark">Pending</span>
-                                        @elseif($withdrawal->status == 1)
+                                        @elseif($withdrawal->status == 2)
                                             <span class="badge bg-success">Approved</span>
-                                        @elseif($withdrawal->status == 0)
+                                        @elseif($withdrawal->status == 3)
                                             <span class="badge bg-danger">Rejected</span>
                                         @endif
                                     </td>
