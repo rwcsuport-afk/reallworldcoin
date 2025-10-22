@@ -156,7 +156,7 @@ class AdminController extends Controller
     public function acceptWithdrawal($id)
     {
         $user = Withdrawan::findOrFail($id);
-        $user->status = 2; // Accepted
+        $user->status = 1; // Accepted
         $user->save();
 
         return back()->with('success', 'Withdrawal request accepted.');
@@ -165,7 +165,7 @@ class AdminController extends Controller
     public function rejectWithdrawal($id)
     {
         $user = Withdrawan::findOrFail($id);
-        $user->status = 3; // Rejected
+        $user->status = 0; // Rejected
         $user->save();
 
         return back()->with('error', 'Withdrawal request rejected.');
@@ -180,7 +180,7 @@ class AdminController extends Controller
     public function racceptWithdrawal($id)
     {
         $user = ReferralBonus::findOrFail($id);
-        $user->status = 2; // Accepted
+        $user->status = 1; // Accepted
         $user->save();
 
         return back()->with('success', 'Withdrawal request accepted.');
@@ -189,7 +189,7 @@ class AdminController extends Controller
     public function rrejectWithdrawal($id)
     {
         $user = ReferralBonus::findOrFail($id);
-        $user->status = 3; // Rejected
+        $user->status = 0; // Rejected
         $user->save();
 
         return back()->with('error', 'Withdrawal request rejected.');
