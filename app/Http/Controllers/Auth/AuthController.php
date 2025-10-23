@@ -99,6 +99,77 @@ class AuthController extends Controller
         // }
     }
 
+    // public function register(Request $request)
+
+    // {
+    //     if ($request->isMethod('get')) {
+    //         $referralCode = $request->query('referral_link');
+    //         return view('auth.register', compact('referralCode'));
+    //     }
+
+    //     $request->validate([
+    //         'user_id'   => 'required|string', // API Key
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|email|unique:users,email',
+    //         'password' => 'required|min:6|confirmed',
+    //     ]);
+
+    //     // ✅ Check if API key (user_id) exists in stakes.from_address
+    //     $exists = DB::table('stakes')->where('from_address', $request->user_id)->exists();
+
+    //     if (!$exists) {
+    //         return back()->withErrors(['user_id' => 'API Key not valid'])->withInput();
+    //     }
+
+    //     // ✅ Check if API key already used in users table
+    //     $existsInUsers = User::where('user_id', $request->user_id)->exists();
+    //     if ($existsInUsers) {
+    //         return back()->withErrors(['user_id' => 'This API Key is already registered'])->withInput();
+    //     }
+
+    //     $referrer = null;
+    //     $referralBonus = 0;
+
+    //     if ($request->filled('referral_code')) {
+    //         $referrer = User::where('unique_id', $request->referral_code)->first();
+
+    //         if (!$referrer) {
+    //             return back()->withErrors(['referral_code' => 'Referral code not valid'])->withInput();
+    //         }
+
+    //         // Fetch bonus percent from referral_settings table
+    //         $referralSetting = DB::table('referral_settings')->first(); // assuming one row
+    //         $referralBonus = $referralSetting->bonus_percent ?? 0;
+
+    //         // ✅ Update the referrer’s referral_bonus column
+    //         if ($referralBonus > 0) {
+    //             $referrer->referral_bonus = $referrer->referral_bonus + $referralBonus;
+    //             $referrer->save(); // ✅ this actually updates
+    //         }
+    //     }
+
+    //     $uniqueFormId = $this->generateUniqueFormId();
+    //     $user = User::create([
+    //         'name'        => $request->name,
+    //         'email'       => $request->email,
+    //         'password'    => Hash::make($request->password),
+    //         'user_type'   => 2,
+    //         'unique_id'   => $uniqueFormId,
+    //         'referral_id' => $request->referral_code,
+    //         'user_id'     => $request->user_id, // store API key in users table
+    //         //'referral_bonus'  => $referralBonus,    // set bonus if referral exists
+    //     ]);
+
+    //     return redirect()->route('login')->with('registered_user', [
+    //         'name' => $user->name,
+    //         'email' => $user->email,
+    //         'unique_id' => $user->unique_id,
+    //         'referral_id' => $user->referral_id,
+    //         'user_id'     => $user->user_id,
+    //     ]);
+    // }
+
+
     public function register(Request $request)
     {
         if ($request->isMethod('get')) {
@@ -106,16 +177,15 @@ class AuthController extends Controller
             return view('auth.register', compact('referralCode'));
         }
 
-        $request->validate([
-            'user_id'   => 'required|string', // API Key
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
+        // $request->validate([
+        //     'user_id'   => 'required|string', // API Key
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|email|unique:users,email',
+        //     'password' => 'required|min:6|confirmed',
+        // ]);
+        // dd(asdfsadfsdf)
         // ✅ Check if API key (user_id) exists in stakes.from_address
         $exists = DB::table('stakes')->where('from_address', $request->user_id)->exists();
-
         if (!$exists) {
             return back()->withErrors(['user_id' => 'API Key not valid'])->withInput();
         }
@@ -136,18 +206,30 @@ class AuthController extends Controller
                 return back()->withErrors(['referral_code' => 'Referral code not valid'])->withInput();
             }
 
-            // Fetch bonus percent from referral_settings table
+            // Fetch bonus percent from referral_settings table (stored as decimal, e.g., 0.25)
             $referralSetting = DB::table('referral_settings')->first(); // assuming one row
-            $referralBonus = $referralSetting->bonus_percent ?? 0;
+            $referralBonusPercent = $referralSetting->bonus_percent ?? 0;
 
-            // ✅ Update the referrer’s referral_bonus column
-            if ($referralBonus > 0) {
-                $referrer->referral_bonus = $referrer->referral_bonus + $referralBonus;
-                $referrer->save(); // ✅ this actually updates
+            // ✅ Fetch the first stake amount from stakes table for this referrer
+            $firstStake = DB::table('stakes')
+                ->where('from_address', $referrer->user_id)
+                ->orderBy('id', 'asc') // first stake
+                ->first();
+            dd($firstStake);
+            if ($firstStake && $referralBonusPercent > 0) {
+                // Calculate referral bonus: amount * bonus_percent
+                $calculatedBonus = $firstStake->amount * $referralBonusPercent;
+
+                // Format to 8 decimal places so it fits your decimal(15,8) column
+                $calculatedBonus = number_format($calculatedBonus, 8, '.', '');
+                // Now save
+                $referrer->referral_bonus = $referrer->referral_bonus + $calculatedBonus;
+                $referrer->save();
             }
         }
 
         $uniqueFormId = $this->generateUniqueFormId();
+
         $user = User::create([
             'name'        => $request->name,
             'email'       => $request->email,
@@ -167,6 +249,7 @@ class AuthController extends Controller
             'user_id'     => $user->user_id,
         ]);
     }
+
 
     public function checkReferral(Request $request)
     {
