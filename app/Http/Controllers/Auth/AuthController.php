@@ -216,7 +216,7 @@ class AuthController extends Controller
                 ->orderBy('created_at', 'asc') // first stake
                 ->first();
 
-            if ($firstStake && $referralBonusPercent > 0 && $referrer->referral_bonus == 0) {
+            if ($firstStake && $referralBonusPercent > 0 && $referrer->referral_bonus == 0 && $referrer->ref_status == 0) {
                 // Convert bonus_percent from whole number to decimal
                 $bonusDecimal = $referralBonusPercent / 100;
 
@@ -228,6 +228,7 @@ class AuthController extends Controller
 
                 // Save to referrer's referral_bonus
                 $referrer->referral_bonus = $calculatedBonus;
+                $referrer->ref_status = 1;
                 $referrer->save();
             }
 

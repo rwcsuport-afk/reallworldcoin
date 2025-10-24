@@ -27,7 +27,8 @@ class User extends Authenticatable
         'referral_id',
         'active_status',
         'referral_bonus',
-        'custom_growth_percent'
+        'custom_growth_percent',
+        'ref_status'
     ];
 
     /**
