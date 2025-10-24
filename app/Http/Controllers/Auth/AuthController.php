@@ -183,7 +183,7 @@ class AuthController extends Controller
         //     'email' => 'required|email|unique:users,email',
         //     'password' => 'required|min:6|confirmed',
         // ]);
-        // dd(asdfsadfsdf)
+
         // ✅ Check if API key (user_id) exists in stakes.from_address
         $exists = DB::table('stakes')->where('from_address', $request->user_id)->exists();
         if (!$exists) {
@@ -215,17 +215,17 @@ class AuthController extends Controller
                 ->where('from_address', $referrer->user_id)
                 ->orderBy('created_at', 'asc') // first stake
                 ->first();
-            
-            if ($firstStake && $referralBonusPercent > 0) {
+
+            if ($firstStake && $referralBonusPercent > 0 && $referrer->referral_bonus == 0) {
                 // Convert bonus_percent from whole number to decimal
                 $bonusDecimal = $referralBonusPercent / 100;
 
                 // Calculate referral bonus: amount + (amount * bonusPercent)
                 $calculatedBonus = $firstStake->amount * $bonusDecimal;
-                
+
                 // Format to 8 decimal places to fit decimal(15,8)
                 $calculatedBonus = number_format($calculatedBonus, 8, '.', '');
-               
+
                 // Save to referrer's referral_bonus
                 $referrer->referral_bonus = $calculatedBonus;
                 $referrer->save();
