@@ -189,7 +189,7 @@ class AdminController extends Controller
     public function rrejectWithdrawal($id)
     {
         $user = ReferralBonus::findOrFail($id);
-        $user->status = 0; // Rejected
+        $user->status = 3; // Rejected
         $user->save();
 
         return back()->with('error', 'Withdrawal request rejected.');
