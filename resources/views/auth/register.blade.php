@@ -66,7 +66,7 @@
                         <div class="col-lg-3 col-8 d-flex align-items-center">
                             <div class="site_logo">
                                 <a class="site_link" href="https://reallworldcoin.com/">
-                                    <img loading="lazy" src="{{ asset('sssssss-removebg-preview.png') }}" alt="ICO Site Logo">
+                                    <img loading="lazy" src="{{ asset('sssssss.png') }}" alt="ICO Site Logo">
                                 </a>
                             </div>
                         </div>
@@ -87,16 +87,6 @@
                                                 <span class="nav_link_label" data-text="About ICO">About</span>
                                             </a>
                                         </li>
-                                        {{-- <li>
-                                            <a class="nav-link scrollspy_btn" href="#id_ico_service_section">
-                                                <span class="nav_link_label" data-text="Features">Features</span>
-                                            </a>
-                                        </li> --}}
-                                         {{-- <li>
-                                            <a class="nav-link" href="{{ route('register') }}">
-                                                <span class="nav_link_label" data-text="Register">Register</span>
-                                            </a>
-                                        </li> --}}
                                         
                                         <li>
                                             <a class="nav-link" href="https://dashboard.reallworldcoin.com/contact">
@@ -113,6 +103,21 @@
                                                 <span class="nav_link_label" data-text="Register">Register</span>
                                             </a>
                                         </li>
+                                        {{-- <li>
+                                            <a class="nav-link" href="/contact">
+                                                <span class="nav_link_label" data-text="Contact">Contact</span>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown active">
+                                            <a class="nav-link" href="/login">
+                                                <span class="nav_link_label" data-text="Login">Login</span>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown active">
+                                            <a class="nav-link" href="/register">
+                                                <span class="nav_link_label" data-text="Register">Register</span>
+                                            </a>
+                                        </li> --}}
                                     </ul>
                                 </div>
                             </nav>

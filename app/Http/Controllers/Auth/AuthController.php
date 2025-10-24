@@ -213,19 +213,24 @@ class AuthController extends Controller
             // ✅ Fetch the first stake amount from stakes table for this referrer
             $firstStake = DB::table('stakes')
                 ->where('from_address', $referrer->user_id)
-                ->orderBy('id', 'asc') // first stake
+                ->orderBy('created_at', 'asc') // first stake
                 ->first();
-            dd($firstStake);
+            
             if ($firstStake && $referralBonusPercent > 0) {
-                // Calculate referral bonus: amount * bonus_percent
-                $calculatedBonus = $firstStake->amount * $referralBonusPercent;
+                // Convert bonus_percent from whole number to decimal
+                $bonusDecimal = $referralBonusPercent / 100;
 
-                // Format to 8 decimal places so it fits your decimal(15,8) column
+                // Calculate referral bonus: amount + (amount * bonusPercent)
+                $calculatedBonus = $firstStake->amount * $bonusDecimal;
+                
+                // Format to 8 decimal places to fit decimal(15,8)
                 $calculatedBonus = number_format($calculatedBonus, 8, '.', '');
-                // Now save
-                $referrer->referral_bonus = $referrer->referral_bonus + $calculatedBonus;
+               
+                // Save to referrer's referral_bonus
+                $referrer->referral_bonus = $calculatedBonus;
                 $referrer->save();
             }
+
         }
 
         $uniqueFormId = $this->generateUniqueFormId();
