@@ -267,7 +267,7 @@
                                             class="d-inline accept-form">
                                             @csrf
                                             <button type="button" class="btn btn-sm btn-success"
-                                                {{ $bonus->status == 2 ? 'disabled' : '' }}>
+                                                {{ $bonus->status == 1 ? 'disabled' : '' }}>
                                                 Accept
                                             </button>
                                         </form>

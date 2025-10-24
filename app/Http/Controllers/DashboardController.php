@@ -366,7 +366,7 @@ class DashboardController extends Controller
         // Check if user has pending (status = 2) withdrawals
         $pendingWithdrawals = DB::table('referral_bonuses')
             ->where('user_id', $user->id)
-            ->where('status', 2)
+            ->where('status', 1)
             ->get();
         return view('pages.User.withdrawal_referral', compact('referralBonus', 'pendingWithdrawals'));
     }
